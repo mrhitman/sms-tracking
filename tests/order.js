@@ -10,12 +10,18 @@ describe("order", () => {
     const response = await app.post("/order").send({
       user_id: 1,
       phone: chance.phone(),
-      ttl: chance.guid(),
+      ttn: chance.guid(),
       status: "pending"
     });
     expect(response.status).eq(201);
   });
 
-  // test.todo("edit order");
-  // test.todo("delete order");
+  test("edit order", async () => {
+    const response = await app.post("/order/update").send({
+      id: 1,
+      status: "in_progress"
+    });
+    expect(response.status).eq(200);
+  });
+  test("pause order", async () => {});
 });

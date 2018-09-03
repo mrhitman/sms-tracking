@@ -6,14 +6,19 @@ class Order extends Model {
     return "order";
   }
 
+  check() {}
+
+  static get relationMappings() {
+    return {};
+  }
+
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["ttl", "status", "phone", "user_id"],
       properties: {
         phone: { type: "string" },
         type: { enum: ["novaposhta"] },
-        ttl: { type: "string" },
+        ttn: { type: "string" },
         user_id: { type: "number" },
         sms_template: { type: "string" },
         status: {

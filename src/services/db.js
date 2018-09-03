@@ -7,5 +7,5 @@ module.exports = Knex({
   connection: {
     filename: `./${process.env.DB_FILENAME}`
   },
-  pool: { min: 12, max: 24 }
+  pool: { min: 24, max: 48 }
 });
