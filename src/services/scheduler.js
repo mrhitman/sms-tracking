@@ -20,19 +20,19 @@ class Scheduler {
     this.start();
   }
 
-  checkOrdersStatuses = async () => {
+  async checkOrdersStatuses() {
     const orders = await Order.query().where({ status: "pending" });
     orders.map(
       async order => await order.$query().update({ status: "in_progress" })
     );
-  };
+  }
 
-  sendSms = async () => {
+  async sendSms() {
     const orders = await Order.query().where({ status: "pending" });
     orders.map(
       async order => await order.$query().update({ status: "in_progress" })
     );
-  };
+  }
 
   stop() {
     this.order.cancel();
@@ -40,8 +40,11 @@ class Scheduler {
   }
 
   start() {
-    this.order = schedule.scheduleJob("*/30 * * * *", this.checkOrdersStatuses);
-    this.sms = schedule.scheduleJob("0 10 * * *", this.sendSms);
+    this.order = schedule.scheduleJob(
+      "*/30 * * * *",
+      this.checkOrdersStatuses.bind(this)
+    );
+    this.sms = schedule.scheduleJob("0 10 * * *", this.sendSms.bind(this));
   }
 }
 
