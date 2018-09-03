@@ -1,5 +1,7 @@
 const schedule = require("node-schedule");
+const moment = require("moment")();
 const Order = require("../models/order");
+const Sms = require("../models/sms");
 
 const TrackingStatus = {
   wait: [1],
@@ -28,10 +30,14 @@ class Scheduler {
   }
 
   async sendSms() {
-    const orders = await Order.query().where({ status: "pending" });
-    orders.map(
-      async order => await order.$query().update({ status: "in_progress" })
-    );
+    const orders = await Order.query().where({ status: "in_progress" });
+    orders.map(async order => {
+      await Sms.query().insert({
+        order_id: order.id,
+        status: "in_progress",
+        send_time: moment.format()
+      });
+    });
   }
 
   stop() {
