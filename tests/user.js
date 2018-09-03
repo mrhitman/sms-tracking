@@ -1,13 +1,26 @@
-const { test } = require("ava");
+const { test } = require("mocha");
+const { expect } = require("chai");
 const createApp = require("../src");
 const agent = require("supertest-koa-agent");
+const chance = require("chance")();
 
-const app = agent(createApp());
+describe("user", () => {
+  const app = agent(createApp());
 
-test("create user", async t => {
-    const response = await app.get('/');
-    t.is(response.status, 200);
-    // t.is(response.body, 'hi');
+  test("create user", async () => {
+    const response = await app.post("/user").send({
+      name: chance.name(),
+      phone: chance.phone(),
+      email: chance.email()
+    });
+    expect(response.status).eq(201);
+  });
+
+  test("update", async () => {
+    const response = await app.post("/user/update").send({
+      id: 1,
+      name: chance.name()
+    });
+    expect(response.status).eq(200);
+  });
 });
-
-test.todo("update user");

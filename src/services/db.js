@@ -1,12 +1,11 @@
+const Knex = require("knex");
 require("dotenv").config();
 
-module.exports = {
+module.exports = Knex({
   client: "sqlite3",
   useNullAsDefault: true,
   connection: {
     filename: `./${process.env.DB_FILENAME}`
   },
-  migrations: {
-    tableName: "migration"
-  }
-};
+  pool: { min: 12, max: 24 }
+});
