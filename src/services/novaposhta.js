@@ -18,9 +18,9 @@ class NovaPoshta {
         modelName: "TrackingDocument",
         calledMethod: "getStatusDocuments",
         methodProperties: {
-          Documents: _.map(documents, document => ({
-            DocumentNumber: document.ttn,
-            Phone: document.phone
+          Documents: _.map(documents, ({ ttn, phone }) => ({
+            DocumentNumber: ttn,
+            Phone: phone
           }))
         }
       },

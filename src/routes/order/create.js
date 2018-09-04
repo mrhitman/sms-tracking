@@ -10,6 +10,7 @@ module.exports = async ctx => {
     ttn,
     phone,
     status: "pending",
+    type: "novaposhta",
     sms_template:
       ctx.request.body.sms_template ||
       user.default_sms_template ||

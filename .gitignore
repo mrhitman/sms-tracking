@@ -2,3 +2,5 @@ node_modules/
 .vscode
 .env
 db.sqlite3
+coverage/
+.nyc_output

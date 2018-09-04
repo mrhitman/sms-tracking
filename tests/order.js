@@ -22,6 +22,7 @@ describe("order", () => {
       status: "in_progress"
     });
     expect(response.status).eq(200);
+    expect(response.body.status).eq("in_progress");
   });
 
   test("pause order", async () => {

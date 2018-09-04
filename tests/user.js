@@ -23,4 +23,15 @@ describe("user", () => {
     });
     expect(response.status).eq(200);
   });
+
+  test("get", async () => {
+    const response = await app.get("/user/1");
+    expect(response.status).eq(200);
+    expect(response.body.id).eq(1);
+  });
+
+  test("get unexists", async () => {
+    const response = await app.get("/user/update/999999");
+    expect(response.status).eq(404);
+  });
 });

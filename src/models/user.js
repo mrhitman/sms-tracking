@@ -1,6 +1,7 @@
 const { Model } = require("objection");
 const db = require("../services/db");
 const Order = require("./order");
+const SmsTemplate = require("./sms-template");
 
 class User extends Model {
   static get tableName() {
@@ -13,11 +14,19 @@ class User extends Model {
         relation: Model.HasManyRelation,
         modelClass: Order,
         join: {
-          from: 'user.id',
-          to: 'order.user_id',
+          from: "user.id",
+          to: "order.user_id"
+        }
+      },
+      smsTemplates: {
+        relation: Model.HasManyRelation,
+        modelClass: SmsTemplate,
+        join: {
+          from: "user.id",
+          to: "sms_template.user_id"
         }
       }
-    }
+    };
   }
 
   static get jsonSchema() {
