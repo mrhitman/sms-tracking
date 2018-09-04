@@ -1,7 +1,8 @@
+"use strict";
+
 const schedule = require("node-schedule");
-const moment = require("moment")();
 const Order = require("../models/order");
-const Sms = require("./sms");
+const processOrders = require("./sms");
 
 const TrackingStatus = {
   wait: [1],
@@ -17,21 +18,29 @@ const TrackingStatus = {
   checking: [14]
 };
 
+const orderTemplate = "*/30 * * * *";
+const smsTemplate = "0 10 * * *";
+
 class Scheduler {
   constructor() {
     this.start();
   }
 
   async checkOrdersStatuses() {
-    const orders = await Order.query().where({ status: "pending" });
-    orders.map(
-      async order => await order.$query().update({ status: "in_progress" })
-    );
+    const pendingOrders = await Order.query().where({ status: "pending" });
+    pendingOrders.map(async order => order.start());
+
+    const inProgressOrders = await Order.query().where({
+      status: "in_progress"
+    });
+
+    inProgressOrders.map(async order => order.complete());
   }
 
   async sendSms() {
+    console.log("check sms");
     const orders = await Order.query().where({ status: "in_progress" });
-    await sms.processOrders(orders)
+    await processOrders(orders);
   }
 
   stop() {
@@ -41,10 +50,10 @@ class Scheduler {
 
   start() {
     this.order = schedule.scheduleJob(
-      "*/30 * * * *",
+      orderTemplate,
       this.checkOrdersStatuses.bind(this)
     );
-    this.sms = schedule.scheduleJob("0 10 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob(smsTemplate, this.sendSms.bind(this));
   }
 }
 

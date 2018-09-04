@@ -1,3 +1,5 @@
+"use strict";
+
 const { Model } = require("objection");
 const db = require("../services/db");
 const Order = require("./order");
@@ -6,6 +8,20 @@ const SmsTemplate = require("./sms-template");
 class User extends Model {
   static get tableName() {
     return "user";
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      novaposhta_key: this.novaposhta_key,
+      smg_token: this.smg_token,
+      alpha_name: this.alpha_name,
+      novaposhta_key: this.novaposhta_key,
+      default_sms_template: this.default_sms_template
+    };
   }
 
   static get relationMappings() {
@@ -37,7 +53,9 @@ class User extends Model {
         email: { type: "string" },
         phone: { type: "string" },
         novaposhta_key: { type: "string" },
+        smg_token: { type: "string" },
         alpha_name: { type: "string" },
+        reference: { type: "number" },
         default_sms_template: { type: "string" }
       }
     };

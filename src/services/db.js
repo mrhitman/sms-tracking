@@ -1,3 +1,5 @@
+"use strict";
+
 const Knex = require("knex");
 require("dotenv").config();
 

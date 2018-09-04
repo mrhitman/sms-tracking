@@ -1,3 +1,5 @@
+"use strict";
+
 const SmsTemplate = require("../../models/sms-template");
 
 module.exports = async ctx => {
