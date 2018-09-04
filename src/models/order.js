@@ -1,14 +1,23 @@
 const { Model } = require("objection");
 const db = require("../services/db");
 const Sms = require("./sms");
-const User = require("./user");
 
 class Order extends Model {
   static get tableName() {
     return "order";
   }
 
-  check() {}
+  async pause() {
+    if (this.status === "in_progress") {
+      return this.$query().update({ status: "paused" });
+    }
+  }
+
+  async unpause() {
+    if (this.status === "paused") {
+      return this.$query().update({ status: "in_progress" });
+    }
+  }
 
   static get relationMappings() {
     return {
@@ -16,16 +25,8 @@ class Order extends Model {
         relation: Model.HasManyRelation,
         modelClass: Sms,
         join: {
-          from: 'order.id',
-          to: 'sms.order_id',
-        }
-      },
-      user: {
-        relation: Model.HasOneRelation,
-        modelClass: User,
-        join: {
-          from: 'order.user_id',
-          to: 'user.id',
+          from: "order.id",
+          to: "sms.order_id"
         }
       }
     };

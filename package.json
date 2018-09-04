@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node src/index.js",
+    "start:dev": "nodemon src/index.js",
     "test": "mocha tests",
     "migrate": "knex migrate:latest",
     "migrate:down": "knex migrate:rollback",

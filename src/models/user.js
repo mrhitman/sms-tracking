@@ -23,7 +23,6 @@ class User extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["name", "email", "phone"],
       properties: {
         name: { type: "string" },
         email: { type: "string" },

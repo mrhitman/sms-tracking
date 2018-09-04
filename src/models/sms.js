@@ -1,25 +1,11 @@
 const { Model } = require("objection");
 const db = require("../services/db");
-const Order = require("./order");
 
 class Sms extends Model {
   static get tableName() {
     return "sms";
   }
   
-  static get relationMappings() {
-    return {
-      order: {
-        relation: Model.HasOneRelation,
-        modelClass: Order,
-        join: {
-          from: 'sms.order_id',
-          to: 'order.id',
-        }
-      }
-    }
-  }
-
   static get jsonSchema() {
     return {
       type: "object",
