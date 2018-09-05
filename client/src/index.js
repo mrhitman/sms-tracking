@@ -10,6 +10,7 @@ import User from "./components/User";
 import Orders from "./components/Orders";
 import SmsTemplates from "./components/SmsTemplates";
 import reducer from "./reducers";
+import UpdateUser from "./components/UpdateUser";
 
 const store = createStore(reducer);
 
@@ -18,6 +19,7 @@ ReactDOM.render(
     <Router>
       <Switch>
         <Route path="/profile" component={User} />
+        <Route path="/update-profile" component={UpdateUser} />
         <Route path="/orders" component={Orders} />
         <Route path="/sms-templates" component={SmsTemplates} />
         <Route path="/" component={App} />

@@ -1,4 +1,6 @@
 export const actions = {
+  user_login: "user_login",
+  user_logout: "user_logout",
   user_get: "user_get",
   user_update: "user_update",
   user_create: "user_create",
