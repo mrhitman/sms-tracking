@@ -1,3 +1,23 @@
-export default (state = {}, action) => {
-  return state;
+import { Record, List } from "immutable";
+import { actions } from "../constants";
+
+const SmsTemplate = Record({
+  id: "",
+  template: ""
+});
+
+const initialState = List();
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case actions.sms_templates_get:
+      const templates = action.payload;
+      return List(templates.map(template => new SmsTemplate(template)));
+    case actions.sms_templates_delete:
+      return state.delete(
+        state.findIndex(item => item.id == action.payload.id)
+      );
+    default:
+      return state;
+  }
 };

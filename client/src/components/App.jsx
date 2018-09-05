@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Orders from "./Orders";
 import Layout from "./Layout";
 
 class App extends Component {

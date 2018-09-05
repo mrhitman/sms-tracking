@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table } from "antd";
+import { Table, Icon } from "antd";
 import { connect } from "react-redux";
 import * as axios from "axios";
 import { actions } from "../constants";
@@ -35,8 +35,40 @@ class Orders extends Component {
     {
       title: "created_at",
       dataIndex: "created_at"
+    },
+    {
+      title: "Operation",
+      dataIndex: "operation",
+      render: (text, record) => {
+        return (
+          <a href="javascript:;">
+            {record.status === "in_progress" && (
+              <Icon
+                type={"pause-circle"}
+                onClick={() => this.handlePause(record.id)}
+              />
+            )}
+            {record.status === "paused" && (
+              <Icon
+                type={"right-circle"}
+                onClick={() => this.handleUnpause(record.id)}
+              />
+            )}
+          </a>
+        );
+      }
     }
   ];
+
+  handlePause(id) {
+    const { pause } = this.props;
+    axios.post("/order/pause", { id }).then(pause);
+  }
+
+  handleUnpause(id) {
+    const { unpause } = this.props;
+    axios.post("/order/unpause", { id }).then(unpause);
+  }
 
   componentDidMount() {
     const { getOrders } = this.props;
@@ -56,6 +88,12 @@ const mapStateToProps = state => state;
 const mapDispatchToState = dispatch => ({
   getOrders: payload => {
     dispatch({ type: actions.orders_get, payload: payload.data });
+  },
+  pause: payload => {
+    dispatch({ type: actions.orders_pause, payload: payload.data });
+  },
+  unpause: payload => {
+    dispatch({ type: actions.orders_unpause, payload: payload.data });
   }
 });
 
