@@ -17,7 +17,7 @@ class User extends Model {
       email: this.email,
       phone: this.phone,
       novaposhta_key: this.novaposhta_key,
-      smg_token: this.smg_token,
+      bsg_token: this.smg_token,
       alpha_name: this.alpha_name,
       novaposhta_key: this.novaposhta_key,
       default_sms_template: this.default_sms_template
@@ -53,7 +53,7 @@ class User extends Model {
         email: { type: "string" },
         phone: { type: "string" },
         novaposhta_key: { type: "string" },
-        smg_token: { type: "string" },
+        bsg_token: { type: "string" },
         alpha_name: { type: "string" },
         reference: { type: "number" },
         default_sms_template: { type: "string" }

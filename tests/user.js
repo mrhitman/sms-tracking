@@ -22,7 +22,7 @@ describe("user", () => {
       name: "Mr Hitman",
       email: "kabalx47@gmail.com",
       alpha_name: "Prom.ua",
-      smg_token: "test_jGIBEs3BXQwOg4ZVTwxd",
+      bsg_token: "test_jGIBEs3BXQwOg4ZVTwxd",
       novaposhta_key: "6610680b61f0ba4d96a92d6ba8052dcf",
       reference: 20,
       default_sms_template: "Test test test"

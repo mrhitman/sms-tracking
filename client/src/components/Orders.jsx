@@ -3,6 +3,7 @@ import { Table } from "antd";
 import { connect } from "react-redux";
 import * as axios from "axios";
 import { actions } from "../constants";
+import Layout from "./Layout";
 
 class Orders extends Component {
   columns = [
@@ -43,9 +44,10 @@ class Orders extends Component {
   }
 
   render() {
-    console.log(this.props.order);
     return (
-      <Table columns={this.columns} dataSource={this.props.order.toJS()} />
+      <Layout>
+        <Table columns={this.columns} dataSource={this.props.order.toJS()} />
+      </Layout>
     );
   }
 }

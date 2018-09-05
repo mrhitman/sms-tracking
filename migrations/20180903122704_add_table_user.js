@@ -7,7 +7,7 @@ exports.up = knex =>
     table.string("email");
     table.string("phone");
     table.string("novaposhta_key");
-    table.string("smg_token");
+    table.string("bsg_token");
     table.string("alpha_name");
     table.integer("reference");
     table.string("default_sms_template");
