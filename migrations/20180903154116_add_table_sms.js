@@ -7,6 +7,7 @@ exports.up = knex =>
     table.enum("status", ["sent", "not_reached", "in_progress"]);
     table.integer("template_id");
     table.datetime("send_time");
+    table.text("sms_raw");
   });
 
 exports.down = knex => knex.schema.dropTable(tableName);

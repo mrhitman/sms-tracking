@@ -4,6 +4,7 @@ const Router = require("koa-router");
 
 const router = new Router();
 
+router.get("/order/:user_id", require("./get"));
 router.post("/order", require("./create"));
 router.post("/order/update", require("./update"));
 router.post("/order/pause", require("./pause"));

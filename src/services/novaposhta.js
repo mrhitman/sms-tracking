@@ -6,17 +6,16 @@ const _ = require("lodash");
 const TrackingStatuses = {};
 
 class NovaPoshta {
-  constructor(params) {
-    this.apiKey = params.apiKey;
+  constructor() {
     this.uri = "https://api.novaposhta.ua/v2.0/json/";
   }
 
-  async getStatusDocuments(documents) {
+  async getStatusDocuments(apiKey, documents) {
     return request({
       uri: this.uri,
       method: "POST",
       body: {
-        apiKey: this.apiKey,
+        apiKey: apiKey,
         modelName: "TrackingDocument",
         calledMethod: "getStatusDocuments",
         methodProperties: {

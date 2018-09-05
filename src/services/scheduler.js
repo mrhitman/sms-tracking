@@ -2,6 +2,8 @@
 
 const schedule = require("node-schedule");
 const Order = require("../models/order");
+const User = require("../models/user");
+const NovaPoshta = require("../services/novaposhta");
 const processOrders = require("./sms");
 
 const TrackingStatus = {
@@ -15,11 +17,12 @@ const TrackingStatus = {
   ready: [7, 8],
   done: [9],
   taken: [10, 11, 106],
-  checking: [14]
+  checking: [14],
+  refuse: [102, 103, 108],
+  stopsaving: [105]
 };
 
 const orderTemplate = "*/30 * * * *";
-const smsTemplate = "0 10 * * *";
 
 class Scheduler {
   constructor() {
@@ -27,18 +30,45 @@ class Scheduler {
   }
 
   async checkOrdersStatuses() {
+    const novaposhta = new NovaPoshta();
     const pendingOrders = await Order.query().where({ status: "pending" });
-    pendingOrders.map(async order => order.start());
+
+    pendingOrders.map(async order => {
+      const user = await User.query().findById(order.user_id);
+      const info = novaposhta.getStatusDocuments(user.novaposhta_key, {
+        phone: order.phone,
+        ttn: order.ttn
+      });
+      if (TrackingStatus.ready.includes(info.status)) {
+        await order.start();
+      }
+    });
 
     const inProgressOrders = await Order.query().where({
       status: "in_progress"
     });
 
-    inProgressOrders.map(async order => order.complete());
+    inProgressOrders.map(async order => {
+      const user = await User.query().findById(order.user_id);
+      const info = novaposhta.getStatusDocuments(user.novaposhta_key, {
+        phone: order.phone,
+        ttn: order.ttn
+      });
+      if (TrackingStatus.done.includes(info.status)) {
+        await order.complete();
+      }
+      if (
+        [...TrackingStatus.refuse, ...TrackingStatus.stopsaving].includes(
+          info.status
+        )
+      ) {
+        await order.complete();
+      }
+    });
+    await processOrders(inProgressOrders);
   }
 
   async sendSms() {
-    console.log("check sms");
     const orders = await Order.query().where({ status: "in_progress" });
     await processOrders(orders);
   }
@@ -53,7 +83,14 @@ class Scheduler {
       orderTemplate,
       this.checkOrdersStatuses.bind(this)
     );
-    this.sms = schedule.scheduleJob(smsTemplate, this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 10 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 11 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 12 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 13 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 14 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 16 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 17 * * *", this.sendSms.bind(this));
+    this.sms = schedule.scheduleJob("0 18 * * *", this.sendSms.bind(this));
   }
 }
 

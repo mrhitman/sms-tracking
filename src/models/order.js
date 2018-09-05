@@ -11,29 +11,30 @@ class Order extends Model {
 
   async start() {
     if (this.status === "pending") {
-      console.log(`Start ${this.id} order`);
       return await this.$query().update({ status: "in_progress" });
     }
   }
 
   async complete() {
-    console.log(this.status);
     if (["in_progress", "paused"].indexOf(this.status) !== -1) {
-      console.log(`Complete ${this.id} order`);
       return await this.$query().update({ status: "done" });
+    }
+  }
+
+  async refuse() {
+    if (["in_progress", "paused"].indexOf(this.status) !== -1) {
+      return await this.$query().update({ status: "refused" });
     }
   }
 
   async pause() {
     if (this.status === "in_progress") {
-      console.log(`Pause ${this.id} order`);
       return this.$query().update({ status: "paused" });
     }
   }
 
   async unpause() {
     if (this.status === "paused") {
-      console.log(`Unpause ${this.id} order`);
       return this.$query().update({ status: "in_progress" });
     }
   }
@@ -63,6 +64,7 @@ class Order extends Model {
         status: {
           enum: ["pending", "in_progress", "paused", "done", "refused"]
         },
+        last_sms_sent: { type: "string" },
         created_at: { type: "string" }
       }
     };
