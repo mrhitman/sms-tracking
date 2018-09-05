@@ -17,7 +17,7 @@ class User extends Model {
       email: this.email,
       phone: this.phone,
       novaposhta_key: this.novaposhta_key,
-      bsg_token: this.smg_token,
+      bsg_token: this.bsg_token,
       alpha_name: this.alpha_name,
       novaposhta_key: this.novaposhta_key,
       default_sms_template: this.default_sms_template
