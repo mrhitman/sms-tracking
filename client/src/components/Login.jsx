@@ -3,6 +3,7 @@ import { Checkbox, Form, Icon, Input, Button } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as axios from "axios";
+import { actions } from "../constants";
 
 const FormItem = Form.Item;
 class Login extends Component {
@@ -64,7 +65,11 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  login: payload => {
+    dispatch({ type: actions.user_login, payload: payload.data });
+  }
+});
 
 export default connect(
   mapStateToProps,

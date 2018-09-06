@@ -71,8 +71,8 @@ class Orders extends Component {
   }
 
   componentDidMount() {
-    const { getOrders } = this.props;
-    axios.get("/order/1").then(getOrders);
+    const { getOrders, user } = this.props;
+    axios.get(`/order/${user.get("id")}`).then(getOrders);
   }
 
   render() {

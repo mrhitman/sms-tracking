@@ -1,8 +1,9 @@
 import { Record } from "immutable";
 import { actions } from "../constants";
+import * as decode from "jwt-decode";
 
 const User = Record({
-  id: "",
+  id: decode(localStorage.getItem("token")).id || null,
   name: "",
   email: "",
   phone: "",
@@ -22,6 +23,10 @@ export default (state = initialState, action) => {
       localStorage.clear();
       return new User();
     case actions.user_login:
+      const { token, refreshToken } = action.payload;
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+      return state.set("token", token).set("refreshToken", refreshToken);
     case actions.user_get:
       return new User(action.payload);
     default:

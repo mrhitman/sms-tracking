@@ -10,8 +10,8 @@ const rowStyle = { margin: 8 };
 
 class User extends Component {
   componentDidMount() {
-    const { getUser } = this.props;
-    axios.get("/user/1").then(getUser);
+    const { getUser, user } = this.props;
+    axios.get(`/user/${user.get("id")}`).then(getUser);
   }
 
   render() {
@@ -30,14 +30,6 @@ class User extends Component {
           <Col span={3}>Phone:</Col>
           <Col span={12}>{user.get("phone")}</Col>
         </Row>
-        {/* <Row style={rowStyle}>
-          <Col span={3}>NovaPoshta key:</Col>
-          <Col span={6}>{user.get("novaposhta_key")}</Col>
-        </Row>
-        <Row style={rowStyle}>
-          <Col span={3}>bsg token:</Col>
-          <Col span={6}>{user.get("bsg_token")}</Col>
-        </Row> */}
         <Row style={rowStyle}>
           <Col span={3}>Alpha name:</Col>
           <Col span={12}>{user.get("alpha_name")}</Col>

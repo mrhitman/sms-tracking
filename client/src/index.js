@@ -13,6 +13,7 @@ import reducer from "./reducers";
 import UpdateUser from "./components/UpdateUser";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import Register from "./components/Register";
 
 const store = createStore(reducer);
 
@@ -24,6 +25,7 @@ ReactDOM.render(
         <Route path="/update-profile" component={UpdateUser} />
         <Route path="/orders" component={Orders} />
         <Route path="/sms-templates" component={SmsTemplates} />
+        <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
         <Route path="/reset-password" component={Logout} />

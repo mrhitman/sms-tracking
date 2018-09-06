@@ -14,8 +14,8 @@ const rowStyle = { margin: 6 };
 
 class User extends Component {
   componentDidMount() {
-    const { getUser } = this.props;
-    axios.get("/user/1").then(getUser);
+    const { getUser, user } = this.props;
+    axios.get(`/user/${user.id}`).then(getUser);
   }
 
   handleSubmit = e => {
