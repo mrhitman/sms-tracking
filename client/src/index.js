@@ -11,6 +11,8 @@ import Orders from "./components/Orders";
 import SmsTemplates from "./components/SmsTemplates";
 import reducer from "./reducers";
 import UpdateUser from "./components/UpdateUser";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
 
 const store = createStore(reducer);
 
@@ -22,6 +24,8 @@ ReactDOM.render(
         <Route path="/update-profile" component={UpdateUser} />
         <Route path="/orders" component={Orders} />
         <Route path="/sms-templates" component={SmsTemplates} />
+        <Route path="/login" component={Login} />
+        <Route path="/logout" component={Logout} />
         <Route path="/" component={App} />
       </Switch>
     </Router>
