@@ -51,6 +51,7 @@ class User extends Model {
       properties: {
         name: { type: "string" },
         email: { type: "string" },
+        password: { type: "string" },
         phone: { type: "string" },
         novaposhta_key: { type: "string" },
         bsg_token: { type: "string" },

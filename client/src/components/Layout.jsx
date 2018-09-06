@@ -45,6 +45,12 @@ class BaseLayout extends PureComponent {
                 <span>SMS Templates</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="5">
+              <Link to="/logout">
+                <Icon type="exit" />
+                <span>Logout</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout>
