@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Layout from "./Layout";
 import { Col, Row, Form, Input, Button } from "antd";
 import { actions } from "../constants";
-import * as axios from "axios";
+import api from "../api";
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -15,14 +15,14 @@ const rowStyle = { margin: 6 };
 class User extends Component {
   componentDidMount() {
     const { getUser, user } = this.props;
-    axios.get(`/user/${user.id}`).then(getUser);
+    api.get(`/user/${user.id}`).then(getUser);
   }
 
   handleSubmit = e => {
     e.preventDefault();
     const { getUser } = this.props;
     this.props.form.validateFields((err, values) => {
-      axios.post("/user/update", values).then(getUser);
+      api.post("/user/update", values).then(getUser);
     });
   };
 

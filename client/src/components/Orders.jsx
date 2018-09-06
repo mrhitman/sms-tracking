@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table, Icon } from "antd";
 import { connect } from "react-redux";
-import * as axios from "axios";
+import api from "../api";
 import { actions } from "../constants";
 import Layout from "./Layout";
 
@@ -62,17 +62,17 @@ class Orders extends Component {
 
   handlePause(id) {
     const { pause } = this.props;
-    axios.post("/order/pause", { id }).then(pause);
+    api.pauseOrder({ id }).then(pause);
   }
 
   handleUnpause(id) {
     const { unpause } = this.props;
-    axios.post("/order/unpause", { id }).then(unpause);
+    api.unpauseOrder({ id }).then(unpause);
   }
 
   componentDidMount() {
     const { getOrders, user } = this.props;
-    axios.get(`/order/${user.get("id")}`).then(getOrders);
+    api.getOrders(user.get("id")).then(getOrders);
   }
 
   render() {

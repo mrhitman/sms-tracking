@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { actions } from "../constants";
 import { connect } from "react-redux";
-import * as axios from "axios";
+import api from "../api";
 
 class Logout extends Component {
-  logout() {
+  componentDidMount() {
     const { logout } = this.props;
-    axios.post("/user/logout").then(logout);
+    api.logout().then(logout);
   }
 
   render() {
@@ -18,7 +18,7 @@ class Logout extends Component {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
   logout: () => {
-    dispatch({ action: actions.user_logout });
+    dispatch({ type: actions.user_logout });
   }
 });
 

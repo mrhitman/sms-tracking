@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Table, Icon, Popconfirm, Input } from "antd";
 import { connect } from "react-redux";
-import * as axios from "axios";
+import api from "../api";
 import { actions } from "../constants";
 import Layout from "./Layout";
 
@@ -49,12 +49,12 @@ class SmsTemplates extends Component {
 
   handleDelete(id) {
     const { deleteTemplate } = this.props;
-    axios.post("/sms-template/delete", { id }).then(deleteTemplate);
+    api.deleteSmsTemplate({ id }).then(deleteTemplate);
   }
 
   componentDidMount() {
-    const { getTemplates } = this.props;
-    axios.get("/sms-template/1").then(getTemplates);
+    const { getTemplates, user } = this.props;
+    api.getSmsTemplates(user.get("id")).then(getTemplates);
   }
 
   render() {

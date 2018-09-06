@@ -17,8 +17,11 @@ module.exports = async ctx => {
   if (!bcrypt.compareSync(String(password), user.password)) {
     return;
   }
-  
-  const token = jwt.sign({ id: user.id }, process.env.SALT, {expiresIn: "1h" });
+
+  const token = jwt.sign({ id: user.id }, process.env.SALT, {
+    expiresIn: "1h"
+  });
+
   let refreshToken = await RefreshToken.query().findOne({ user_id: user.id });
   if (!refreshToken) {
     refreshToken = await RefreshToken.query()
@@ -27,7 +30,8 @@ module.exports = async ctx => {
   }
 
   ctx.body = {
+    user,
     token,
-    refreshToken: refreshToken.token,
+    refreshToken: refreshToken.token
   };
 };

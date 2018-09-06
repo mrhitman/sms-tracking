@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Icon, Input, Button } from "antd";
 import { connect } from "react-redux";
 import { actions } from "../constants";
-import * as axios from "axios";
+import api from "../api";
 
 const FormItem = Form.Item;
 class Register extends Component {
@@ -11,7 +11,7 @@ class Register extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { create } = this.props;
-        axios.post("/user", values).then(create);
+        api.post("/user", values).then(create);
       }
     });
   };

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Layout from "./Layout";
 import { Col, Row, Button } from "antd";
 import { actions } from "../constants";
-import * as axios from "axios";
+import api from "../api";
 import { Link } from "react-router-dom";
 
 const rowStyle = { margin: 8 };
@@ -11,7 +11,7 @@ const rowStyle = { margin: 8 };
 class User extends Component {
   componentDidMount() {
     const { getUser, user } = this.props;
-    axios.get(`/user/${user.get("id")}`).then(getUser);
+    api.getUser(user.get("id")).then(getUser);
   }
 
   render() {

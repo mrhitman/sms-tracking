@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Checkbox, Form, Icon, Input, Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import * as axios from "axios";
+import api from "../api";
 import { actions } from "../constants";
 
 const FormItem = Form.Item;
@@ -12,15 +12,17 @@ class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { login } = this.props;
-        axios.post("/user/login", values).then(login);
+        api.login(values).then(login);
       }
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { user } = this.props;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
+        {user.get("id") && <Redirect to="/" />}
         <FormItem>
           {getFieldDecorator("email", {
             rules: [{ required: true, message: "Please input your email" }]

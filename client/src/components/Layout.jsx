@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Layout, Menu, Icon } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 const { Header, Sider, Content } = Layout;
 
@@ -16,14 +17,16 @@ class BaseLayout extends PureComponent {
   };
 
   render() {
+    const { user } = this.props;
     return (
       <Layout>
+        {!user.get("id") && <Redirect to="/login" />}
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo" />
           <Menu theme="dark" mode="inline">
             <Menu.Item key="1">
               <Link to="/">
-                <Icon type="bars" />
+                <Icon type="dashboard" />
                 <span>Hi</span>
               </Link>
             </Menu.Item>
@@ -47,7 +50,7 @@ class BaseLayout extends PureComponent {
             </Menu.Item>
             <Menu.Item key="5">
               <Link to="/logout">
-                <Icon type="exit" />
+                <Icon type="logout" />
                 <span>Logout</span>
               </Link>
             </Menu.Item>
@@ -77,4 +80,10 @@ class BaseLayout extends PureComponent {
   }
 }
 
-export default BaseLayout;
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BaseLayout);
