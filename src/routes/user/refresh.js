@@ -1,6 +1,7 @@
 "use strict";
 
 const RefreshToken = require("../../models/refresh-token");
+const jwt = require("jsonwebtoken");
 const uuid = require('uuid');
 
 module.exports = async ctx => {

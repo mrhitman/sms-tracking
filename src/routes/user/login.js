@@ -14,7 +14,7 @@ module.exports = async ctx => {
     return;
   }
 
-  if (!bcrypt.compareSync(password, user.password)) {
+  if (!bcrypt.compareSync(String(password), user.password)) {
     return;
   }
   

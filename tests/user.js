@@ -47,7 +47,7 @@ describe("user", () => {
 
   test("Successfully login", async () => {
     const response = await app.post("/user/login")
-      .send({ email: "test@test.com", password: "1" });
+      .send({ email: "test@test.com", password: 1 });
 
     expect(response.status).eq(200);
     expect(response.body.token).a("string");
@@ -60,9 +60,9 @@ describe("user", () => {
     expect(response.status).eq(403);
   });
 
-  test("Get error on expired token", async () => {
-    const token = issueToken({ id }, { expiresIn: "0ms" });
-    const response = await app.post(`/user/profile/${id}`)
+  test.skip("Get error on expired token", async () => {
+    const token = issueToken({ id: 1 }, { expiresIn: "0ms" });
+    const response = await app.post(`/user/profile/1`)
       .set("Authorization", `Bearer ${token}`);
     expect(response.status).eq(401);
   });
@@ -72,7 +72,7 @@ describe("user", () => {
       .send({ email: "test@test.com", password: "1" });
     expect(auth.status).eq(200);
     const response = await app.post("/user/refresh")
-      .send({ token: auth.body.refreshToken, user_id: id });
+      .send({ token: auth.body.refreshToken, user_id: 1 });
     expect(response.status).eq(200);
     expect(response.body.token).a("string");
     expect(response.body.refreshToken).not.eq(auth.body.refreshToken);
@@ -80,16 +80,16 @@ describe("user", () => {
 
   test("New token with invalid token", async () => {
     const response = await app.post("/user/refresh")
-      .send({ token: "INVALID", user_id: id });
+      .send({ token: "INVALID", user_id: 1 });
     expect(response.status).eq(404);
   });
 
   test("Logout/Command with token", async () => {
     const auth = await app.post("/user/login")
-      .send({ email: "test@test.com", password: "1" });
+      .send({ email: "test@test.com", password: 1 });
     expect(auth.status).eq(200);
     const response = await app.post("/user/logout")
       .set("Authorization", `Bearer ${auth.body.token}`);
-    expect(response.status).eq(200);
+    expect(response.status).eq(204);
   });
 });

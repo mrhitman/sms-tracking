@@ -4,6 +4,10 @@ const { Model } = require("objection");
 const db = require("../services/db");
 
 class RefreshToken extends Model {
+  static get idColumn() {
+    return "token";
+  }
+
   static get tableName() {
     return "refresh_token";
   }
