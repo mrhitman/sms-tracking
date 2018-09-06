@@ -3,6 +3,9 @@ const { expect } = require("chai");
 const createApp = require("../src");
 const agent = require("supertest-koa-agent");
 const chance = require("chance")();
+const jwt = require("jsonwebtoken");
+
+const issueToken = (data, options = {}) => jwt.sign(data, "test", options); 
 
 describe("user", () => {
   const app = agent(createApp());
@@ -43,8 +46,7 @@ describe("user", () => {
   });
 
   test("Successfully login", async () => {
-    const response = await request(app)
-      .post("/user/login")
+    const response = await app.post("/user/login")
       .send({ email: "test@test.com", password: "1" });
 
     expect(response.status).eq(200);
@@ -53,27 +55,23 @@ describe("user", () => {
   });
 
   test("Invalid login", async () => {
-    const response = await request(app)
-      .post("/user/login")
+    const response = await app.post("/user/login")
       .send({ email: "INVALID", password: "INVALID" });
     expect(response.status).eq(403);
   });
 
   test("Get error on expired token", async () => {
     const token = issueToken({ id }, { expiresIn: "0ms" });
-    const response = await request(app)
-      .post(`/user/profile/${id}`)
+    const response = await app.post(`/user/profile/${id}`)
       .set("Authorization", `Bearer ${token}`);
     expect(response.status).eq(401);
   });
 
   test("Get new token", async () => {
-    const auth = await request(app)
-      .post("/user/login")
+    const auth = await app.post("/user/login")
       .send({ email: "test@test.com", password: "1" });
     expect(auth.status).eq(200);
-    const response = await request(app)
-      .post("/user/refresh")
+    const response = await app.post("/user/refresh")
       .send({ token: auth.body.refreshToken, user_id: id });
     expect(response.status).eq(200);
     expect(response.body.token).a("string");
@@ -81,19 +79,16 @@ describe("user", () => {
   });
 
   test("New token with invalid token", async () => {
-    const response = await request(app)
-      .post("/user/refresh")
+    const response = await app.post("/user/refresh")
       .send({ token: "INVALID", user_id: id });
     expect(response.status).eq(404);
   });
 
   test("Logout/Command with token", async () => {
-    const auth = await request(app)
-      .post("/user/login")
+    const auth = await app.post("/user/login")
       .send({ email: "test@test.com", password: "1" });
     expect(auth.status).eq(200);
-    const response = await request(app)
-      .post("/user/logout")
+    const response = await app.post("/user/logout")
       .set("Authorization", `Bearer ${auth.body.token}`);
     expect(response.status).eq(200);
   });
