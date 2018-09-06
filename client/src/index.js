@@ -26,6 +26,7 @@ ReactDOM.render(
         <Route path="/sms-templates" component={SmsTemplates} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
+        <Route path="/reset-password" component={Logout} />
         <Route path="/" component={App} />
       </Switch>
     </Router>
