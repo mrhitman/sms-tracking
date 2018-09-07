@@ -15,14 +15,14 @@ const rowStyle = { margin: 6 };
 class User extends Component {
   componentDidMount() {
     const { getUser, user } = this.props;
-    api.get(`/user/${user.id}`).then(getUser);
+    api.getUser(user.id).then(getUser);
   }
 
   handleSubmit = e => {
     e.preventDefault();
     const { getUser } = this.props;
     this.props.form.validateFields((err, values) => {
-      api.post("/user/update", values).then(getUser);
+      api.updateUser(values).then(getUser);
     });
   };
 
