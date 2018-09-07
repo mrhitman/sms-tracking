@@ -1,10 +1,14 @@
 require("dotenv").config();
 
 module.exports = {
-  client: "sqlite3",
-  useNullAsDefault: true,
+  client: 'postgres',
   connection: {
-    filename: `./${process.env.DB_FILENAME}`
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    multipleStatements: true,
   },
   migrations: {
     tableName: "migration"

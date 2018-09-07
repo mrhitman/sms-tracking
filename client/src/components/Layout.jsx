@@ -27,7 +27,7 @@ class BaseLayout extends PureComponent {
             <Menu.Item key="1">
               <Link to="/">
                 <Icon type="dashboard" />
-                <span>Hi</span>
+                <span>Orders</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
@@ -36,7 +36,7 @@ class BaseLayout extends PureComponent {
                 <span>Profile</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="3" style={{ display: "none" }}>
               <Link to="/orders">
                 <Icon type="database" />
                 <span>Orders</span>

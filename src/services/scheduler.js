@@ -22,10 +22,9 @@ const TrackingStatus = {
   stopsaving: [105]
 };
 
-const orderTemplate = "*/30 * * * *";
-
 class Scheduler {
   constructor() {
+    this.sms = [];
     this.start();
   }
 
@@ -75,22 +74,22 @@ class Scheduler {
 
   stop() {
     this.order.cancel();
-    this.sms.cancel();
+    this.sms.map(item => item.cancel());
   }
 
   start() {
     this.order = schedule.scheduleJob(
-      orderTemplate,
+      "*/30 * * * *",
       this.checkOrdersStatuses.bind(this)
     );
-    this.sms = schedule.scheduleJob("0 10 * * *", this.sendSms.bind(this));
-    this.sms = schedule.scheduleJob("0 11 * * *", this.sendSms.bind(this));
-    this.sms = schedule.scheduleJob("0 12 * * *", this.sendSms.bind(this));
-    this.sms = schedule.scheduleJob("0 13 * * *", this.sendSms.bind(this));
-    this.sms = schedule.scheduleJob("0 14 * * *", this.sendSms.bind(this));
-    this.sms = schedule.scheduleJob("0 16 * * *", this.sendSms.bind(this));
-    this.sms = schedule.scheduleJob("0 17 * * *", this.sendSms.bind(this));
-    this.sms = schedule.scheduleJob("0 18 * * *", this.sendSms.bind(this));
+    this.sms.push(schedule.scheduleJob("0 10 * * *", this.sendSms.bind(this)));
+    this.sms.push(schedule.scheduleJob("0 11 * * *", this.sendSms.bind(this)));
+    this.sms.push(schedule.scheduleJob("0 12 * * *", this.sendSms.bind(this)));
+    this.sms.push(schedule.scheduleJob("0 13 * * *", this.sendSms.bind(this)));
+    this.sms.push(schedule.scheduleJob("0 14 * * *", this.sendSms.bind(this)));
+    this.sms.push(schedule.scheduleJob("0 16 * * *", this.sendSms.bind(this)));
+    this.sms.push(schedule.scheduleJob("0 17 * * *", this.sendSms.bind(this)));
+    this.sms.push(schedule.scheduleJob("0 18 * * *", this.sendSms.bind(this)));
   }
 }
 

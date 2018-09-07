@@ -12,6 +12,11 @@
     "migrate:down": "knex migrate:rollback",
     "migrate:make": "knex migrate:make"
   },
+  "engines": {
+    "node": ">=8.4.0",
+    "npm": ">=5.6.0",
+    "yarn": ">=1.7.0"
+  },
   "dependencies": {
     "bcrypt": "^3.0.0",
     "bsg-nodejs": "^1.0.13",
@@ -35,9 +40,9 @@
     "novaposhta": "^0.2.0",
     "objection": "^1.2.6",
     "passport-jwt": "^4.0.0",
+    "pg": "^7.4.3",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "sqlite3": "^4.0.2",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
