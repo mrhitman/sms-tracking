@@ -3,8 +3,9 @@ import axios from "axios";
 class Api {
   constructor(options = {}) {
     this.client = options.client || axios.create();
-    this.token = options.token;
-    this.refreshToken = options.refreshToken;
+    this.token = options.token || localStorage.getItem("token");
+    this.refreshToken =
+      options.refreshToken || localStorage.getItem("refreshToken");
     this.refreshRequest = null;
 
     this.client.interceptors.request.use(
@@ -17,7 +18,6 @@ class Api {
           headers: {},
           ...config
         };
-
         newConfig.headers.Authorization = `Bearer ${this.token}`;
         return newConfig;
       },
@@ -66,8 +66,8 @@ class Api {
     return Promise.resolve();
   }
 
-  getUser() {
-    return this.client("/user");
+  getUser(id) {
+    return this.client(`/user/${id}`);
   }
 
   updateUser(data) {
@@ -78,12 +78,21 @@ class Api {
     return this.client.post("/user", data);
   }
 
+
   getOrders(id) {
     return this.client(`/order/${id}`);
   }
 
+  deleteOrder(data) {
+    return this.client.post("/order/delete", data);
+  }
+  
   updateOrder(data) {
     return this.client.post("/order/update", data);
+  }
+
+  createOrder(data) {
+    return this.client.post("/order", data);
   }
 
   pauseOrder(data) {
@@ -92,6 +101,10 @@ class Api {
 
   unpauseOrder(data) {
     return this.client.post("/order/unpause", data);
+  }
+
+  loadOrders(type, data) {
+    return this.client.post(`/order/load/${type}`, data);
   }
 
   getSmsTemplates(id) {

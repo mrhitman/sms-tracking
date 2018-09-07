@@ -18,6 +18,12 @@ export default (state = initialState, action) => {
     case actions.orders_get:
       const orders = action.payload;
       return List(orders.map(order => new Order(order)));
+    case actions.order_create:
+      return state.push(new Order(action.payload));
+    case actions.order_delete:
+      return state.delete(
+        state.findIndex(order => order.id == action.payload.id)
+      );
     case actions.orders_pause:
     case actions.orders_unpause:
       return state.update(

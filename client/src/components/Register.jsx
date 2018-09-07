@@ -2,16 +2,20 @@ import React, { Component } from "react";
 import { Form, Icon, Input, Button } from "antd";
 import { connect } from "react-redux";
 import { actions } from "../constants";
+import { Redirect } from "react-router-dom";
 import api from "../api";
 
 const FormItem = Form.Item;
 class Register extends Component {
+  state = {
+    registered: false
+  };
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { create } = this.props;
-        api.post("/user", values).then(create);
+        api.createUser(values).then(create);
       }
     });
   };
@@ -20,6 +24,7 @@ class Register extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="register-form">
+        {this.state.registered && <Redirect to="/login" />}
         <FormItem>
           {getFieldDecorator("name", {
             rules: [{ required: true, message: "Please input your name" }]

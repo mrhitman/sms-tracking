@@ -7,6 +7,7 @@ const router = new Router();
 
 router.get("/order/:user_id", auth, require("./get"));
 router.post("/order", auth, require("./create"));
+router.post("/order/delete", auth, require("./delete"));
 router.post("/order/update", auth, require("./update"));
 router.post("/order/pause", auth, require("./pause"));
 router.post("/order/unpause", auth, require("./unpause"));

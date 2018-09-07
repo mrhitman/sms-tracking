@@ -4,7 +4,12 @@ const SmsTemplate = require("../../models/sms-template");
 
 module.exports = async ctx => {
   const { id } = ctx.request.body;
-  console.log(id);
-  await SmsTemplate.query().deleteById(id);
+  const user_id = ctx.state.user.id;
+  await SmsTemplate.query()
+    .where({
+      id,
+      user_id
+    })
+    .delete();
   ctx.body = { id };
 };

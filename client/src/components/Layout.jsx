@@ -20,7 +20,7 @@ class BaseLayout extends PureComponent {
     const { user } = this.props;
     return (
       <Layout>
-        {!user.get("id") && <Redirect to="/login" />}
+        {!!user.get("id") === false && <Redirect to="/login" />}
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo" />
           <Menu theme="dark" mode="inline">

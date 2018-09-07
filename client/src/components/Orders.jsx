@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Table, Icon } from "antd";
+import { Table, Icon, Button, Upload, Popconfirm } from "antd";
 import { connect } from "react-redux";
 import api from "../api";
 import { actions } from "../constants";
 import Layout from "./Layout";
+import NewOrder from "./NewOrder";
 
 class Orders extends Component {
   columns = [
@@ -44,16 +45,22 @@ class Orders extends Component {
           <a href="javascript:;">
             {record.status === "in_progress" && (
               <Icon
-                type={"pause-circle"}
+                type="pause-circle"
                 onClick={() => this.handlePause(record.id)}
               />
             )}
             {record.status === "paused" && (
               <Icon
-                type={"right-circle"}
+                type="right-circle"
                 onClick={() => this.handleUnpause(record.id)}
               />
             )}
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => this.handleDelete(record.id)}
+            >
+              <Icon type="delete" />
+            </Popconfirm>
           </a>
         );
       }
@@ -70,6 +77,11 @@ class Orders extends Component {
     api.unpauseOrder({ id }).then(unpause);
   }
 
+  handleDelete(id) {
+    const { deleteOrder } = this.props;
+    api.deleteOrder({ id }).then(deleteOrder);
+  }
+
   componentDidMount() {
     const { getOrders, user } = this.props;
     api.getOrders(user.get("id")).then(getOrders);
@@ -78,6 +90,14 @@ class Orders extends Component {
   render() {
     return (
       <Layout>
+        <Button.Group style={{ margin: 20 }}>
+          <NewOrder />
+        </Button.Group>
+        <Upload name="data" accept="*.csv|*.json|*.xls">
+          <Button type="primary" icon="download">
+            Load csv
+          </Button>
+        </Upload>
         <Table columns={this.columns} dataSource={this.props.order.toJS()} />
       </Layout>
     );
@@ -94,6 +114,9 @@ const mapDispatchToState = dispatch => ({
   },
   unpause: payload => {
     dispatch({ type: actions.orders_unpause, payload: payload.data });
+  },
+  deleteOrder: payload => {
+    dispatch({ type: actions.order_delete, payload: payload.data });
   }
 });
 
