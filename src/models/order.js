@@ -48,6 +48,14 @@ class Order extends Model {
           from: "order.id",
           to: "sms.order_id"
         }
+      },
+      smsTemplate: {
+        relation: Model.HasOneRelation,
+        modelClass: Sms,
+        join: {
+          from: "order.sms_template_id",
+          to: "sms_template.id"
+        }
       }
     };
   }
@@ -60,7 +68,7 @@ class Order extends Model {
         type: { enum: ["novaposhta"] },
         ttn: { type: "string" },
         user_id: { type: "number" },
-        sms_template: { type: "string" },
+        sms_template_id: { type: "number" },
         status: {
           enum: ["pending", "in_progress", "paused", "done", "refused"]
         },

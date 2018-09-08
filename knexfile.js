@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 module.exports = {
-  client: 'postgres',
+  client: 'mysql',
   connection: {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -9,6 +9,7 @@ module.exports = {
     port: process.env.DB_PORT,
     database: process.env.DB_NAME,
     multipleStatements: true,
+    charset: "utf8",
   },
   migrations: {
     tableName: "migration"

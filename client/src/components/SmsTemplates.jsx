@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Table, Icon, Popconfirm, Input } from "antd";
+import { Table, Icon, Popconfirm, Input, Button } from "antd";
 import { connect } from "react-redux";
 import api from "../api";
 import { actions } from "../constants";
@@ -22,6 +22,7 @@ class SmsTemplates extends Component {
       render: (text, record) => {
         return (
           <Fragment>
+            <Button onClick={() => this.handleAdd()} >Add</Button>
             <Input.TextArea size="small" value={text} autosize />
             <div>Text length: {text.length}</div>
           </Fragment>
@@ -46,6 +47,11 @@ class SmsTemplates extends Component {
       }
     }
   ];
+
+  handleAdd() {
+    const { createTemplate } = this.props;
+    api.createSmsTemplate({}).then(createTemplate);
+  }
 
   handleDelete(id) {
     const { deleteTemplate } = this.props;
@@ -74,8 +80,11 @@ const mapDispatchToState = dispatch => ({
   getTemplates: payload => {
     dispatch({ type: actions.sms_templates_get, payload: payload.data });
   },
+  createTemplate: payload => {
+    dispatch({ type: actions.sms_template_create, payload: payload.data });
+  },
   deleteTemplate: payload => {
-    dispatch({ type: actions.sms_templates_delete, payload: payload.data });
+    dispatch({ type: actions.sms_template_delete, payload: payload.data });
   }
 });
 

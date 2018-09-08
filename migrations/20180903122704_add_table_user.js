@@ -7,9 +7,6 @@ exports.up = knex =>
     table.string("email").unique();
     table.string("password");
     table.string("phone");
-    table.string("novaposhta_key");
-    table.string("bsg_token");
-    table.string("alpha_name");
     table.integer("reference");
     table.string("default_sms_template");
   });

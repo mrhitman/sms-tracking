@@ -15,8 +15,8 @@ exports.up = knex =>
     table.string("ttn");
     table.string("sms_template");
     table.string("phone");
-    table.datetime("last_sms_sent");
-    table.datetime("created_at");
+    table.timestamp("last_sms_sent");
+    table.timestamp("created_at");
   });
 
 exports.down = knex => knex.schema.dropTable(tableName);

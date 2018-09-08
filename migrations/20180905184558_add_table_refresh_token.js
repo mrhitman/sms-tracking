@@ -4,7 +4,7 @@ exports.up = knex =>
   knex.schema.createTable(tableName, table => {
     table.string("token").primary();
     table.integer("user_id");
-    table.datetime("created_at");
+    table.timestamp("created_at");
   });
 
 exports.down = knex => knex.schema.dropTable(tableName);

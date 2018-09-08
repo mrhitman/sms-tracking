@@ -6,7 +6,7 @@ exports.up = knex =>
     table.integer("order_id");
     table.enum("status", ["sent", "not_reached", "in_progress"]);
     table.integer("template_id");
-    table.datetime("send_time");
+    table.timestamp("send_time");
     table.text("sms_raw");
   });
 

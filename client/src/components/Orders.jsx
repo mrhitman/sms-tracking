@@ -22,19 +22,19 @@ class Orders extends Component {
       dataIndex: "ttn"
     },
     {
-      title: "sms_template",
+      title: "SMS template",
       dataIndex: "sms_template"
     },
     {
-      title: "status",
+      title: "Status",
       dataIndex: "status"
     },
     {
-      title: "last_sms_sent",
+      title: "Last sms sent",
       dataIndex: "last_sms_sent"
     },
     {
-      title: "created_at",
+      title: "Created at",
       dataIndex: "created_at"
     },
     {

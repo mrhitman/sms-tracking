@@ -4,6 +4,7 @@ exports.up = knex =>
   knex.schema.createTable(tableName, table => {
     table.increments("id").primary();
     table.string("template");
+    table.string("description");
     table.integer("user_id");
   });
 
