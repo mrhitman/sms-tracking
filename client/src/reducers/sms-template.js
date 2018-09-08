@@ -3,7 +3,8 @@ import { actions } from "../constants";
 
 const SmsTemplate = Record({
   id: "",
-  template: ""
+  template: "",
+  description: "",
 });
 
 const initialState = List();

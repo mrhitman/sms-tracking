@@ -3,9 +3,7 @@ const { expect } = require("chai");
 const createApp = require("../src");
 const agent = require("supertest-koa-agent");
 const chance = require("chance")();
-const jwt = require("jsonwebtoken");
-
-const issueToken = (data, options = {}) => jwt.sign(data, "test", options); 
+const issueToken = require("./helpers/issueToken");
 
 describe("user", () => {
   const app = agent(createApp());
@@ -26,10 +24,7 @@ describe("user", () => {
       name: "Mr Hitman",
       email: "test@test.com",
       alpha_name: "Prom.ua",
-      bsg_token: "test_jGIBEs3BXQwOg4ZVTwxd",
-      novaposhta_key: "6610680b61f0ba4d96a92d6ba8052dcf",
       reference: 20,
-      default_sms_template: "Test test test"
     });
     expect(response.status).eq(200);
   });
