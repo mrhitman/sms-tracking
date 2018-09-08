@@ -8,7 +8,7 @@ exports.up = knex =>
     table.string("password");
     table.string("phone");
     table.integer("reference");
-    table.string("default_sms_template");
+    table.integer("default_sms_template_id");
   });
 
 exports.down = knex => knex.schema.dropTable(tableName);

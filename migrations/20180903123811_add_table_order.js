@@ -13,7 +13,8 @@ exports.up = knex =>
       "refused"
     ]);
     table.string("ttn");
-    table.string("sms_template");
+    table.unique(['ttn', 'type']);
+    table.integer("sms_template_id");
     table.string("phone");
     table.timestamp("last_sms_sent");
     table.timestamp("created_at");
