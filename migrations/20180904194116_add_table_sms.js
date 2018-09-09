@@ -6,7 +6,7 @@ exports.up = knex =>
     table.integer("order_id").unsigned();
     table.enum("status", ["sent", "not_reached", "in_progress"]);
     table.integer("sms_template_id").unsigned();
-    table.timestamp("send_time");
+    table.bigint("send_time");
     table.text("sms_raw");
 
     table.foreign("order_id").references("id").inTable("order");

@@ -8,7 +8,7 @@ const router = new Router();
 router.post("/user", require("./create"));
 router.post("/user/login", require("./login"));
 router.post("/user/refresh", require("./refresh"));
-router.get("/user/:id", auth, require("./get"));
+router.get("/user", auth, require("./get"));
 router.post("/user/logout", auth, require("./logout"));
 router.post("/user/update", auth, require("./update"));
 

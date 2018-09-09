@@ -5,18 +5,11 @@ const SmsTemplate = require("../../models/sms-template");
 const bcrypt = require("bcrypt");
 
 module.exports = async ctx => {
-  const {
-    name,
-    email,
-    phone,
-    password
-  } = ctx.request.body;
+  const { name, email, phone, password } = ctx.request.body;
 
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
-  if (await User.query().findOne({
-      email
-    })) {
+  if (await User.query().findOne({ email })) {
     ctx.body = "User with such email already exists";
     ctx.status = 409;
     return;
@@ -28,12 +21,11 @@ module.exports = async ctx => {
     password: hash
   });
   const smsTemplate = await SmsTemplate.query().insert({
-    user_id: user.id
+    user_id: user.id,
+    template: "Your order has delivered"
   });
   await user.$query().update({
     default_sms_template_id: smsTemplate.id,
-    description: "default sms template",
-    template: "Your order has delivered"
   });
   ctx.body = user;
   ctx.status = 201;

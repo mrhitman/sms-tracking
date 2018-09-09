@@ -19,30 +19,45 @@ describe("user", () => {
   });
 
   test("update", async () => {
-    const response = await app.post("/user/update").send({
-      id: 1,
-      name: "Mr Hitman",
-      email: "test@test.com",
-      alpha_name: "Prom.ua",
-      reference: 20,
-    });
+    const token = issueToken({ id: 1 }, { expiresIn: "1h" });
+    const response = await app
+      .post("/user/update")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        id: 1,
+        name: "Mr Hitman",
+        email: "test@test.com",
+        reference: 20,
+      });
     expect(response.status).eq(200);
   });
 
   test("get", async () => {
-    const response = await app.get("/user/1");
+    const token = issueToken({ id: 1 }, { expiresIn: "1m" });
+    const response = await app
+      .get("/user")
+      .set("Authorization", `Bearer ${token}`);
     expect(response.status).eq(200);
     expect(response.body.id).eq(1);
   });
 
   test("get unexists", async () => {
-    const response = await app.get("/user/update/999999");
+    const token = issueToken({ id: 1 }, { expiresIn: "1m" });
+    const response = await app
+      .get("/user/update/999999")
+      .set("Authorization", `Bearer ${token}`);
     expect(response.status).eq(404);
   });
 
   test("Successfully login", async () => {
-    const response = await app.post("/user/login")
-      .send({ email: "test@test.com", password: 1 });
+    const token = issueToken({ id: 1 }, { expiresIn: "1m" });
+    const response = await app
+      .post("/user/login")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        email: "test@test.com",
+        password: 1
+      });
 
     expect(response.status).eq(200);
     expect(response.body.token).a("string");
@@ -50,24 +65,38 @@ describe("user", () => {
   });
 
   test("Invalid login", async () => {
-    const response = await app.post("/user/login")
-      .send({ email: "INVALID", password: "INVALID" });
+    const token = issueToken({ id: 1 }, { expiresIn: "1m" });
+    const response = await app
+      .post("/user/login")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        email: "INVALID",
+        password: "INVALID"
+      });
     expect(response.status).eq(403);
   });
 
-  test.skip("Get error on expired token", async () => {
+  test("Get error on expired token", async () => {
     const token = issueToken({ id: 1 }, { expiresIn: "0ms" });
-    const response = await app.post(`/user/profile/1`)
+    const response = await app
+      .post(`/user/logout`)
       .set("Authorization", `Bearer ${token}`);
     expect(response.status).eq(401);
   });
 
   test("Get new token", async () => {
-    const auth = await app.post("/user/login")
-      .send({ email: "test@test.com", password: "1" });
+    const auth = await app
+      .post("/user/login")
+      .send({
+        email: "test@test.com",
+        password: "1"
+      });
     expect(auth.status).eq(200);
-    const response = await app.post("/user/refresh")
-      .send({ token: auth.body.refreshToken, user_id: 1 });
+    const response = await app
+      .post("/user/refresh")
+      .send({
+        token: auth.body.refreshToken,
+      });
     expect(response.status).eq(200);
     expect(response.body.token).a("string");
     expect(response.body.refreshToken).not.eq(auth.body.refreshToken);
@@ -75,15 +104,22 @@ describe("user", () => {
 
   test("New token with invalid token", async () => {
     const response = await app.post("/user/refresh")
-      .send({ token: "INVALID", user_id: 1 });
+      .send({
+        token: "INVALID",
+        user_id: 1
+      });
     expect(response.status).eq(404);
   });
 
   test("Logout/Command with token", async () => {
     const auth = await app.post("/user/login")
-      .send({ email: "test@test.com", password: 1 });
+      .send({
+        email: "test@test.com",
+        password: 1
+      });
     expect(auth.status).eq(200);
-    const response = await app.post("/user/logout")
+    const response = await app
+      .post("/user/logout")
       .set("Authorization", `Bearer ${auth.body.token}`);
     expect(response.status).eq(204);
   });

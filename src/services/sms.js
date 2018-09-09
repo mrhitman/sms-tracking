@@ -24,7 +24,7 @@ const send = async order => {
   const sms = await Sms.query().insert({
     order_id: order.id,
     status: "in_progress",
-    send_time: moment().format()
+    send_time: moment().unix()
   });
   try {
     const response = await bsg.createSMS({
@@ -43,7 +43,7 @@ const send = async order => {
       sms
         .$query()
         .update({ status: "sent", sms_raw: JSON.stringify(response) }),
-      order.$query().update({ last_sms_sent: moment().format() }),
+      order.$query().update({ last_sms_sent: moment().unix() }),
       user.$query().update({ reference: user.reference + 1 })
     ]);
   } catch (_) {

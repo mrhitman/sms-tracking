@@ -17,7 +17,8 @@ class RefreshToken extends Model {
       type: "object",
       properties: {
         user_id: { type: "number" },
-        token: { type: "string" }
+        token: { type: "string" },
+        created_at: { type: "number" }
       }
     };
   }

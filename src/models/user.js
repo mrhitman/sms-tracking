@@ -3,7 +3,6 @@
 const { Model } = require("objection");
 const db = require("../services/db");
 const Order = require("./order");
-const SmsTemplate = require("./sms-template");
 
 class User extends Model {
   static get tableName() {
@@ -16,7 +15,6 @@ class User extends Model {
       name: this.name,
       email: this.email,
       phone: this.phone,
-      default_sms_template: this.default_sms_template
     };
   }
 
@@ -30,22 +28,6 @@ class User extends Model {
           to: "order.user_id"
         }
       },
-      smsTemplates: {
-        relation: Model.HasManyRelation,
-        modelClass: SmsTemplate,
-        join: {
-          from: "user.id",
-          to: "sms_template.user_id"
-        }
-      },
-      defaultSmsTemplate: {
-        relation: Model.HasOneRelation,
-        modelClass: SmsTemplate,
-        join: {
-          from: "user.default_sms_template_id",
-          to: "sms_template.id"
-        }
-      }
     };
   }
 

@@ -16,8 +16,8 @@ exports.up = knex =>
     table.unique(['ttn', 'type']);
     table.integer("sms_template_id").unsigned();
     table.string("phone");
-    table.timestamp("last_sms_sent");
-    table.timestamp("created_at");
+    table.bigint("last_sms_sent");
+    table.bigint("created_at");
 
     table.foreign("user_id").references("id").inTable("user");
     table.foreign("sms_template_id").references("id").inTable("sms_template");

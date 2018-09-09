@@ -27,7 +27,7 @@ module.exports = async ctx => {
     status: "pending",
     type: "novaposhta",
     sms_template_id: smsTemplate ? smsTemplate.id : user.default_sms_template_id,
-    created_at: moment.utc()
+    created_at: moment.unix()
   });
   ctx.body = order;
   ctx.status = 201;
