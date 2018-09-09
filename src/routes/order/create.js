@@ -7,7 +7,7 @@ const moment = require("moment")();
 
 module.exports = async ctx => {
   const user_id = ctx.state.user.id;
-  const { phone, ttn, sms_template } = ctx.request.body;
+  const { phone, ttn, sms_template, sms_template_id } = ctx.request.body;
   const user = await User.query().findById(user_id);
   let smsTemplate;
   if (sms_template) {
@@ -26,7 +26,7 @@ module.exports = async ctx => {
     phone,
     status: "pending",
     type: "novaposhta",
-    sms_template_id: smsTemplate ? smsTemplate.id : user.default_sms_template_id,
+    sms_template_id: sms_template_id || smsTemplate ? smsTemplate.id : user.default_sms_template_id,
     created_at: moment.unix()
   });
   ctx.body = order;

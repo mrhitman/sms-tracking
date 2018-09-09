@@ -9,7 +9,7 @@ describe("order", () => {
   const app = agent(createApp());
   const token = issueToken({ id: 1 }, { expiresIn: "1m" });
 
-  test.only("create order", async () => {
+  test("create order", async () => {
     const response = await app
       .post("/order")
       .send({

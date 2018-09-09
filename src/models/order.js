@@ -49,14 +49,6 @@ class Order extends Model {
           to: "sms.order_id"
         }
       },
-      smsTemplate: {
-        relation: Model.HasOneRelation,
-        modelClass: Sms,
-        join: {
-          from: "order.sms_template_id",
-          to: "sms_template.id"
-        }
-      }
     };
   }
 
@@ -73,7 +65,7 @@ class Order extends Model {
           enum: ["pending", "in_progress", "paused", "done", "refused"]
         },
         last_sms_sent: { type: "string" },
-        created_at: { type: "string" }
+        created_at: { type: "number" }
       }
     };
   }
