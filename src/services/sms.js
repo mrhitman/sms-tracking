@@ -4,6 +4,7 @@ const BSG = require("bsg-nodejs");
 const moment = require("moment");
 const Sms = require("../models/sms");
 const User = require("../models/user");
+const Config = require("../models/config");
 const _ = require("lodash");
 
 const processOrders = async orders => {
@@ -20,7 +21,8 @@ const send = async order => {
     return;
   }
   const user = await User.query().findById(order.user_id);
-  const bsg = BSG(user.bsg_token);
+  const bsg_token = await Config.get('bsg_token');
+  const bsg = BSG(bsg_token);
   const sms = await Sms.query().insert({
     order_id: order.id,
     status: "in_progress",

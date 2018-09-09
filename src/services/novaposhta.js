@@ -3,8 +3,6 @@
 const request = require("request-promise-native");
 const _ = require("lodash");
 
-const TrackingStatuses = {};
-
 class NovaPoshta {
   constructor() {
     this.uri = "https://api.novaposhta.ua/v2.0/json/";
