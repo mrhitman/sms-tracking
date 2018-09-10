@@ -3,7 +3,6 @@
 const schedule = require("node-schedule");
 const Order = require("../models/order");
 const Config = require("../models/config");
-const User = require("../models/user");
 const NovaPoshta = require("../services/novaposhta");
 const processOrders = require("./sms");
 
@@ -35,7 +34,6 @@ class Scheduler {
     const novaposhtaKey = await Config.get('novaposhta_key');
 
     pendingOrders.map(async order => {
-      const user = await User.query().findById(order.user_id);
       const info = novaposhta.getStatusDocuments(novaposhtaKey, {
         phone: order.phone,
         ttn: order.ttn
@@ -50,7 +48,6 @@ class Scheduler {
     });
 
     inProgressOrders.map(async order => {
-      const user = await User.query().findById(order.user_id);
       const info = novaposhta.getStatusDocuments(novaposhtaKey, {
         phone: order.phone,
         ttn: order.ttn

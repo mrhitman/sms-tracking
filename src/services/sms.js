@@ -29,9 +29,10 @@ const send = async order => {
     send_time: moment().unix()
   });
   try {
+    const alpha_name = await Config.get('alpha_name');
     const response = await bsg.createSMS({
       destination: "phone",
-      originator: user.alpha_name,
+      originator: alpha_name,
       body: order.sms_template,
       msisdn: order.phone,
       reference: `ext_id_${user.reference}`,

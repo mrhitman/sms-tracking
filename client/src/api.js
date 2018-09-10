@@ -66,8 +66,8 @@ class Api {
     return Promise.resolve();
   }
 
-  getUser(id) {
-    return this.client(`/user/${id}`);
+  getUser() {
+    return this.client(`/user`);
   }
 
   updateUser(data) {

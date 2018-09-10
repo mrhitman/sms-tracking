@@ -10,8 +10,8 @@ const rowStyle = { margin: 8 };
 
 class User extends Component {
   componentDidMount() {
-    const { getUser, user } = this.props;
-    api.getUser(user.get("id")).then(getUser);
+    const { getUser } = this.props;
+    api.getUser().then(getUser);
   }
 
   render() {
@@ -29,10 +29,6 @@ class User extends Component {
         <Row style={rowStyle}>
           <Col span={3}>Phone:</Col>
           <Col span={12}>{user.get("phone")}</Col>
-        </Row>
-        <Row style={rowStyle}>
-          <Col span={3}>Alpha name:</Col>
-          <Col span={12}>{user.get("alpha_name")}</Col>
         </Row>
         <Row style={rowStyle}>
           <Col span={3}>Default sms template:</Col>

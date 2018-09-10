@@ -4,7 +4,7 @@ import { actions } from "../constants";
 const SmsTemplate = Record({
   id: "",
   template: "",
-  description: "",
+  description: ""
 });
 
 const initialState = List();
@@ -14,6 +14,16 @@ export default (state = initialState, action) => {
     case actions.sms_templates_get:
       const templates = action.payload;
       return List(templates.map(template => new SmsTemplate(template)));
+    case actions.sms_template_create:
+      return state.push(new SmsTemplate(action.payload));
+    case actions.sms_template_update:
+      return state.update(
+        state.findIndex(item => item.id == action.payload.id),
+        item =>
+          item
+            .set("template", action.payload.template)
+            .set("description", action.payload.description)
+      );
     case actions.sms_template_delete:
       return state.delete(
         state.findIndex(item => item.id == action.payload.id)

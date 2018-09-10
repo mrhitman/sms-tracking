@@ -14,8 +14,8 @@ const rowStyle = { margin: 6 };
 
 class User extends Component {
   componentDidMount() {
-    const { getUser, user } = this.props;
-    api.getUser(user.id).then(getUser);
+    const { getUser } = this.props;
+    api.getUser().then(getUser);
   }
 
   handleSubmit = e => {
@@ -57,30 +57,6 @@ class User extends Component {
           <FormItem label="Phone" {...formItemLayout}>
             {getFieldDecorator("phone", {
               initialValue: user.get("phone"),
-              rules: [{ required: true }]
-            })(<Input />)}
-          </FormItem>
-        </Row>
-        <Row style={rowStyle}>
-          <FormItem label="NovaPoshta key" {...formItemLayout}>
-            {getFieldDecorator("novaposhta_key", {
-              initialValue: user.get("novaposhta_key"),
-              rules: [{ required: true }]
-            })(<Input type="password" />)}
-          </FormItem>
-        </Row>
-        <Row style={rowStyle}>
-          <FormItem label="bsg token" {...formItemLayout}>
-            {getFieldDecorator("bsg_token", {
-              initialValue: user.get("bsg_token"),
-              rules: [{ required: true }]
-            })(<Input type="password" />)}
-          </FormItem>
-        </Row>
-        <Row style={rowStyle}>
-          <FormItem label="Alpha name" {...formItemLayout}>
-            {getFieldDecorator("alpha_name", {
-              initialValue: user.get("alpha_name"),
               rules: [{ required: true }]
             })(<Input />)}
           </FormItem>

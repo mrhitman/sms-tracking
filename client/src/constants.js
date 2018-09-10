@@ -11,5 +11,6 @@ export const actions = {
   orders_unpause: "orders_unpause",
   sms_templates_get: "sms_templates_get",
   sms_template_delete: "sms_template_delete",
-  sms_template_create: "sms_template_delete"
+  sms_template_create: "sms_template_create",
+  sms_template_update: "sms_template_update"
 };
