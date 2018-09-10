@@ -2,6 +2,7 @@
 
 const schedule = require("node-schedule");
 const Order = require("../models/order");
+const Config = require("../models/config");
 const User = require("../models/user");
 const NovaPoshta = require("../services/novaposhta");
 const processOrders = require("./sms");
@@ -31,10 +32,11 @@ class Scheduler {
   async checkOrdersStatuses() {
     const novaposhta = new NovaPoshta();
     const pendingOrders = await Order.query().where({ status: "pending" });
+    const novaposhtaKey = await Config.get('novaposhta_key');
 
     pendingOrders.map(async order => {
       const user = await User.query().findById(order.user_id);
-      const info = novaposhta.getStatusDocuments(user.novaposhta_key, {
+      const info = novaposhta.getStatusDocuments(novaposhtaKey, {
         phone: order.phone,
         ttn: order.ttn
       });
@@ -49,7 +51,7 @@ class Scheduler {
 
     inProgressOrders.map(async order => {
       const user = await User.query().findById(order.user_id);
-      const info = novaposhta.getStatusDocuments(user.novaposhta_key, {
+      const info = novaposhta.getStatusDocuments(novaposhtaKey, {
         phone: order.phone,
         ttn: order.ttn
       });
@@ -77,11 +79,9 @@ class Scheduler {
     this.sms.map(item => item.cancel());
   }
 
-  start() {
-    this.order = schedule.scheduleJob(
-      "*/30 * * * *",
-      this.checkOrdersStatuses.bind(this)
-    );
+  async start() {
+    const ordersCheckInterval = await Config.get("orders_check_interval");
+    this.order = schedule.scheduleJob(ordersCheckInterval, this.checkOrdersStatuses.bind(this));
     this.sms.push(schedule.scheduleJob("0 10 * * *", this.sendSms.bind(this)));
     this.sms.push(schedule.scheduleJob("0 11 * * *", this.sendSms.bind(this)));
     this.sms.push(schedule.scheduleJob("0 12 * * *", this.sendSms.bind(this)));

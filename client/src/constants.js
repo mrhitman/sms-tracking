@@ -10,5 +10,6 @@ export const actions = {
   orders_pause: "orders_pause",
   orders_unpause: "orders_unpause",
   sms_templates_get: "sms_templates_get",
-  sms_templates_delete: "sms_templates_delete"
+  sms_template_delete: "sms_template_delete",
+  sms_template_create: "sms_template_delete"
 };

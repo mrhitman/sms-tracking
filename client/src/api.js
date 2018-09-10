@@ -36,7 +36,7 @@ class Api {
         }
 
         if (!this.refreshRequest) {
-          this.refreshRequest = this.client.post("/auth/refresh", {
+          this.refreshRequest = this.client.post("/user/refresh", {
             refreshToken: this.refreshToken
           });
         }

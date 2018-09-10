@@ -3,7 +3,6 @@
 const { Model } = require("objection");
 const db = require("../services/db");
 const Order = require("./order");
-const SmsTemplate = require("./sms-template");
 
 class User extends Model {
   static get tableName() {
@@ -16,11 +15,6 @@ class User extends Model {
       name: this.name,
       email: this.email,
       phone: this.phone,
-      novaposhta_key: this.novaposhta_key,
-      bsg_token: this.bsg_token,
-      alpha_name: this.alpha_name,
-      novaposhta_key: this.novaposhta_key,
-      default_sms_template: this.default_sms_template
     };
   }
 
@@ -34,14 +28,6 @@ class User extends Model {
           to: "order.user_id"
         }
       },
-      smsTemplates: {
-        relation: Model.HasManyRelation,
-        modelClass: SmsTemplate,
-        join: {
-          from: "user.id",
-          to: "sms_template.user_id"
-        }
-      }
     };
   }
 
@@ -49,15 +35,24 @@ class User extends Model {
     return {
       type: "object",
       properties: {
-        name: { type: "string" },
-        email: { type: "string" },
-        password: { type: "string" },
-        phone: { type: "string" },
-        novaposhta_key: { type: "string" },
-        bsg_token: { type: "string" },
-        alpha_name: { type: "string" },
-        reference: { type: "number" },
-        default_sms_template: { type: "string" }
+        name: {
+          type: "string"
+        },
+        email: {
+          type: "string"
+        },
+        password: {
+          type: "string"
+        },
+        phone: {
+          type: "string"
+        },
+        reference: {
+          type: "number"
+        },
+        default_sms_template_id: {
+          type: "number"
+        }
       }
     };
   }

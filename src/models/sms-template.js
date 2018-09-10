@@ -13,7 +13,8 @@ class SmsTemplate extends Model {
       type: "object",
       properties: {
         user_id: { type: "number" },
-        template: { type: "string" }
+        template: { type: "string" },
+        description: { type: "string" }
       }
     };
   }

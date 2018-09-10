@@ -48,7 +48,7 @@ class Order extends Model {
           from: "order.id",
           to: "sms.order_id"
         }
-      }
+      },
     };
   }
 
@@ -60,12 +60,12 @@ class Order extends Model {
         type: { enum: ["novaposhta"] },
         ttn: { type: "string" },
         user_id: { type: "number" },
-        sms_template: { type: "string" },
+        sms_template_id: { type: "number" },
         status: {
           enum: ["pending", "in_progress", "paused", "done", "refused"]
         },
         last_sms_sent: { type: "string" },
-        created_at: { type: "string" }
+        created_at: { type: "number" }
       }
     };
   }

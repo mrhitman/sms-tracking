@@ -4,6 +4,7 @@ const BSG = require("bsg-nodejs");
 const moment = require("moment");
 const Sms = require("../models/sms");
 const User = require("../models/user");
+const Config = require("../models/config");
 const _ = require("lodash");
 
 const processOrders = async orders => {
@@ -20,11 +21,12 @@ const send = async order => {
     return;
   }
   const user = await User.query().findById(order.user_id);
-  const bsg = BSG(user.bsg_token);
+  const bsg_token = await Config.get('bsg_token');
+  const bsg = BSG(bsg_token);
   const sms = await Sms.query().insert({
     order_id: order.id,
     status: "in_progress",
-    send_time: moment().format()
+    send_time: moment().unix()
   });
   try {
     const response = await bsg.createSMS({
@@ -43,7 +45,7 @@ const send = async order => {
       sms
         .$query()
         .update({ status: "sent", sms_raw: JSON.stringify(response) }),
-      order.$query().update({ last_sms_sent: moment().format() }),
+      order.$query().update({ last_sms_sent: moment().unix() }),
       user.$query().update({ reference: user.reference + 1 })
     ]);
   } catch (_) {

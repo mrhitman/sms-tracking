@@ -15,7 +15,12 @@ class Register extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { create } = this.props;
-        api.createUser(values).then(create);
+        api
+          .createUser(values)
+          .then(create)
+          .then(() => {
+            this.setState({ registered: true });
+          });
       }
     });
   };

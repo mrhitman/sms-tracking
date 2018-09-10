@@ -5,6 +5,7 @@ const RefreshToken = require("../../models/refresh-token");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
+const moment = require("moment")();
 
 module.exports = async ctx => {
   const { email, password } = ctx.request.body;
@@ -22,12 +23,8 @@ module.exports = async ctx => {
     expiresIn: "1h"
   });
 
-  let refreshToken = await RefreshToken.query().findOne({ user_id: user.id });
-  if (!refreshToken) {
-    refreshToken = await RefreshToken.query()
-      .insertAndFetch({ user_id: user.id, token: uuid() })
-      .execute();
-  }
+  const refreshToken = await RefreshToken.query()
+    .insert({ user_id: user.id, token: uuid(), created_at: moment.unix() });
 
   ctx.body = {
     user,

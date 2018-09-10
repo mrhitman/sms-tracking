@@ -1,6 +1,7 @@
 "use strict";
 
 const User = require("../../models/user");
+const SmsTemplate = require("../../models/sms-template");
 const bcrypt = require("bcrypt");
 
 module.exports = async ctx => {
@@ -13,7 +14,19 @@ module.exports = async ctx => {
     ctx.status = 409;
     return;
   }
-  const user = await User.query().insert({ name, email, phone, password: hash });
+  const user = await User.query().insert({
+    name,
+    email,
+    phone,
+    password: hash
+  });
+  const smsTemplate = await SmsTemplate.query().insert({
+    user_id: user.id,
+    template: "Your order has delivered"
+  });
+  await user.$query().update({
+    default_sms_template_id: smsTemplate.id,
+  });
   ctx.body = user;
   ctx.status = 201;
 };

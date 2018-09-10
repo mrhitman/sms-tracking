@@ -11,6 +11,8 @@ router.post("/order/delete", auth, require("./delete"));
 router.post("/order/update", auth, require("./update"));
 router.post("/order/pause", auth, require("./pause"));
 router.post("/order/unpause", auth, require("./unpause"));
+router.get("/order/track/:id", auth, require("./track"));
+
 router.post("/order/load/csv", auth, require("./load-csv"));
 router.post("/order/load/xls", auth, require("./load-xls"));
 router.post("/order/load/txt", auth, require("./load-txt"));
