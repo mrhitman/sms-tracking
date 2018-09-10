@@ -93,7 +93,14 @@ class Orders extends Component {
         <Button.Group style={{ margin: 20 }}>
           <NewOrder />
         </Button.Group>
-        <Upload name="data" accept="*.csv|*.json|*.xls">
+        <Upload
+          name="data"
+          accept="*.csv|*.json|*.xls"
+          beforeUpload={file => {
+            api.loadOrders("csv", file);
+            return false;
+          }}
+        >
           <Button type="primary" icon="download">
             Load csv
           </Button>
