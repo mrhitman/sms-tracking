@@ -3,6 +3,7 @@
 const { Model } = require("objection");
 const db = require("../services/db");
 const Sms = require("./sms");
+const SmsTemplate = require("./sms-template");
 
 class Order extends Model {
   static get tableName() {
@@ -49,6 +50,14 @@ class Order extends Model {
           to: "sms.order_id"
         }
       },
+      template: {
+        relation: Model.HasOneRelation,
+        modelClass: SmsTemplate,
+        join: {
+          from: "order.sms_template_id",
+          to: "sms_template.id"
+        }
+      }
     };
   }
 

@@ -23,7 +23,7 @@ class Orders extends Component {
     },
     {
       title: "SMS template",
-      dataIndex: "sms_template"
+      dataIndex: "template"
     },
     {
       title: "Status",

@@ -18,7 +18,7 @@ const schema = joi.object().keys({
 
 module.exports = async ctx => {
   const user_id = ctx.state.user.id;
-  validate(ctx.request.body, schema);
+  validate(ctx, schema);
   const { phone, ttn, sms_template, sms_template_id } = ctx.request.body;
   const user = await User.query().findById(user_id);
   let smsTemplate;
