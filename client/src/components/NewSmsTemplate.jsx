@@ -17,7 +17,12 @@ const formItemLayout = {
 
 class NewSmsTemplate extends Component {
   state = {
-    visible: false
+    visible: false,
+    title: "Add SMS Template",
+    values: {
+      template: "",
+      description: ""
+    }
   };
 
   showModal = () => {
@@ -55,7 +60,7 @@ class NewSmsTemplate extends Component {
           Add
         </Button>
         <Modal
-          title="Add SMS Template"
+          title={this.state.title}
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -70,12 +75,22 @@ class NewSmsTemplate extends Component {
                     message: "Input template"
                   }
                 ]
-              })(<Input.TextArea prefix={<Icon type="snippets" />} />)}
+              })(
+                <Input.TextArea
+                  prefix={<Icon type="snippets" />}
+                  value={this.state.values.template}
+                />
+              )}
             </Form.Item>
             <Form.Item label="Description" {...formItemLayout}>
               {getFieldDecorator("description", {
                 rules: [{ type: "string" }]
-              })(<Input prefix={<Icon type="info-circle" />} />)}
+              })(
+                <Input
+                  prefix={<Icon type="info-circle" />}
+                  value={this.state.values.description}
+                />
+              )}
             </Form.Item>
           </Form>
         </Modal>
