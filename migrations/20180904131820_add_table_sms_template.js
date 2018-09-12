@@ -7,7 +7,10 @@ exports.up = knex =>
     table.string("description");
     table.integer("user_id").unsigned();
 
-    table.foreign("user_id").references("id").inTable("user");
+    table
+      .foreign("user_id")
+      .references("id")
+      .inTable("user");
   });
 
 exports.down = knex => knex.schema.dropTable(tableName);

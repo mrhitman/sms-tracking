@@ -13,14 +13,20 @@ exports.up = knex =>
       "refused"
     ]);
     table.string("ttn");
-    table.unique(['ttn', 'type']);
+    table.unique(["ttn", "type"]);
     table.integer("sms_template_id").unsigned();
     table.string("phone");
     table.bigint("last_sms_sent");
     table.bigint("created_at");
 
-    table.foreign("user_id").references("id").inTable("user");
-    table.foreign("sms_template_id").references("id").inTable("sms_template");
+    table
+      .foreign("user_id")
+      .references("id")
+      .inTable("user");
+    table
+      .foreign("sms_template_id")
+      .references("id")
+      .inTable("sms_template");
   });
 
 exports.down = knex => knex.schema.dropTable(tableName);

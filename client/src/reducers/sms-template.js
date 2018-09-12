@@ -13,7 +13,15 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actions.sms_templates_get:
       const templates = action.payload;
-      return List(templates.map(template => new SmsTemplate(template)));
+      return List(
+        templates.map(
+          template =>
+            new SmsTemplate({
+              ...template,
+              description: template.description || ""
+            })
+        )
+      );
     case actions.sms_template_create:
       return state.push(new SmsTemplate(action.payload));
     case actions.sms_template_update:
@@ -22,7 +30,7 @@ export default (state = initialState, action) => {
         item =>
           item
             .set("template", action.payload.template)
-            .set("description", action.payload.description)
+            .set("description", action.payload.description || "")
       );
     case actions.sms_template_delete:
       return state.delete(

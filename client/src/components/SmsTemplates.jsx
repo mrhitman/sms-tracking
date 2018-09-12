@@ -121,22 +121,12 @@ class SmsTemplates extends Component {
     {
       title: "Template",
       dataIndex: "template",
-      editable: true,
-      render: (text, record) => {
-        return (
-          <Fragment>
-            <div>Text length: {text.length}</div>
-            <Input.TextArea size="small" value={text} autosize />
-          </Fragment>
-        );
-      }
+      editable: true
     },
     {
       title: "Description",
       dataIndex: "description",
       editable: true,
-      sorter: (a, b) => a.id - b.id,
-      render: text => <Input value={text} />
     },
     {
       title: "Operation",
