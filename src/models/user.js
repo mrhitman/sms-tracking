@@ -15,6 +15,7 @@ class User extends Model {
       name: this.name,
       email: this.email,
       phone: this.phone,
+      default_sms_template_id: this.default_sms_template_id,
     };
   }
 
@@ -27,7 +28,7 @@ class User extends Model {
           from: "user.id",
           to: "order.user_id"
         }
-      },
+      }
     };
   }
 

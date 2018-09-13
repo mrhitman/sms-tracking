@@ -8,6 +8,7 @@ const User = Record({
   name: "",
   email: "",
   phone: "",
+  default_sms_template_id: undefined,
   default_sms_template: "",
   token: localStorage.getItem("token"),
   refreshToken: localStorage.getItem("refreshToken")

@@ -1,21 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "./Layout";
-import { Col, Row, Form, Input, Button } from "antd";
+import { Col, Row, Form, Input, Button, Select } from "antd";
 import { actions } from "../constants";
 import api from "../api";
 
 const FormItem = Form.Item;
 const formItemLayout = {
-  labelCol: { span: 3 },
+  labelCol: { span: 5 },
   wrapperCol: { span: 12 }
 };
 const rowStyle = { margin: 6 };
 
 class User extends Component {
   componentDidMount() {
-    const { getUser } = this.props;
-    api.getUser().then(getUser);
+    const { getUser, getTemplates } = this.props;
+    api
+      .getUser()
+      .then(getUser)
+      .then(() => api.getSmsTemplates(this.props.user.id))
+      .then(getTemplates);
   }
 
   handleSubmit = e => {
@@ -61,6 +65,23 @@ class User extends Component {
             })(<Input />)}
           </FormItem>
         </Row>
+        {console.log(user)}
+        <Row style={rowStyle}>
+          <FormItem label="Default SMS Template" {...formItemLayout}>
+            {getFieldDecorator("default_sms_template_id", {
+              initialValue: user.get("default_sms_template_id"),
+              rules: [{ required: true }]
+            })(
+              <Select>
+                {this.props.sms_template.toJS().map(template => (
+                  <Select.Option value={template.id}>
+                    {template.template}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          </FormItem>
+        </Row>
         <FormItem>
           <Button type="primary" onClick={this.handleSubmit}>
             Update
@@ -75,6 +96,9 @@ const mapStateToProps = state => state;
 const mapDispatchToState = dispatch => ({
   getUser: payload => {
     dispatch({ type: actions.user_get, payload: payload.data });
+  },
+  getTemplates: payload => {
+    dispatch({ type: actions.sms_templates_get, payload: payload.data });
   }
 });
 
