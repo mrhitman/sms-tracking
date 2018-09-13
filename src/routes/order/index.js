@@ -14,8 +14,4 @@ router.post("/order/unpause", auth, require("./unpause"));
 router.get("/order/track/:id", auth, require("./track"));
 router.post("/order/load/csv", auth, require("./load-csv"));
 
-// router.post("/order/load/xls", auth, require("./load-xls"));
-// router.post("/order/load/txt", auth, require("./load-txt"));
-// router.post("/order/load/json", require("./load-json"));
-
 module.exports = router;

@@ -6,22 +6,12 @@ import { connect } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
 class BaseLayout extends PureComponent {
-  state = {
-    collapsed: false
-  };
-
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  };
-
   render() {
     const { user } = this.props;
     return (
       <Layout>
         {!!user.get("id") === false && <Redirect to="/login" />}
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider trigger={null}>
           <div className="logo" />
           <Menu theme="dark" mode="inline">
             <Menu.Item key="1">
@@ -57,19 +47,14 @@ class BaseLayout extends PureComponent {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }}>
-            <Icon
-              className="trigger"
-              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-              onClick={this.toggle}
-            />
-          </Header>
+          <Header style={{ background: "#fff", padding: 0 }} />
           <Content
             style={{
               margin: "24px 16px",
               padding: 24,
               background: "#fff",
-              minHeight: "86vh"
+              minHeight: "86vh",
+              overflowY: "auto"
             }}
           >
             {this.props.children}

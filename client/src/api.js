@@ -27,17 +27,11 @@ class Api {
     this.client.interceptors.response.use(
       r => r,
       async error => {
-        if (
-          !this.refreshToken ||
-          error.response.status !== 401 ||
-          error.config.retry
-        ) {
-          throw error;
-        }
+        this.ensureToken(error);
 
         if (!this.refreshRequest) {
           this.refreshRequest = this.client.post("/user/refresh", {
-            refreshToken: this.refreshToken
+            token: this.refreshToken
           });
         }
         const { data } = await this.refreshRequest;
@@ -51,6 +45,17 @@ class Api {
         return this.client(newRequest);
       }
     );
+  }
+
+  ensureToken(error) {
+    if (
+      !this.refreshToken ||
+      error.response.status !== 401 ||
+      error.config.retry
+    ) {
+      console.log(this.refreshToken, error);
+      throw error;
+    }
   }
 
   async login({ email, password }) {
@@ -78,7 +83,6 @@ class Api {
     return this.client.post("/user", data);
   }
 
-
   getOrders(id) {
     return this.client(`/order/${id}`);
   }
@@ -86,7 +90,7 @@ class Api {
   deleteOrder(data) {
     return this.client.post("/order/delete", data);
   }
-  
+
   updateOrder(data) {
     return this.client.post("/order/update", data);
   }
