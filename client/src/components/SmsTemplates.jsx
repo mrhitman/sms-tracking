@@ -5,6 +5,7 @@ import api from "../api";
 import { actions } from "../constants";
 import Layout from "./Layout";
 import NewSmsTemplate from "./NewSmsTemplate";
+import UpdateSmsTemplate from "./UpdateSmsTemplate";
 
 class SmsTemplates extends Component {
   columns = [
@@ -28,7 +29,7 @@ class SmsTemplates extends Component {
       render: (text, record) => {
         return (
           <a href="javascript:;">
-            <Icon type="edit" />
+            <UpdateSmsTemplate {...record} />
             {this.props.sms_template.size >= 1 ? (
               <Popconfirm
                 title="Sure to delete?"
