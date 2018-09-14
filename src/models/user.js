@@ -15,7 +15,8 @@ class User extends Model {
       name: this.name,
       email: this.email,
       phone: this.phone,
-      default_sms_template_id: this.default_sms_template_id,
+      default_remind_sms_template_id: this.default_remind_sms_template_id,
+      default_on_send_sms_template_id: this.default_on_send_sms_template_id
     };
   }
 
@@ -51,7 +52,10 @@ class User extends Model {
         reference: {
           type: "number"
         },
-        default_sms_template_id: {
+        default_remind_sms_template_id: {
+          type: "number"
+        },
+        default_on_send_sms_template_id: {
           type: "number"
         }
       }

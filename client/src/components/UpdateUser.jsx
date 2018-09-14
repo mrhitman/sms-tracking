@@ -18,7 +18,7 @@ class User extends Component {
     api
       .getUser()
       .then(getUser)
-      .then(() => api.getSmsTemplates(this.props.user.id))
+      .then(() => api.getSmsTemplates())
       .then(getTemplates);
   }
 

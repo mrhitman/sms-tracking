@@ -60,8 +60,8 @@ class SmsTemplates extends Component {
   }
 
   componentDidMount() {
-    const { getTemplates, user } = this.props;
-    api.getSmsTemplates(user.get("id")).then(getTemplates);
+    const { getTemplates } = this.props;
+    api.getSmsTemplates().then(getTemplates);
   }
 
   render() {

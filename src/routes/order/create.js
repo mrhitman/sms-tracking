@@ -12,25 +12,45 @@ const schema = joi.object().keys({
     .phoneNumber({ format: "international" })
     .required(),
   ttn: joi.number().required(),
-  sms_template_id: joi.number(),
-  sms_template: joi.string()
+  remind_sms_template_id: joi.number(),
+  remind_sms_template: joi.string(),
+  on_send_sms_template_id: joi.number(),
+  on_send_sms_template: joi.string()
 });
 
 module.exports = async ctx => {
   const user_id = ctx.state.user.id;
   validate(ctx, schema);
-  const { phone, ttn, sms_template, sms_template_id } = ctx.request.body;
+  const {
+    phone,
+    ttn,
+    remind_sms_template,
+    remind_sms_template_id,
+    on_send_sms_template,
+    on_send_sms_template_id
+  } = ctx.request.body;
   const user = await User.query().findById(user_id);
-  let smsTemplate;
-  if (sms_template) {
-    smsTemplate = await SmsTemplate.query().insert({
+  let remindSmsTemplate;
+  if (remind_sms_template) {
+    remindSmsTemplate = await SmsTemplate.query().insert({
       user_id,
-      template: sms_template
+      template: remind_sms_template
     });
   }
-  if (!smsTemplate && !user.default_sms_template_id) {
+  if (!remindSmsTemplate && !user.default_remind_sms_template_id) {
     ctx.status = 400;
-    ctx.body = "Can't create order without sms template";
+    ctx.body = "Can't create order without remind sms template";
+  }
+  let onSendSmsTemplate;
+  if (on_send_sms_template) {
+    onSendSmsTemplate = await SmsTemplate.query().insert({
+      user_id,
+      template: on_send_sms_template
+    });
+  }
+  if (!onSendSmsTemplate && !user.default_on_send_sms_template_id) {
+    ctx.status = 400;
+    ctx.body = "Can't create order without on send sms template";
   }
   const order = await Order.query().insert({
     user_id,
@@ -38,10 +58,14 @@ module.exports = async ctx => {
     phone: phone.replace(/\D/g, ""),
     status: "pending",
     type: "novaposhta",
-    sms_template_id:
-      sms_template_id || smsTemplate
-        ? smsTemplate.id
-        : user.default_sms_template_id,
+    remind_sms_template_id:
+      remind_sms_template_id || remindSmsTemplate
+        ? remindSmsTemplate.id
+        : user.default_remind_sms_template_id,
+    on_send_sms_template_id:
+      on_send_sms_template_id || onSendSmsTemplate
+        ? onSendSmsTemplate.id
+        : user.default_on_send_sms_template_id,
     created_at: moment.unix()
   });
   ctx.body = order;

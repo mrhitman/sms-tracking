@@ -20,12 +20,17 @@ module.exports = async ctx => {
     phone,
     password: hash
   });
-  const smsTemplate = await SmsTemplate.query().insert({
+  const remindSmsTemplate = await SmsTemplate.query().insert({
     user_id: user.id,
-    template: "Your order has delivered"
+    template: "Your order {{ttn}} has sent"
+  });
+  const onSendSmsTemplate = await SmsTemplate.query().insert({
+    user_id: user.id,
+    template: "Your order {{ttn}} had delivered, take it back please"
   });
   await user.$query().update({
-    default_sms_template_id: smsTemplate.id,
+    default_remind_sms_template_id: remindSmsTemplate.id,
+    default_on_send_sms_template_id: onSendSmsTemplate.id
   });
   ctx.body = user;
   ctx.status = 201;

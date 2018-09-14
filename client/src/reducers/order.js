@@ -6,7 +6,8 @@ const Order = Record({
   id: "",
   phone: "",
   ttn: "",
-  template: "",
+  remind_template: "",
+  on_send_template: "",
   status: "",
   last_sms_sent: "",
   created_at: ""
@@ -23,7 +24,8 @@ export default (state = initialState, action) => {
           order =>
             new Order({
               ...order,
-              template: render(order.template.template, order)
+              remind_template: render(order.remind_template.template, order),
+              on_send_template: render(order.on_send_template.template, order)
             })
         )
       );

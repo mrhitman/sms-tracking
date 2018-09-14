@@ -3,15 +3,16 @@ import { Form, Icon, Input, Button, Modal } from "antd";
 import { actions } from "../constants";
 import { connect } from "react-redux";
 import api from "../api";
+import AutoCompleteSmsTemplate from "./AutoCompleteSmsTemplate";
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 22 },
-    sm: { span: 6 }
+    xs: { span: 24 },
+    sm: { span: 8 }
   },
   wrapperCol: {
-    xs: { span: 26 },
-    sm: { span: 18 }
+    xs: { span: 24 },
+    sm: { span: 16 }
   }
 };
 
@@ -78,6 +79,20 @@ class NewOrder extends Component {
                   { type: "string", required: true, message: "Input ttn" }
                 ]
               })(<Input prefix={<Icon type="schedule" />} />)}
+            </Form.Item>
+            <Form.Item label="remind_template" {...formItemLayout}>
+              {getFieldDecorator("remind_template", {
+                rules: [
+                  { type: "string", message: "Input remind sms template" }
+                ]
+              })(<AutoCompleteSmsTemplate />)}
+            </Form.Item>
+            <Form.Item label="on_send_template" {...formItemLayout}>
+              {getFieldDecorator("on_send_template", {
+                rules: [
+                  { type: "string", message: "Input on send sms template" }
+                ]
+              })(<AutoCompleteSmsTemplate />)}
             </Form.Item>
           </Form>
         </Modal>

@@ -111,8 +111,8 @@ class Api {
     return this.client.post(`/order/load/${type}`, data);
   }
 
-  getSmsTemplates(id) {
-    return this.client(`/sms-template/${id}`);
+  getSmsTemplates() {
+    return this.client(`/sms-template`);
   }
 
   updateSmsTemplate(data) {
