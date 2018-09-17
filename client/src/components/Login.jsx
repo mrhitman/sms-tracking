@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Checkbox, Form, Icon, Input, Button } from "antd";
+import { Alert, Checkbox, Form, Icon, Input, Button } from "antd";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import api from "../api";
@@ -7,12 +7,21 @@ import { actions } from "../constants";
 
 const FormItem = Form.Item;
 class Login extends Component {
+  state = {
+    error: false
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { login } = this.props;
-        api.login(values).then(login);
+        api
+          .login(values)
+          .then(login)
+          .catch(() => {
+            this.setState({ error: true });
+          });
       }
     });
   };
@@ -23,6 +32,9 @@ class Login extends Component {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         {user.get("id") && <Redirect to="/" />}
+        {this.state.error && (
+          <Alert type="error" message="Inocorrect user email or password" />
+        )}
         <FormItem>
           {getFieldDecorator("email", {
             rules: [{ required: true, message: "Please input your email" }]
