@@ -3,10 +3,25 @@
 const User = require("../../models/user");
 const SmsTemplate = require("../../models/sms-template");
 const bcrypt = require("bcrypt");
+const { joi, validate } = require("../../helpers/validate");
+
+const schema = joi.object().keys({
+  name: joi.string().required(),
+  email: joi
+    .string()
+    .email()
+    .required(),
+  phone: joi
+    .string()
+    .phoneNumber({ format: "international" })
+    .required(),
+  password: joi.string().required(),
+  "repeat-password": joi.string().required()
+});
 
 module.exports = async ctx => {
+  validate(ctx, schema);
   const { name, email, phone, password } = ctx.request.body;
-
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
   if (await User.query().findOne({ email })) {

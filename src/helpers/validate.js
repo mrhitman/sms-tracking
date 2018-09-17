@@ -4,9 +4,8 @@ module.exports = {
   validate: (ctx, schema) => {
     const { error } = joi.validate(ctx.request.body, schema);
     if (error) {
-      ctx.status = 400;
-      ctx.body = error;
-      ctx.throw(400, error);
+      const messages = error.details.map(e => e.message);
+      ctx.throw(400, JSON.stringify(messages));
     }
   },
   joi

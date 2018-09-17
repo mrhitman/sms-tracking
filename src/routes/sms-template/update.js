@@ -1,8 +1,15 @@
 "use strict";
 
 const SmsTemplate = require("../../models/sms-template");
+const { joi, validate } = require("../../helpers/validate");
+
+const schema = joi.object().keys({
+  template: joi.string(),
+  description: joi.string()
+});
 
 module.exports = async ctx => {
+  validate(ctx, schema);
   const body = ctx.request.body;
   const smsTemplate = await SmsTemplate.query().updateAndFetchById(
     body.id,

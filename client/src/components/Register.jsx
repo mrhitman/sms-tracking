@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Icon, Input, Button } from "antd";
+import { Alert, Form, Icon, Input, Button } from "antd";
 import { connect } from "react-redux";
 import { actions } from "../constants";
 import { Redirect } from "react-router-dom";
@@ -8,9 +8,13 @@ import api from "../api";
 const FormItem = Form.Item;
 class Register extends Component {
   state = {
-    registered: false
+    registered: false,
+    errors: []
   };
   handleSubmit = e => {
+    this.setState({
+      errors: []
+    });
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -18,8 +22,13 @@ class Register extends Component {
         api
           .createUser(values)
           .then(create)
-          .then(() => {
+          .then(r => {
             this.setState({ registered: true });
+          })
+          .catch(error => {
+            this.setState({
+              errors: [].concat(error.response.data)
+            });
           });
       }
     });
@@ -30,6 +39,9 @@ class Register extends Component {
     return (
       <Form onSubmit={this.handleSubmit} className="register-form">
         {this.state.registered && <Redirect to="/login" />}
+        {this.state.errors.map(e => (
+          <Alert message={e} type="error" />
+        ))}
         <FormItem>
           {getFieldDecorator("name", {
             rules: [{ required: true, message: "Please input your name" }]

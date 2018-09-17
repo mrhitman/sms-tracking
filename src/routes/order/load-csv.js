@@ -5,7 +5,6 @@ const { parse } = require("papaparse");
 const moment = require("moment")();
 
 module.exports = async ctx => {
-  console.log(ctx.request);
   const result = parse(ctx.request.body.files[0], {
     skipEmptyLines: true,
     header: true
