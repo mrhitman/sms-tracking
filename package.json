@@ -12,8 +12,7 @@
     "migrate:down": "knex migrate:rollback",
     "migrate:make": "knex migrate:make",
     "seed": "knex seed:run",
-    "build:client": "rm -rf src/web && cd client &&  yarn build && cd .. && cp -R client/build src/web",
-    "postinstall": "yarn migrate"
+    "build:client": "rm -rf src/web && cd client &&  yarn build && cd .. && cp -R client/build src/web"
   },
   "engines": {
     "node": ">=8.4.0",
