@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from "react";
-import { Form, Icon, Input, Button, Modal } from "antd";
+import { Form, Icon, Input, Button, Modal, Select } from "antd";
 import { actions } from "../constants";
 import { connect } from "react-redux";
 import api from "../api";
-import AutoCompleteSmsTemplate from "./AutoCompleteSmsTemplate";
 
 const formItemLayout = {
   labelCol: {
@@ -48,6 +47,11 @@ class NewOrder extends Component {
     });
   };
 
+  componentDidMount() {
+    const { getTemplates } = this.props;
+    api.getSmsTemplates().then(getTemplates);
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -80,19 +84,27 @@ class NewOrder extends Component {
                 ]
               })(<Input prefix={<Icon type="schedule" />} />)}
             </Form.Item>
-            <Form.Item label="remind_template" {...formItemLayout}>
-              {getFieldDecorator("remind_template", {
-                rules: [
-                  { type: "string", message: "Input remind sms template" }
-                ]
-              })(<AutoCompleteSmsTemplate />)}
+            <Form.Item label="Remind sms template" {...formItemLayout}>
+              {getFieldDecorator("remind_sms_template_id")(
+                <Select>
+                  {this.props.sms_template.toJS().map(template => (
+                    <Select.Option value={template.id}>
+                      {template.template}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
             </Form.Item>
-            <Form.Item label="on_send_template" {...formItemLayout}>
-              {getFieldDecorator("on_send_template", {
-                rules: [
-                  { type: "string", message: "Input on send sms template" }
-                ]
-              })(<AutoCompleteSmsTemplate />)}
+            <Form.Item label="On send template" {...formItemLayout}>
+              {getFieldDecorator("on_send_sms_template_id")(
+                <Select>
+                  {this.props.sms_template.toJS().map(template => (
+                    <Select.Option value={template.id}>
+                      {`${template.template} ${template.id} `}
+                    </Select.Option>
+                  ))}
+                </Select>
+              )}
             </Form.Item>
           </Form>
         </Modal>
@@ -105,6 +117,9 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
   afterCreateOrder: payload => {
     dispatch({ type: actions.order_create, payload: payload.data });
+  },
+  getTemplates: payload => {
+    dispatch({ type: actions.sms_templates_get, payload: payload.data });
   }
 });
 export default connect(

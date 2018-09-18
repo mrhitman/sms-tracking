@@ -5,7 +5,7 @@ const auth = require("../../middlewares/auth");
 
 const router = new Router();
 
-router.get("/order/:user_id", auth, require("./get"));
+router.get("/order", auth, require("./get"));
 router.post("/order", auth, require("./create"));
 router.post("/order/delete", auth, require("./delete"));
 router.post("/order/update", auth, require("./update"));

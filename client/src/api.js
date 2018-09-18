@@ -83,8 +83,8 @@ class Api {
     return this.client.post("/user", data);
   }
 
-  getOrders(id) {
-    return this.client(`/order/${id}`);
+  getOrders() {
+    return this.client(`/order`);
   }
 
   deleteOrder(data) {

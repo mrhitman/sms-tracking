@@ -8,6 +8,8 @@ const Order = Record({
   ttn: "",
   remind_template: "",
   on_send_template: "",
+  remind_sms_template_id: "",
+  on_send_sms_template_id: "",
   status: "",
   last_sms_sent: "",
   created_at: ""

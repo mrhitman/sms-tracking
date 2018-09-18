@@ -22,8 +22,12 @@ class Orders extends Component {
       dataIndex: "ttn"
     },
     {
-      title: "SMS template",
-      dataIndex: "template"
+      title: "SMS remind template",
+      dataIndex: "remind_template"
+    },
+    {
+      title: "SMS on send template",
+      dataIndex: "on_send_template"
     },
     {
       title: "Status",

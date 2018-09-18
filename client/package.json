@@ -2,7 +2,7 @@
   "name": "clien",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://sms-tracking.herokuapp.com",
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "antd": "^3.9.1",
     "axios": "^0.18.0",
