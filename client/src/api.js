@@ -107,6 +107,10 @@ class Api {
     return this.client.post("/order/unpause", data);
   }
 
+  trackOrder(id) {
+    return this.client(`/order/track/${id}`);
+  }
+
   loadOrders(type, data) {
     return this.client.post(`/order/load/${type}`, data);
   }

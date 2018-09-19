@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "./Layout";
-import { Col, Row, Form, Input, Button, Select } from "antd";
+import { Row, Form, Input, Button, Select } from "antd";
 import { actions } from "../constants";
 import api from "../api";
 

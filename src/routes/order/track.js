@@ -1,6 +1,7 @@
 "use strict";
 
 const Order = require("../../models/order");
+const Config = require("../../models/config");
 const NovaPosta = require("../../services/novaposhta");
 
 module.exports = async ctx => {
@@ -10,6 +11,7 @@ module.exports = async ctx => {
     return;
   }
   const poshta = new NovaPosta();
-  const response = await poshta.getStatusDocuments("", [order]);
-  ctx.body = response;
+  const apiKey = await Config.get("novaposhta_key");
+  const response = await poshta.getStatusDocuments(apiKey, [order]);
+  ctx.body = response.data;
 };
