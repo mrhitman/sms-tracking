@@ -14,7 +14,7 @@ class Sms extends Model {
       properties: {
         order_id: { type: "number" },
         status: { enum: ["sent", "not_reached", "in_progress"] },
-        send_time: { type: "string" },
+        send_time: { type: "number" },
         sms_raw: { type: "string" }
       }
     };

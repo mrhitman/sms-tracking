@@ -6,6 +6,7 @@ export const actions = {
   user_create: "user_create",
   order_create: "orders_create",
   order_delete: "orders_delete",
+  order_send_sms: "order_send_sms",
   orders_get: "orders_get",
   orders_pause: "orders_pause",
   orders_unpause: "orders_unpause",

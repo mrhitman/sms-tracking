@@ -65,7 +65,6 @@ class User extends Component {
             })(<Input />)}
           </FormItem>
         </Row>
-        {console.log(user)}
         <Row style={rowStyle}>
           <FormItem label="Default SMS Template" {...formItemLayout}>
             {getFieldDecorator("default_sms_template_id", {

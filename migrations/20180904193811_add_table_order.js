@@ -5,13 +5,7 @@ exports.up = knex =>
     table.increments("id").primary();
     table.integer("user_id").unsigned();
     table.enum("type", ["novaposhta"]);
-    table.enum("status", [
-      "pending",
-      "in_progress",
-      "paused",
-      "done",
-      "refused"
-    ]);
+    table.string("status");
     table.string("ttn");
     table.unique(["ttn", "type"]);
     table.integer("sms_template_id").unsigned();

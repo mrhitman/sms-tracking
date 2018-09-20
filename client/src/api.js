@@ -103,6 +103,10 @@ class Api {
     return this.client.post("/order/pause", data);
   }
 
+  sendSmsOrder(data) {
+    return this.client.post("/order/send-sms", data);
+  }
+
   unpauseOrder(data) {
     return this.client.post("/order/unpause", data);
   }

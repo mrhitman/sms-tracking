@@ -4,9 +4,11 @@ const schedule = require("node-schedule");
 const Order = require("../models/order");
 const Config = require("../models/config");
 const NovaPoshta = require("../services/novaposhta");
-const processOrders = require("./sms");
+const { remind, on_send } = require("../services/sms");
+const moment = require("moment");
+const _ = require("lodash");
 
-const TrackingStatus = {
+const Code = {
   wait: ["1"],
   deleted: ["2"],
   notfound: ["3"],
@@ -24,73 +26,80 @@ const TrackingStatus = {
 
 class Scheduler {
   constructor() {
-    this.sms = [];
     this.start();
   }
 
-  async checkOrdersStatuses() {
-    const novaposhta = new NovaPoshta();
-    const pendingOrders = await Order.query().where({ status: "pending" });
-    const novaposhtaKey = await Config.get("novaposhta_key");
-
-    pendingOrders.map(async order => {
-      const info = (await novaposhta.getStatusDocuments(novaposhtaKey, [
-        {
-          phone: order.phone,
-          ttn: order.ttn
-        }
-      ])).data[0];
-
-      if (TrackingStatus.ready.includes(info.StatusCode)) {
-        await order.start();
-      }
-    });
-
-    const inProgressOrders = await Order.query().where({
-      status: "in_progress"
-    });
-
-    inProgressOrders.map(async order => {
-      const info = (await novaposhta.getStatusDocuments(novaposhtaKey, [
-        {
-          phone: order.phone,
-          ttn: order.ttn
-        }
-      ])).data[0];
-      if (TrackingStatus.done.includes(info.StatusCode)) {
-        await order.complete();
-      }
-      if ([...TrackingStatus.refuse, ...TrackingStatus.stopsaving].includes(info.StatusCode)) {
-        await order.complete();
-      }
-    });
-
-    await processOrders(inProgressOrders);
-  }
-
-  async sendSms() {
-    const orders = await Order.query().where({ status: "in_progress" });
-    await processOrders(orders);
+  async start() {
+    const interval = await Config.get("orders_check_interval");
+    this.scheduler = [
+      schedule.scheduleJob(interval, this.checkOrders),
+      schedule.scheduleJob("0 10 * * *", this.notify),
+      schedule.scheduleJob("0 11 * * *", this.notify),
+      schedule.scheduleJob("0 12 * * *", this.notify),
+      schedule.scheduleJob("0 13 * * *", this.notify),
+      schedule.scheduleJob("0 14 * * *", this.notify),
+      schedule.scheduleJob("0 15 * * *", this.notify),
+      schedule.scheduleJob("0 16 * * *", this.notify),
+      schedule.scheduleJob("0 17 * * *", this.notify),
+      schedule.scheduleJob("0 18 * * *", this.notify)
+    ];
   }
 
   stop() {
-    this.order.cancel();
-    this.sms.map(item => item.cancel());
+    _.map(this.scheduler, task => task.cancel());
   }
 
-  async start() {
-    const ordersCheckInterval = await Config.get("orders_check_interval");
-    this.order = schedule.scheduleJob(ordersCheckInterval, this.checkOrdersStatuses.bind(this));
-    const sendSms = this.sendSms.bind(this);
-    this.sms.push(schedule.scheduleJob("0 10 * * *", sendSms));
-    this.sms.push(schedule.scheduleJob("0 11 * * *", sendSms));
-    this.sms.push(schedule.scheduleJob("0 12 * * *", sendSms));
-    this.sms.push(schedule.scheduleJob("0 13 * * *", sendSms));
-    this.sms.push(schedule.scheduleJob("0 14 * * *", sendSms));
-    this.sms.push(schedule.scheduleJob("0 16 * * *", sendSms));
-    this.sms.push(schedule.scheduleJob("0 17 * * *", sendSms));
-    this.sms.push(schedule.scheduleJob("0 18 * * *", sendSms));
-  }
+  notify = async () => {
+    const orders = await Order.query().whereIn({ status: Code.ready });
+    Promise.all(
+      _.map(orders, order => {
+        if (!order.last_sms_sent || moment().diff(moment(order.last_sms_sent)) >= 85400000) {
+          return remind(order);
+        }
+        return Promise.resolve();
+      })
+    );
+  };
+
+  checkOrders = async () => {
+    const api = new NovaPoshta();
+    const novaposhtaKey = await Config.get("novaposhta_key");
+
+    const orders = await Order.query().whereNotIn({
+      status: [...Code.done, ...Code.refused, "paused"]
+    });
+
+    const cards = _.map(orders, _.partialRight(_.pick, ["ttn", "phone"]));
+    const invoices = (await api.getStatusDocuments(novaposhtaKey, cards)).data;
+
+    Promise.all(
+      _.map(invoices, (invoice, i) => {
+        const pl = [];
+        const order = orders[i];
+        if (invoice.StatusCode !== order.status) {
+          if (Code.ready.includes(info.StatusCode)) {
+            pl.push(this.ready(order, invoice));
+          }
+          if (Code.done.includes(info.StatusCode)) {
+            pl.push(this.done(order, invoice));
+          }
+          if (Code.refuse.includes(info.StatusCode)) {
+            pl.push(this.refuse(order, invoice));
+          }
+          if (Code.stopsaving.includes(info.StatusCode)) {
+            pl.push(this.refuse(order, invoice));
+          }
+          pl.push(order.$query().update({ status: invoice.StatusCode }));
+        }
+      })
+    );
+  };
+
+  async ready() {}
+
+  async done() {}
+
+  async refuse() {}
 }
 
 module.exports = Scheduler;

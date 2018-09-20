@@ -59,7 +59,8 @@ class Orders extends Component {
                 onClick={() => this.handleUnpause(record.id)}
               />
             )}
-            <Icon type="mail" onClick={() => this.handleTrack(record.id)} />
+            <Icon type="dashboard" onClick={() => this.handleTrack(record.id)} />
+            <Icon type="mail" onClick={() => this.handleSendSms(record.id)} />
             <Popconfirm
               title="Sure to delete?"
               onConfirm={() => this.handleDelete(record.id)}
@@ -89,6 +90,10 @@ class Orders extends Component {
 
   handleTrack(id) {
     api.trackOrder(id);
+  }
+
+  handleSendSms(id) {
+    api.sendSmsOrder({ id });
   }
 
   componentDidMount() {

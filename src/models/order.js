@@ -10,33 +10,15 @@ class Order extends Model {
     return "order";
   }
 
-  async start() {
-    if (this.status === "pending") {
-      return await this.$query().update({ status: "in_progress" });
-    }
-  }
-
-  async complete() {
-    if (["in_progress", "paused"].indexOf(this.status) !== -1) {
-      return await this.$query().update({ status: "done" });
-    }
-  }
-
-  async refuse() {
-    if (["in_progress", "paused"].indexOf(this.status) !== -1) {
-      return await this.$query().update({ status: "refused" });
-    }
-  }
-
   async pause() {
-    if (this.status === "in_progress") {
+    if (this.status === "ready") {
       return this.$query().update({ status: "paused" });
     }
   }
 
   async unpause() {
     if (this.status === "paused") {
-      return this.$query().update({ status: "in_progress" });
+      return this.$query().update({ status: "8" }); // ready
     }
   }
 
@@ -79,10 +61,8 @@ class Order extends Model {
         user_id: { type: "number" },
         remind_sms_template_id: { type: "number" },
         on_send_sms_template_id: { type: "number" },
-        status: {
-          enum: ["pending", "in_progress", "paused", "done", "refused"]
-        },
-        last_sms_sent: { type: "string" },
+        status: { type: "string" },
+        last_sms_sent: { type: "number" },
         created_at: { type: "number" }
       }
     };

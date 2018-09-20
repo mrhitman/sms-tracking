@@ -33,7 +33,8 @@ module.exports = async ctx => {
     name,
     email,
     phone,
-    password: hash
+    password: hash,
+    reference: 0
   });
   const remindSmsTemplate = await SmsTemplate.query().insert({
     user_id: user.id,
