@@ -18,7 +18,7 @@ class Order extends Model {
 
   async unpause() {
     if (this.status === "paused") {
-      return this.$query().update({ status: "8" }); // ready
+      return this.$query().update({ status: "ready" }); 
     }
   }
 

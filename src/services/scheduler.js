@@ -50,9 +50,8 @@ class Scheduler {
   }
 
   notify = async () => {
-    const orders = await Order.query().whereIn({ status: Code.ready });
-    Promise.all(
-      _.map(orders, order => {
+    const orders = await Order.query().where({ status: "ready" });
+    Promise.all(_.map(orders, order => {
         if (!order.last_sms_sent || moment().diff(moment(order.last_sms_sent)) >= 85400000) {
           return remind(order);
         }
@@ -66,31 +65,29 @@ class Scheduler {
     const novaposhtaKey = await Config.get("novaposhta_key");
 
     const orders = await Order.query().whereNotIn({
-      status: [...Code.done, ...Code.refused, "paused"]
+      status: ["done", "refused", "paused"]
     });
 
     const cards = _.map(orders, _.partialRight(_.pick, ["ttn", "phone"]));
     const invoices = (await api.getStatusDocuments(novaposhtaKey, cards)).data;
 
-    Promise.all(
-      _.map(invoices, (invoice, i) => {
-        const pl = [];
+    Promise.all(_.map(invoices, (invoice, i) => {
         const order = orders[i];
         if (invoice.StatusCode !== order.status) {
           if (Code.ready.includes(info.StatusCode)) {
-            pl.push(this.ready(order, invoice));
+            return order.$query().update({ status: "ready" });
           }
           if (Code.done.includes(info.StatusCode)) {
-            pl.push(this.done(order, invoice));
+            return order.$query().update({ status: "done" });
           }
           if (Code.refuse.includes(info.StatusCode)) {
-            pl.push(this.refuse(order, invoice));
+            return order.$query().update({ status: "refuse" });
           }
           if (Code.stopsaving.includes(info.StatusCode)) {
-            pl.push(this.refuse(order, invoice));
+            return order.$query().update({ status: "refuse" });
           }
-          pl.push(order.$query().update({ status: invoice.StatusCode }));
         }
+        return Promise.resolve();
       })
     );
   };
