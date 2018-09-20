@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Form, Icon, Input, Button, Modal, Select } from "antd";
+import { Form, Icon, Input, Button, Modal, Select, Checkbox } from "antd";
 import { actions } from "../constants";
 import { connect } from "react-redux";
 import api from "../api";
@@ -94,6 +94,9 @@ class NewOrder extends Component {
                   ))}
                 </Select>
               )}
+            </Form.Item>
+            <Form.Item label="Send sms after add order" {...formItemLayout}>
+              {getFieldDecorator("send_sms")(<Checkbox />)}
             </Form.Item>
             <Form.Item label="On send template" {...formItemLayout}>
               {getFieldDecorator("on_send_sms_template_id")(
