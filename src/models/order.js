@@ -3,6 +3,7 @@
 const { Model } = require("objection");
 const db = require("../services/db");
 const Sms = require("./sms");
+const OrderHistory = require("./order-history");
 const SmsTemplate = require("./sms-template");
 
 class Order extends Model {
@@ -18,7 +19,7 @@ class Order extends Model {
 
   async unpause() {
     if (this.status === "paused") {
-      return this.$query().update({ status: "ready" }); 
+      return this.$query().update({ status: "ready" });
     }
   }
 
@@ -46,6 +47,14 @@ class Order extends Model {
         join: {
           from: "order.on_send_sms_template_id",
           to: "sms_template.id"
+        }
+      },
+      history: {
+        relation: Model.HasManyRelation,
+        modelClass: OrderHistory,
+        join: {
+          from: "order.id",
+          to: "order_history.order_id"
         }
       }
     };
