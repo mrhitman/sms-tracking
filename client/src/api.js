@@ -53,7 +53,6 @@ class Api {
       error.response.status !== 401 ||
       error.config.retry
     ) {
-      console.log(this.refreshToken, error);
       throw error;
     }
   }
@@ -112,7 +111,11 @@ class Api {
   }
 
   trackOrder(id) {
-    return this.client(`/order/track/${id}`);
+    return this.client(`/order/${id}/track`);
+  }
+
+  getOrderHistory(id) {
+    return this.client(`/order/${id}/history`)
   }
 
   loadOrders(type, data) {

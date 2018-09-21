@@ -9,19 +9,6 @@ class OrderHistory extends Model {
     return "order_history";
   }
 
-  static get relationMappings() {
-    return {
-      order: {
-        relation: Model.HasOneRelation,
-        modelClass: Order,
-        join: {
-          from: "order.id",
-          to: "sms.order_id"
-        }
-      },
-    };
-  }
-
   static get jsonSchema() {
     return {
       type: "object",

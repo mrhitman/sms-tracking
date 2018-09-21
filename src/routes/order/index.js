@@ -12,6 +12,7 @@ router.post("/order/update", auth, require("./update"));
 router.post("/order/pause", auth, require("./pause"));
 router.post("/order/unpause", auth, require("./unpause"));
 router.post("/order/send-sms", auth, require("./send-sms"));
+router.get("/order/history/:id", auth, require("./history"));
 router.get("/order/track/:id", auth, require("./track"));
 router.post("/order/load/csv", auth, require("./load-csv"));
 

@@ -27,6 +27,8 @@ const Code = {
 
 class Scheduler {
   constructor() {
+    this.notify = this.notify.bind(this);
+    this.checkOrders = this.checkOrders.bind(this);
     this.start();
   }
 
@@ -34,6 +36,7 @@ class Scheduler {
     const interval = await Config.get("orders_check_interval") || "*/10 * * * *";
     this.scheduler = [
       schedule.scheduleJob(interval, this.checkOrders),
+      schedule.scheduleJob("* * * * *", this.notify),
       schedule.scheduleJob("0 10 * * *", this.notify),
       schedule.scheduleJob("0 11 * * *", this.notify),
       schedule.scheduleJob("0 12 * * *", this.notify),
@@ -50,7 +53,8 @@ class Scheduler {
     _.map(this.scheduler, task => task.cancel());
   }
 
-  notify = async () => {
+  async notify() {
+    console.log('____ notify ____');
     const orders = await Order.query().where({
       status: "ready"
     });
@@ -62,52 +66,47 @@ class Scheduler {
     }));
   };
 
-  checkOrders = async () => {
+  static getStatus(invoice) {
+      if (Code.ready.includes(invoice.StatusCode)) {
+          return "ready";
+      }
+      if (Code.done.includes(invoice.StatusCode)) {
+          return "done";
+      }
+      if (Code.refuse.includes(invoice.StatusCode)) {
+          return "refuse";
+      }
+      if (Code.stopsaving.includes(invoice.StatusCode)) {
+          return "refuse";
+      }
+  }
+
+  async checkOrders() {
+    console.log('____ checkOrders ____');
     const api = new NovaPoshta();
     const novaposhtaKey = await Config.get("novaposhta_key");
 
-    const orders = await Order.query().whereNotIn({
-      status: ["done", "refused", "paused"]
-    });
+    const orders = await Order.query().whereNotIn("status", ["done", "refused", "paused"]);
 
     const cards = _.map(orders, _.partialRight(_.pick, ["ttn", "phone"]));
     const invoices = (await api.getStatusDocuments(novaposhtaKey, cards)).data;
 
-    Promise.all(_.map(invoices, (invoice, i) => {
-      const order = orders[i];
-      const pl = [];
-      if (invoice.StatusCode !== order.status) {
-        if (Code.ready.includes(info.StatusCode)) {
-          pl.push(order.$query().update({
-            status: "ready"
-          }));
-        }
-        if (Code.done.includes(info.StatusCode)) {
-          pl.push(order.$query().update({
-            status: "done"
-          }));
-        }
-        if (Code.refuse.includes(info.StatusCode)) {
-          pl.push(order.$query().update({
-            status: "refuse"
-          }));
-        }
-        if (Code.stopsaving.includes(info.StatusCode)) {
-          pl.push(order.$query().update({
-            status: "refuse"
-          }));
-        }
-        pl.push(OrderHistory.query().insert({
-          user_id: order.user_id,
-          order_id: order.id,
-          status: order.status,
-          created_at: moment().unix(),
-          data: JSON.stringify(invoice)
-        }));
-        return Promise.all(pl);
-      }
-      return Promise.resolve();
-    }));
+    Promise.all(
+        _.map(invoices, (invoice, i) => {
+            const order = orders[i];
+            if (invoice.StatusCode !== order.status) {
+                const status = Scheduler.getStatus(invoice);
+                await OrderHistory.query(t).insert({
+                    user_id: order.user_id,
+                    order_id: order.id,
+                    status: status,
+                    created_at: moment().unix(),
+                    data: JSON.stringify(invoice)
+                });
+            }
+            return Promise.resolve();
+        })
+    );
   };
 }
 
