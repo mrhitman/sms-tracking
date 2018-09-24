@@ -2,13 +2,13 @@
 
 const RefreshToken = require("../../models/refresh-token");
 const jwt = require("jsonwebtoken");
-const uuid = require('uuid');
-const moment = require('moment')();
+const uuid = require("uuid");
+const moment = require("moment")();
 
 module.exports = async ctx => {
   const { token } = ctx.request.body;
-  
-  let refreshToken = await RefreshToken.query().findOne({ token });
+
+  const refreshToken = await RefreshToken.query().findOne({ token });
   if (!refreshToken) {
     return;
   }

@@ -42,9 +42,9 @@ describe("user", () => {
   });
 
   test("get unexists", async () => {
-    const token = issueToken({ id: 1 }, { expiresIn: "1m" });
+    const token = issueToken({ id: 1111 }, { expiresIn: "1m" });
     const response = await app
-      .get("/user/update/999999")
+      .post("/user/update")
       .set("Authorization", `Bearer ${token}`);
     expect(response.status).eq(404);
   });

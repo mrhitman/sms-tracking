@@ -14,18 +14,17 @@ module.exports = async ctx => {
     ctx.status = 403;
     return;
   }
-
   if (!bcrypt.compareSync(String(password), user.password)) {
     return;
   }
-
   const token = jwt.sign({ id: user.id }, process.env.SALT, {
     expiresIn: "1h"
   });
-
-  const refreshToken = await RefreshToken.query()
-    .insert({ user_id: user.id, token: uuid(), created_at: moment.unix() });
-
+  const refreshToken = await RefreshToken.query().insert({
+    user_id: user.id,
+    token: uuid(),
+    created_at: moment.unix()
+  });
   ctx.body = {
     user,
     token,
