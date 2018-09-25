@@ -20,7 +20,7 @@ const schema = joi.object().keys({
   ttn: joi.number().required(),
   remind_sms_template_id: joi.number().required(),
   on_send_sms_template_id: joi.number(),
-  send_sms: joi.boolean().required()
+  send_sms: joi.boolean()
 });
 
 module.exports = async ctx => {
@@ -33,7 +33,7 @@ module.exports = async ctx => {
       user_id,
       ttn,
       phone: phone.replace(/\D/g, ""),
-      status: Scheduler.getStatus(invoice),
+      status: "unknown",
       type: "novaposhta",
       last_sms_sent: 0,
       remind_sms_template_id,
@@ -44,25 +44,31 @@ module.exports = async ctx => {
     const api = new NovaPoshta();
     const novaposhtaKey = await Config.get("novaposhta_key");
     const invoice = _.first(
-      (await api.getStatusDocuments(novaposhtaKey, cards)).data
+      (await api.getStatusDocuments(novaposhtaKey, [order])).data
     );
+
+    if (invoice.StatusCode) {
+      order.$query(t).update({ status: invoice.StatusCode});
+    }
 
     await OrderHistory.query(t).insert({
       user_id: order.user_id,
       order_id: order.id,
       status: order.status,
       created_at: moment().unix(),
-      data: JSON.stringify(invoice)
+      data: JSON.stringify(invoice),
+      created_at: moment().unix()
     });
 
     if (!!send_sms) {
       await on_send(order);
     }
+
     await OrderHistory.query(t).insert({
       order_id: order.id,
       user_id,
       data: JSON.stringify(invoice),
-      status: invoice.StatusCode,
+      status: invoice.StatusCode || "unknown",
       created_at: moment().unix()
     });
     ctx.body = order;

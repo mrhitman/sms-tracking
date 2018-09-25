@@ -1,6 +1,5 @@
 import { Record, List } from "immutable";
 import { actions } from "../constants";
-import { render } from "mustache";
 
 const Order = Record({
   id: "",
@@ -26,8 +25,12 @@ export default (state = initialState, action) => {
           order =>
             new Order({
               ...order,
-              remind_template: render(order.remind_template.template, order),
-              on_send_template: render(order.on_send_template.template, order)
+              remind_template: order.remind_template
+                ? order.remind_template.template
+                : "",
+              on_send_template: order.on_send_template
+                ? order.on_send_template.template
+                : ""
             })
         )
       );

@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { Table, Icon, Popconfirm, Input, Button, Form } from "antd";
+import React, { Component } from "react";
+import { Table, Icon, Popconfirm, Button } from "antd";
 import { connect } from "react-redux";
 import api from "../api";
 import { actions } from "../constants";

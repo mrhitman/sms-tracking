@@ -96,7 +96,7 @@ class Scheduler {
             const order = orders[i];
             if (invoice.StatusCode !== order.status) {
                 const status = Scheduler.getStatus(invoice);
-                await OrderHistory.query(t).insert({
+                return OrderHistory.query(t).insert({
                     user_id: order.user_id,
                     order_id: order.id,
                     status: status,

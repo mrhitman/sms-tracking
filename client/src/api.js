@@ -1,8 +1,9 @@
 import axios from "axios";
 
+const baseUrl = "http://localhost:3000/";
 class Api {
   constructor(options = {}) {
-    this.client = options.client || axios.create();
+    this.client = options.client || axios.create({ baseURL: baseUrl });
     this.token = options.token || localStorage.getItem("token");
     this.refreshToken =
       options.refreshToken || localStorage.getItem("refreshToken");
@@ -31,7 +32,8 @@ class Api {
 
         if (!this.refreshRequest) {
           this.refreshRequest = this.client.post("/user/refresh", {
-            token: this.refreshToken
+            token: this.refreshToken,
+            baseUrl
           });
         }
         const { data } = await this.refreshRequest;
@@ -42,7 +44,7 @@ class Api {
           retry: true
         };
 
-        return this.client(newRequest);
+        return this.client(newRequest, { baseUrl });
       }
     );
   }
@@ -58,7 +60,7 @@ class Api {
   }
 
   async login({ email, password }) {
-    const { data } = await this.client.post("/user/login", { email, password });
+    const { data } = await this.client.post("user/login", { email, password });
     this.token = data.token;
     this.refreshToken = data.refreshToken;
     return { data };
@@ -115,7 +117,7 @@ class Api {
   }
 
   getOrderHistory(id) {
-    return this.client(`/order/${id}/history`)
+    return this.client(`/order/${id}/history`);
   }
 
   loadOrders(type, data) {
@@ -139,8 +141,8 @@ class Api {
   }
 
   getSms(id) {
-    return this.client(`/sms/${id}`);
+    return this.client(`/order/${id}/sms`);
   }
 }
 
-export default new Api({});
+export default new Api();

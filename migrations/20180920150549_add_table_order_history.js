@@ -7,6 +7,7 @@ exports.up = knex =>
     table.integer("order_id").unsigned();
     table.integer("user_id").unsigned();
     table.text("data");
+    table.bigint("created_at");
   });
 
 exports.down = knex => knex.schema.dropTable(tableName);

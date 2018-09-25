@@ -1,10 +1,13 @@
-import React, { Component } from "react";
-import { Table, Icon, Button, Upload, Popconfirm } from "antd";
+import React, { Component, Fragment } from "react";
+import { Table, Icon, Button, Upload, Popconfirm, Col, Row } from "antd";
 import { connect } from "react-redux";
 import api from "../api";
+import * as moment from "moment";
 import { actions } from "../constants";
 import Layout from "./Layout";
 import NewOrder from "./NewOrder";
+import OrderHistory from "./OrderHistory";
+import SmsHistory from "./SmsHistory";
 
 class Orders extends Component {
   columns = [
@@ -35,11 +38,14 @@ class Orders extends Component {
     },
     {
       title: "Last sms sent",
-      dataIndex: "last_sms_sent"
+      dataIndex: "last_sms_sent",
+      render: text =>
+        parseInt(text) === 0 ? "None" : moment.unix(text).format()
     },
     {
       title: "Created at",
-      dataIndex: "created_at"
+      dataIndex: "created_at",
+      render: text => moment.unix(text).format()
     },
     {
       title: "Operation",
@@ -49,18 +55,28 @@ class Orders extends Component {
           <a href="javascript:;">
             {record.status === "in_progress" && (
               <Icon
+                title="Pause order"
                 type="pause-circle"
                 onClick={() => this.handlePause(record.id)}
               />
             )}
             {record.status === "paused" && (
               <Icon
+                title="Unpause order"
                 type="right-circle"
                 onClick={() => this.handleUnpause(record.id)}
               />
             )}
-            <Icon type="dashboard" onClick={() => this.handleTrack(record.id)} />
-            <Icon type="mail" onClick={() => this.handleSendSms(record.id)} />
+            <Icon
+              title="Track order"
+              type="dashboard"
+              onClick={() => this.handleTrack(record.id)}
+            />
+            <Icon
+              title="Send sms to order owner"
+              type="mail"
+              onClick={() => this.handleSendSms(record.id)}
+            />
             <Popconfirm
               title="Sure to delete?"
               onConfirm={() => this.handleDelete(record.id)}
@@ -119,7 +135,20 @@ class Orders extends Component {
             Load csv
           </Button>
         </Upload>
-        <Table columns={this.columns} dataSource={this.props.order.toJS()} />
+        <Table
+          columns={this.columns}
+          expandedRowRender={row => (
+            <Row>
+              <Col span={16}>
+                <SmsHistory row={row} />
+              </Col>
+              <Col span={6} offset={2}>
+                <OrderHistory row={row} />
+              </Col>
+            </Row>
+          )}
+          dataSource={this.props.order.toJS()}
+        />
       </Layout>
     );
   }

@@ -11,6 +11,7 @@ class Register extends Component {
     registered: false,
     errors: []
   };
+
   handleSubmit = e => {
     this.setState({
       errors: []

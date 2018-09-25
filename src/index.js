@@ -6,12 +6,14 @@ const bodyparser = require("koa-bodyparser");
 const helmet = require("koa-helmet");
 const passport = require("./middlewares/passport");
 const Scheduler = require("./services/scheduler");
+const cors = require("koa-cors");
 
 require("dotenv").config();
 
 function createApp() {
   const app = new Koa();
   app.use(helmet());
+  app.use(cors());
   app.use(bodyparser());
   app.use(logger("tiny"));
   app.use(passport.initialize());
