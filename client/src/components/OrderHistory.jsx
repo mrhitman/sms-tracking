@@ -3,6 +3,7 @@ import { Timeline, Modal } from "antd";
 import { connect } from "react-redux";
 import { actions } from "../constants";
 import api from "../api";
+import * as moment from "moment";
 
 class OrderHistory extends Component {
   componentDidMount() {
@@ -12,7 +13,6 @@ class OrderHistory extends Component {
 
   render() {
     const { history, row } = this.props;
-    // console.log(history.toJS());
     return (
       <Fragment>
         <h3>Order timeline:</h3>
@@ -20,7 +20,7 @@ class OrderHistory extends Component {
           {history.get(row.id, []).map(item => {
             return (
               <Timeline.Item>
-                {item.status} - {item.created_at}
+                {moment.unix(item.created_at).format()}: {item.status}
               </Timeline.Item>
             );
           })}
