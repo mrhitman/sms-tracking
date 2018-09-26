@@ -7,7 +7,6 @@ const Config = require("../../models/config");
 const NovaPoshta = require("../../services/novaposhta");
 const { on_send } = require("../../services/sms");
 const db = require("../../services/db");
-const Scheduler = require("../../services/scheduler");
 const { joi, validate } = require("../../helpers/validate");
 const { transaction } = require("objection");
 const _ = require("lodash");

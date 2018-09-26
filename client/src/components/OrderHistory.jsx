@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Timeline, Modal } from "antd";
+import { Timeline } from "antd";
 import { connect } from "react-redux";
 import { actions } from "../constants";
 import api from "../api";

@@ -2,7 +2,6 @@
 
 const { Model } = require("objection");
 const db = require("../services/db");
-const Order = require("./order");
 
 class OrderHistory extends Model {
   static get tableName() {

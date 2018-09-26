@@ -39,6 +39,8 @@ class Api {
         const { data } = await this.refreshRequest;
         this.token = data.token;
         this.refreshToken = data.refreshToken;
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
         const newRequest = {
           ...error.config,
           retry: true

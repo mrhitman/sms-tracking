@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Table, Icon, Button, Upload, Popconfirm, Col, Row } from "antd";
 import { connect } from "react-redux";
 import api from "../api";
