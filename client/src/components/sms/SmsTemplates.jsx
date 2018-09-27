@@ -8,6 +8,10 @@ import NewSmsTemplate from "./NewSmsTemplate";
 import UpdateSmsTemplate from "./UpdateSmsTemplate";
 
 class SmsTemplates extends Component {
+  state = {
+    loading: false
+  };
+
   columns = [
     {
       title: "Id",
@@ -61,7 +65,16 @@ class SmsTemplates extends Component {
 
   componentDidMount() {
     const { getTemplates } = this.props;
-    api.getSmsTemplates().then(getTemplates);
+    this.setState({ loading: true });
+    api
+      .getSmsTemplates()
+      .then(getTemplates)
+      .then(() => {
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
   }
 
   render() {
@@ -71,6 +84,7 @@ class SmsTemplates extends Component {
           <NewSmsTemplate />
         </Button.Group>
         <Table
+          loading={this.state.loading}
           bordered
           dataSource={this.props.sms_template.toJS()}
           columns={this.columns}
