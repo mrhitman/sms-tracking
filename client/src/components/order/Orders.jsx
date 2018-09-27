@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { Table, Icon, Button, Upload, Popconfirm, Col, Row } from "antd";
 import { connect } from "react-redux";
-import api from "../api";
+import api from "../../api";
 import * as moment from "moment";
-import { actions } from "../constants";
-import Layout from "./Layout";
+import { actions } from "../../constants";
+import Layout from "../Layout";
 import NewOrder from "./NewOrder";
-import OrderHistory from "./OrderHistory";
+import OrderTimeline from "./OrderTimeline";
 import SmsHistory from "./SmsHistory";
 
 class Orders extends Component {
+  state = {
+    loading: true
+  };
+
   columns = [
     {
       title: "Id",
@@ -114,7 +118,15 @@ class Orders extends Component {
 
   componentDidMount() {
     const { getOrders, user } = this.props;
-    api.getOrders(user.get("id")).then(getOrders);
+    this.setState({ loading: true });
+    api.getOrders(user.get("id"))
+      .then(getOrders)
+      .then(() => {
+        this.setState({ loading: false })
+      })
+      .catch(() => {
+        this.setState({ loading: false })
+      })
   }
 
   render() {
@@ -136,6 +148,7 @@ class Orders extends Component {
           </Button>
         </Upload>
         <Table
+          loading={this.state.loading}
           columns={this.columns}
           expandedRowRender={row => (
             <Row>
@@ -143,7 +156,7 @@ class Orders extends Component {
                 <SmsHistory row={row} />
               </Col>
               <Col span={6} offset={2}>
-                <OrderHistory row={row} />
+                <OrderTimeline row={row} />
               </Col>
             </Row>
           )}

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { actions } from "../constants";
+import { actions } from "../../constants";
 import { connect } from "react-redux";
-import api from "../api";
+import api from "../../api";
 
 class Logout extends Component {
   componentDidMount() {
@@ -11,7 +11,10 @@ class Logout extends Component {
   }
 
   render() {
-    return <Redirect to="/login" />;
+    const authorized = !!this.props.user.id;
+    if (!authorized) {
+      return <Redirect to="/login" />;
+    }
   }
 }
 

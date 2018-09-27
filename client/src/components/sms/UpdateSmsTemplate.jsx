@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
-import { Form, Icon, Input, Button, Modal } from "antd";
-import { actions } from "../constants";
+import { Form, Icon, Input, Modal } from "antd";
+import { actions } from "../../constants";
 import { connect } from "react-redux";
-import api from "../api";
+import api from "../../api";
 
 const formItemLayout = {
   labelCol: {
@@ -15,7 +15,7 @@ const formItemLayout = {
   }
 };
 
-class NewSmsTemplate extends Component {
+class UpdateSmsTemplate extends Component {
   state = {
     visible: false
   };
@@ -29,14 +29,14 @@ class NewSmsTemplate extends Component {
   handleOk = e => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { afterCreateTemplate } = this.props;
+        const { afterUpdateTemplate } = this.props;
         api
-          .createSmsTemplate(values)
+          .updateSmsTemplate({ ...values, id: this.props.id })
           .then(response => {
             this.setState({ visible: false });
             return response;
           })
-          .then(afterCreateTemplate);
+          .then(afterUpdateTemplate);
       }
     });
   };
@@ -49,13 +49,12 @@ class NewSmsTemplate extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { template, description } = this.props;
     return (
       <Fragment>
-        <Button type="primary" icon="plus-circle" onClick={this.showModal}>
-          Add
-        </Button>
+        <Icon type="edit" onClick={this.showModal} />
         <Modal
-          title="Create SMS Template"
+          title="Update SMS Template"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -63,6 +62,7 @@ class NewSmsTemplate extends Component {
           <Form onSubmit={this.handleOk}>
             <Form.Item label="Template" {...formItemLayout}>
               {getFieldDecorator("template", {
+                initialValue: template,
                 rules: [
                   {
                     type: "string",
@@ -74,6 +74,7 @@ class NewSmsTemplate extends Component {
             </Form.Item>
             <Form.Item label="Description" {...formItemLayout}>
               {getFieldDecorator("description", {
+                initialValue: description,
                 rules: [{ type: "string" }]
               })(<Input prefix={<Icon type="info-circle" />} />)}
             </Form.Item>
@@ -86,11 +87,11 @@ class NewSmsTemplate extends Component {
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
-  afterCreateTemplate: payload => {
-    dispatch({ type: actions.sms_template_create, payload: payload.data });
+  afterUpdateTemplate: payload => {
+    dispatch({ type: actions.sms_template_update, payload: payload.data });
   }
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Form.create()(NewSmsTemplate));
+)(Form.create()(UpdateSmsTemplate));

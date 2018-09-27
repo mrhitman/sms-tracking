@@ -1,21 +1,36 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { actions } from "../constants";
-import { List } from "antd";
-import api from "../api";
+import { actions } from "../../constants";
+import { List, Card } from "antd";
+import api from "../../api";
 import * as moment from "moment";
 
 class SmsHistory extends Component {
+  state = {
+    loading: false
+  };
+
   componentDidMount() {
     const { getHistory, row } = this.props;
-    api.getSms(row.id).then(getHistory);
+    this.setState({
+      loading: true
+    });
+    api
+      .getSms(row.id)
+      .then(getHistory)
+      .then(() => {
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
   }
 
   render() {
     const order = this.props.row;
     const sms = this.props.sms.get(order.id);
     return (
-      <Fragment>
+      <Card loading={this.state.loading}>
         <h3>Sended sms's</h3>
         <List
           itemLayout="horizontal"
@@ -31,7 +46,7 @@ class SmsHistory extends Component {
             </List.Item>
           )}
         />
-      </Fragment>
+      </Card>
     );
   }
 }

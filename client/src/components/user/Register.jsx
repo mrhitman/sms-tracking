@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Alert, Form, Icon, Input, Button } from "antd";
 import { connect } from "react-redux";
-import { actions } from "../constants";
+import { actions } from "../../constants";
 import { Redirect } from "react-router-dom";
-import api from "../api";
+import api from "../../api";
 
 const FormItem = Form.Item;
 class Register extends Component {

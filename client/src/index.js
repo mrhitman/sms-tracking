@@ -5,15 +5,14 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { createStore } from "redux";
-import App from "./components/App";
-import User from "./components/User";
-import Orders from "./components/Orders";
-import SmsTemplates from "./components/SmsTemplates";
+import User from "./components/user/User";
+import Orders from "./components/order/Orders";
+import SmsTemplates from "./components/sms/SmsTemplates";
 import reducer from "./reducers";
-import UpdateUser from "./components/UpdateUser";
-import Login from "./components/Login";
-import Logout from "./components/Logout";
-import Register from "./components/Register";
+import UpdateUser from "./components/user/UpdateUser";
+import Login from "./components/user/Login";
+import Logout from "./components/user/Logout";
+import Register from "./components/user/Register";
 
 const store = createStore(reducer);
 

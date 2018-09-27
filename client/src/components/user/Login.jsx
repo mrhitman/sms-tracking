@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Alert, Checkbox, Form, Icon, Input, Button } from "antd";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import api from "../api";
-import { actions } from "../constants";
+import api from "../../api";
+import { actions } from "../../constants";
 
 const FormItem = Form.Item;
 class Login extends Component {

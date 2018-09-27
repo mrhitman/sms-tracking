@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Form, Icon, Input, Button, Modal, Select, Checkbox } from "antd";
-import { actions } from "../constants";
+import { actions } from "../../constants";
 import { connect } from "react-redux";
-import api from "../api";
+import api from "../../api";
 
 const formItemLayout = {
   labelCol: {

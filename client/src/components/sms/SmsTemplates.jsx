@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Table, Icon, Popconfirm, Button } from "antd";
 import { connect } from "react-redux";
-import api from "../api";
-import { actions } from "../constants";
-import Layout from "./Layout";
+import api from "../../api";
+import { actions } from "../../constants";
+import Layout from "../Layout";
 import NewSmsTemplate from "./NewSmsTemplate";
 import UpdateSmsTemplate from "./UpdateSmsTemplate";
 

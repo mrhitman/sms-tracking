@@ -1,20 +1,33 @@
-import React, { Component, Fragment } from "react";
-import { Timeline } from "antd";
+import React, { Component } from "react";
+import { Timeline, Card } from "antd";
 import { connect } from "react-redux";
-import { actions } from "../constants";
-import api from "../api";
+import { actions } from "../../constants";
+import api from "../../api";
 import * as moment from "moment";
 
-class OrderHistory extends Component {
+class OrderTimeline extends Component {
+  state = {
+    loading: false
+  };
+
   componentDidMount() {
     const { getHistory, row } = this.props;
-    api.getOrderHistory(row.id).then(getHistory);
+    this.setState({ loading: true });
+    api
+      .getOrderHistory(row.id)
+      .then(getHistory)
+      .then(() => {
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
   }
 
   render() {
     const { history, row } = this.props;
     return (
-      <Fragment>
+      <Card loading={this.state.loadingd}>
         <h3>Order timeline:</h3>
         <Timeline>
           {history.get(row.id, []).map(item => {
@@ -25,7 +38,7 @@ class OrderHistory extends Component {
             );
           })}
         </Timeline>
-      </Fragment>
+      </Card>
     );
   }
 }
@@ -40,4 +53,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OrderHistory);
+)(OrderTimeline);
