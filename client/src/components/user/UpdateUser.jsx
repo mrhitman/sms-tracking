@@ -68,9 +68,25 @@ class User extends Component {
           </FormItem>
         </Row>
         <Row style={rowStyle}>
-          <FormItem label="Default SMS Template" {...formItemLayout}>
-            {getFieldDecorator("default_sms_template_id", {
-              initialValue: user.get("default_sms_template_id"),
+          <FormItem label="Default remind SMS Template" {...formItemLayout}>
+            {getFieldDecorator("default_remind_sms_template_id", {
+              initialValue: user.get("default_remind_sms_template_id"),
+              rules: [{ required: true }]
+            })(
+              <Select>
+                {this.props.sms_template.toJS().map(template => (
+                  <Select.Option value={template.id}>
+                    {template.template}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          </FormItem>
+        </Row>
+        <Row style={rowStyle}>
+          <FormItem label="Default on send SMS Template" {...formItemLayout}>
+            {getFieldDecorator("default_on_send_sms_template_id", {
+              initialValue: user.get("default_on_send_sms_template_id"),
               rules: [{ required: true }]
             })(
               <Select>

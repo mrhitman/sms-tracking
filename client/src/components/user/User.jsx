@@ -31,9 +31,14 @@ class User extends Component {
           <Col span={3}>Phone:</Col>
           <Col span={12}>{user.get("phone")}</Col>
         </Row>
+        {console.log(user.toJS())}
         <Row style={rowStyle}>
-          <Col span={3}>Default sms template:</Col>
-          <Col span={12}>{user.get("default_sms_template")}</Col>
+          <Col span={3}>Default remind sms template:</Col>
+          <Col span={12}>{user.get("default_remind_sms_template")}</Col>
+        </Row>
+        <Row style={rowStyle}>
+          <Col span={3}>Default on send sms template:</Col>
+          <Col span={12}>{user.get("default_on_send_sms_template")}</Col>
         </Row>
         <Link to="/update-profile">
           <Button style={{ margin: 20 }}>Update</Button>

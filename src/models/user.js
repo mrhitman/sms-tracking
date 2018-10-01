@@ -2,6 +2,7 @@
 
 const { Model } = require("objection");
 const db = require("../services/db");
+const SmsTemplate = require("./sms-template");
 const Order = require("./order");
 
 class User extends Model {
@@ -16,7 +17,13 @@ class User extends Model {
       email: this.email,
       phone: this.phone,
       default_remind_sms_template_id: this.default_remind_sms_template_id,
-      default_on_send_sms_template_id: this.default_on_send_sms_template_id
+      default_on_send_sms_template_id: this.default_on_send_sms_template_id,
+      default_remind_sms_template: this.default_remind_sms_template
+        ? this.default_remind_sms_template.template
+        : "",
+      default_on_send_sms_template: this.default_on_send_sms_template
+        ? this.default_on_send_sms_template.template
+        : ""
     };
   }
 
@@ -28,6 +35,22 @@ class User extends Model {
         join: {
           from: "user.id",
           to: "order.user_id"
+        }
+      },
+      default_remind_sms_template: {
+        relation: Model.HasOneRelation,
+        modelClass: SmsTemplate,
+        join: {
+          from: "user.default_remind_sms_template_id",
+          to: "sms_template.id"
+        }
+      },
+      default_on_send_sms_template: {
+        relation: Model.HasOneRelation,
+        modelClass: SmsTemplate,
+        join: {
+          from: "user.default_on_send_sms_template_id",
+          to: "sms_template.id"
         }
       }
     };

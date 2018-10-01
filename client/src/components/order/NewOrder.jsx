@@ -8,11 +8,11 @@ import api from "../../api";
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 }
+    sm: { span: 9 }
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 16 }
+    sm: { span: 15 }
   }
 };
 
@@ -99,17 +99,19 @@ class NewOrder extends Component {
             <Form.Item label="Send sms after add order" {...formItemLayout}>
               {getFieldDecorator("send_sms")(<Checkbox />)}
             </Form.Item>
-            <Form.Item label="On send template" {...formItemLayout}>
-              {getFieldDecorator("on_send_sms_template_id")(
-                <Select>
-                  {this.props.sms_template.toJS().map(template => (
-                    <Select.Option value={template.id}>
-                      {`${template.template} ${template.id} `}
-                    </Select.Option>
-                  ))}
-                </Select>
-              )}
-            </Form.Item>
+            {!!this.props.form.getFieldValue("send_sms") && (
+              <Form.Item label="On send template" {...formItemLayout}>
+                {getFieldDecorator("on_send_sms_template_id")(
+                  <Select>
+                    {this.props.sms_template.toJS().map(template => (
+                      <Select.Option value={template.id}>
+                        {`${template.template} ${template.id} `}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                )}
+              </Form.Item>
+            )}
           </Form>
         </Modal>
       </Fragment>
