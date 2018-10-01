@@ -20,7 +20,8 @@ function createApp() {
   app.use(require("./routes/user").routes());
   app.use(require("./routes/sms-template").routes());
   app.use(require("./routes/order").routes());
-  app.scheduler = new Scheduler();
+  app.use(require("./routes/scheduler").routes());
+  app.context.scheduler = new Scheduler();
   return app;
 }
 
