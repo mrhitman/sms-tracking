@@ -6,9 +6,8 @@ import { bindActionCreators } from "redux";
 import { logout } from "../../actions/user";
 
 class Logout extends Component {
-  componentDidMount() {
-    const { logout } = this.props;
-    api.logout().then(logout);
+  UNSAFE_componentWillMount() {
+    api.logout().then(this.props.logout);
   }
 
   render() {
@@ -16,10 +15,10 @@ class Logout extends Component {
     if (!authorized) {
       return <Redirect to="/login" />;
     }
+    return <Redirect to="/" />;
   }
 }
 
-const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -29,6 +28,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToProps
 )(Logout);

@@ -28,7 +28,7 @@ ReactDOM.render(
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
         <Route path="/reset-password" component={Logout} />
-        <Route path="/" component={Orders} />
+        <Route exact path="/" component={Orders} />
       </Switch>
     </Router>
   </Provider>,
