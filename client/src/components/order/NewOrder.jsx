@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Form, Icon, Input, Button, Modal, Select, Checkbox } from "antd";
-import { actions } from "../../constants";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { afterCreateOrder, getTemplates } from "../../actions/order";
 import api from "../../api";
 
 const formItemLayout = {
@@ -116,16 +117,15 @@ class NewOrder extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-  afterCreateOrder: payload => {
-    dispatch({ type: actions.order_create, payload: payload.data });
-  },
-  getTemplates: payload => {
-    dispatch({ type: actions.sms_templates_get, payload: payload.data });
-  }
-});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      afterCreateOrder,
+      getTemplates
+    },
+    dispatch
+  );
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToProps
 )(Form.create()(NewOrder));

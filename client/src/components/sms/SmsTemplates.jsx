@@ -2,10 +2,16 @@ import React, { Component } from "react";
 import { Table, Icon, Popconfirm, Button } from "antd";
 import { connect } from "react-redux";
 import api from "../../api";
-import { actions } from "../../constants";
 import Layout from "../Layout";
 import NewSmsTemplate from "./NewSmsTemplate";
 import UpdateSmsTemplate from "./UpdateSmsTemplate";
+import { bindActionCreators } from "redux";
+import {
+  afterCreateTemplate,
+  afterUpdateTemplate,
+  afterDeleteTemplate,
+  getTemplates
+} from "../../actions/sms";
 
 class SmsTemplates extends Component {
   state = {
@@ -49,18 +55,18 @@ class SmsTemplates extends Component {
   ];
 
   handleAdd() {
-    const { createTemplate } = this.props;
-    api.createSmsTemplate({}).then(createTemplate);
+    const { afterCreateTemplate } = this.props;
+    api.createSmsTemplate({}).then(afterCreateTemplate);
   }
 
   handleDelete(id) {
-    const { deleteTemplate } = this.props;
-    api.deleteSmsTemplate({ id }).then(deleteTemplate);
+    const { afterDeleteTemplate } = this.props;
+    api.deleteSmsTemplate({ id }).then(afterDeleteTemplate);
   }
 
   handleSave(row) {
-    const { updateTemplate } = this.props;
-    api.updateSmsTemplate(row).then(updateTemplate);
+    const { afterUpdateTemplate } = this.props;
+    api.updateSmsTemplate(row).then(afterUpdateTemplate);
   }
 
   componentDidMount() {
@@ -94,23 +100,18 @@ class SmsTemplates extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToState = dispatch => ({
-  getTemplates: payload => {
-    dispatch({ type: actions.sms_templates_get, payload: payload.data });
-  },
-  createTemplate: payload => {
-    dispatch({ type: actions.sms_template_create, payload: payload.data });
-  },
-  updateTemplate: payload => {
-    dispatch({ type: actions.sms_template_update, payload: payload.data });
-  },
-  deleteTemplate: payload => {
-    dispatch({ type: actions.sms_template_delete, payload: payload.data });
-  }
-});
+const mapDispatchToState = dispatch =>
+  bindActionCreators(
+    {
+      getTemplates,
+      afterCreateTemplate,
+      afterUpdateTemplate,
+      afterDeleteTemplate
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToState
 )(SmsTemplates);

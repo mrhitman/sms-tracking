@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "../Layout";
 import { Row, Form, Input, Button, Select } from "antd";
-import { actions } from "../../constants";
 import api from "../../api";
+import { bindActionCreators } from "redux";
+import { getUser } from "../../actions/user";
+import { getTemplates } from "../../actions/sms";
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -91,17 +93,16 @@ class User extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToState = dispatch => ({
-  getUser: payload => {
-    dispatch({ type: actions.user_get, payload: payload.data });
-  },
-  getTemplates: payload => {
-    dispatch({ type: actions.sms_templates_get, payload: payload.data });
-  }
-});
+const mapDispatchToState = dispatch =>
+  bindActionCreators(
+    {
+      getUser,
+      getTemplates
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToState
 )(Form.create()(User));

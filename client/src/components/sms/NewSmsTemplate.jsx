@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { Form, Icon, Input, Button, Modal } from "antd";
-import { actions } from "../../constants";
 import { connect } from "react-redux";
 import api from "../../api";
+import { bindActionCreators } from "redux";
+import { afterCreateTemplate } from "../../actions/sms";
 
 const formItemLayout = {
   labelCol: {
@@ -84,13 +85,15 @@ class NewSmsTemplate extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-  afterCreateTemplate: payload => {
-    dispatch({ type: actions.sms_template_create, payload: payload.data });
-  }
-});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      afterCreateTemplate
+    },
+    dispatch
+  );
+
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToProps
 )(Form.create()(NewSmsTemplate));

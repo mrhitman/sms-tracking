@@ -3,7 +3,8 @@ import { Alert, Checkbox, Form, Icon, Input, Button } from "antd";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import api from "../../api";
-import { actions } from "../../constants";
+import { bindActionCreators } from "redux";
+import { login } from "../../actions/user";
 
 const FormItem = Form.Item;
 class Login extends Component {
@@ -78,14 +79,15 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-  login: payload => {
-    dispatch({ type: actions.user_login, payload: payload.data });
-  }
-});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      login
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToProps
 )(Form.create()(Login));

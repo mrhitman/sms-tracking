@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "../Layout";
 import { Col, Row, Button } from "antd";
-import { actions } from "../../constants";
 import api from "../../api";
 import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { getUser } from "../../actions/user";
 
 const rowStyle = { margin: 8 };
 
@@ -42,14 +43,15 @@ class User extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToState = dispatch => ({
-  getUser: payload => {
-    dispatch({ type: actions.user_get, payload: payload.data });
-  }
-});
+const mapDispatchToState = dispatch =>
+  bindActionCreators(
+    {
+      getUser
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToState
 )(User);

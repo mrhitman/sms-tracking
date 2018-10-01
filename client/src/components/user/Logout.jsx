@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { actions } from "../../constants";
 import { connect } from "react-redux";
 import api from "../../api";
+import { bindActionCreators } from "redux";
+import { logout } from "../../actions/user";
 
 class Logout extends Component {
   componentDidMount() {
@@ -19,11 +20,13 @@ class Logout extends Component {
 }
 
 const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-  logout: () => {
-    dispatch({ type: actions.user_logout });
-  }
-});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      logout
+    },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,

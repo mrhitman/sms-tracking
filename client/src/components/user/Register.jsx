@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Alert, Form, Icon, Input, Button } from "antd";
 import { connect } from "react-redux";
-import { actions } from "../../constants";
 import { Redirect } from "react-router-dom";
 import api from "../../api";
+import { bindActionCreators } from "redux";
+import { create } from "../../actions/user";
 
 const FormItem = Form.Item;
 class Register extends Component {
@@ -111,14 +112,15 @@ class Register extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-  create: payload => {
-    dispatch({ type: actions.user_create, payload: payload.data });
-  }
-});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      create
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToProps
 )(Form.create()(Register));

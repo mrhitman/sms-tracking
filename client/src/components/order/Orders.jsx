@@ -3,11 +3,12 @@ import { Table, Icon, Button, Upload, Popconfirm, Col, Row } from "antd";
 import { connect } from "react-redux";
 import api from "../../api";
 import * as moment from "moment";
-import { actions } from "../../constants";
 import Layout from "../Layout";
 import NewOrder from "./NewOrder";
 import OrderTimeline from "./OrderTimeline";
-import SmsHistory from "./SmsHistory";
+import SmsHistory from "../sms/SmsHistory";
+import { bindActionCreators } from "redux";
+import { getOrders, pause, unpause, deleteOrder } from "../../actions/order";
 
 class Orders extends Component {
   state = {
@@ -119,14 +120,15 @@ class Orders extends Component {
   componentDidMount() {
     const { getOrders, user } = this.props;
     this.setState({ loading: true });
-    api.getOrders(user.get("id"))
+    api
+      .getOrders(user.get("id"))
       .then(getOrders)
       .then(() => {
-        this.setState({ loading: false })
+        this.setState({ loading: false });
       })
       .catch(() => {
-        this.setState({ loading: false })
-      })
+        this.setState({ loading: false });
+      });
   }
 
   render() {
@@ -167,23 +169,18 @@ class Orders extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToState = dispatch => ({
-  getOrders: payload => {
-    dispatch({ type: actions.orders_get, payload: payload.data });
-  },
-  pause: payload => {
-    dispatch({ type: actions.orders_pause, payload: payload.data });
-  },
-  unpause: payload => {
-    dispatch({ type: actions.orders_unpause, payload: payload.data });
-  },
-  deleteOrder: payload => {
-    dispatch({ type: actions.order_delete, payload: payload.data });
-  }
-});
+const mapDispatchToState = dispatch =>
+  bindActionCreators(
+    {
+      getOrders,
+      pause,
+      unpause,
+      deleteOrder
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToState
 )(Orders);

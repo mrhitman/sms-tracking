@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { actions } from "../../constants";
 import { List, Card } from "antd";
 import api from "../../api";
 import * as moment from "moment";
+import { bindActionCreators } from "redux";
+import { getHistory } from "../../actions/sms";
 
 class SmsHistory extends Component {
   state = {
@@ -51,14 +52,15 @@ class SmsHistory extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-  getHistory: payload => {
-    dispatch({ type: actions.order_get_sms, payload: payload.data });
-  }
-});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getHistory
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToProps
 )(SmsHistory);

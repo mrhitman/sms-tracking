@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Timeline, Card } from "antd";
 import { connect } from "react-redux";
-import { actions } from "../../constants";
 import api from "../../api";
 import * as moment from "moment";
+import { bindActionCreators } from "redux";
+import { getHistory } from "../../actions/order";
 
 class OrderTimeline extends Component {
   state = {
@@ -43,14 +44,15 @@ class OrderTimeline extends Component {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-  getHistory: payload => {
-    dispatch({ type: actions.order_get_history, payload: payload.data });
-  }
-});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getHistory
+    },
+    dispatch
+  );
 
 export default connect(
-  mapStateToProps,
+  state => state,
   mapDispatchToProps
 )(OrderTimeline);

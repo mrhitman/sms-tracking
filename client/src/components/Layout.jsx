@@ -65,10 +65,7 @@ class BaseLayout extends PureComponent {
   }
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({});
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  state => state,
+  () => ({})
 )(BaseLayout);
