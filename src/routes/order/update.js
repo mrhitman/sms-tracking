@@ -16,5 +16,7 @@ module.exports = async ctx => {
   const body = ctx.request.body;
   validate(ctx, schema);
   const order = await Order.query().updateAndFetchById(body.id, body);
-  ctx.body = order;
+  if (order) {
+    ctx.body = order;
+  }
 };

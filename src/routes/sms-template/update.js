@@ -4,6 +4,7 @@ const SmsTemplate = require("../../models/sms-template");
 const { joi, validate } = require("../../helpers/validate");
 
 const schema = joi.object().keys({
+  id: joi.number(),
   template: joi.string(),
   description: joi.string()
 });
