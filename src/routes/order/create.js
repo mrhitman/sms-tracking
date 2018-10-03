@@ -31,7 +31,7 @@ module.exports = async ctx => {
     const order = await Order.query(t).insert({
       user_id,
       ttn,
-      phone: phone.replace(/\D/g, ""),
+      phone,
       status: "unknown",
       type: "novaposhta",
       last_sms_sent: 0,
