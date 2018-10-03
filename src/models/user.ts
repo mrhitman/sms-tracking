@@ -1,11 +1,18 @@
-"use strict";
-
-const { Model } = require("objection");
+import { Model } from "objection";
 const db = require("../services/db");
 const SmsTemplate = require("./sms-template");
 const Order = require("./order");
 
-class User extends Model {
+export default class User extends Model {
+  public id: number;
+  public name: string;
+  public email: string;
+  public phone: string;
+  public default_remind_sms_template_id: number;
+  public default_on_send_sms_template_id: number;
+  public default_remind_sms_template?: SmsTemplate;
+  public default_on_send_sms_template?: SmsTemplate;
+
   static get tableName() {
     return "user";
   }
@@ -87,4 +94,3 @@ class User extends Model {
 }
 
 User.knex(db);
-module.exports = User;

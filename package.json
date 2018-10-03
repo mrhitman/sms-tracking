@@ -12,7 +12,7 @@
     "migrate:down": "knex migrate:rollback",
     "migrate:make": "knex migrate:make",
     "seed": "knex seed:run",
-    "build:client": "rm -rf src/web && cd client &&  yarn build && cd .. && cp -R client/build src/web"
+    "build": "tsc"
   },
   "engines": {
     "node": ">=8.4.0",
@@ -52,9 +52,16 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/joi": "^13.6.0",
+    "@types/knex": "^0.14.25",
+    "@types/koa": "^2.0.46",
+    "@types/koa-passport": "^4.0.2",
+    "@types/passport": "^0.4.6",
+    "@types/passport-jwt": "^3.0.1",
     "chai": "^4.1.2",
     "chance": "^1.0.16",
     "mocha": "^5.2.0",
-    "supertest-koa-agent": "^0.3.0"
+    "supertest-koa-agent": "^0.3.0",
+    "typescript": "^3.1.1"
   }
 }

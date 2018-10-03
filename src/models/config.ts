@@ -9,7 +9,7 @@ class Config extends Model {
     return "config";
   }
 
-  static async get(key) {
+  static async get(key: string) {
     return (await Config.query().findOne({ name: key })).value;
   }
 
