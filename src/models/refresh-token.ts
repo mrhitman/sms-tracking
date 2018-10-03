@@ -1,9 +1,11 @@
-"use strict";
+import { Model } from "objection";
+import db from "../services/db";
 
-const { Model } = require("objection");
-const db = require("../services/db");
+export default class RefreshToken extends Model {
+  public user_id: number;
+  public token: string;
+  public created_at: number;
 
-class RefreshToken extends Model {
   static get idColumn() {
     return "token";
   }
@@ -25,4 +27,3 @@ class RefreshToken extends Model {
 }
 
 RefreshToken.knex(db);
-module.exports = RefreshToken;

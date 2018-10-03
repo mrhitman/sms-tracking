@@ -1,7 +1,7 @@
 import { Model } from "objection";
-const db = require("../services/db");
-const SmsTemplate = require("./sms-template");
-const Order = require("./order");
+import db from "../services/db";
+import SmsTemplate from "./sms-template";
+import Order from "./order";
 
 export default class User extends Model {
   public id: number;
@@ -12,6 +12,7 @@ export default class User extends Model {
   public default_on_send_sms_template_id: number;
   public default_remind_sms_template?: SmsTemplate;
   public default_on_send_sms_template?: SmsTemplate;
+  public reference: number;
 
   static get tableName() {
     return "user";

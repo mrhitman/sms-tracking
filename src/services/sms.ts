@@ -1,23 +1,21 @@
-"use strict";
+import BSG from "bsg-nodejs";
+import * as moment from "moment";
+import Sms from "../models/sms";
+import User from "../models/user";
+import Config from "../models/config";
+import { render } from "mustache";
+import _ from "lodash";
 
-const BSG = require("bsg-nodejs");
-const moment = require("moment");
-const Sms = require("../models/sms");
-const User = require("../models/user");
-const Config = require("../models/config");
-const { render } = require("mustache");
-const _ = require("lodash");
-
-const remind = async order => {
+export const remind = async order => {
   send(order, order.remind_template);
 };
 
-const on_send = async order => {
+export const on_send = async order => {
   send(order, order.on_send);
 };
 
 const send = async (order, template) => {
-  const user = await User.query().findById(order.user_id);
+  const user: User = await User.query().findById(order.user_id);
   const bsg_token = await Config.get("bsg_token");
   const bsg = BSG(bsg_token);
   const sms = await Sms.query().insert({
@@ -60,9 +58,4 @@ const send = async (order, template) => {
       sms_template_id: order.remind_template.id
     });
   }
-};
-
-module.exports = {
-  remind,
-  on_send
 };

@@ -1,5 +1,3 @@
-"use strict";
-
 import { Model } from "objection";
 import db from "../services/db";
 import { zipObject, map } from "lodash";

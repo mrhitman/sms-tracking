@@ -1,9 +1,20 @@
-"use strict";
+import { Model } from "objection";
+import db from "../services/db";
 
-const { Model } = require("objection");
-const db = require("../services/db");
+enum Status {
+  sent = "sent",
+  not_reached = "not_reached",
+  in_progress = "in_progress"
+}
 
-class Sms extends Model {
+export default class Sms extends Model {
+  public order_id: number;
+  public user_id: number;
+  public sms_template_id: number;
+  public status: Status;
+  public send_time: number;
+  public sms_raw: string;
+
   static get tableName() {
     return "sms";
   }
@@ -24,4 +35,3 @@ class Sms extends Model {
 }
 
 Sms.knex(db);
-module.exports = Sms;

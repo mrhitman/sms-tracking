@@ -1,13 +1,11 @@
-"use strict";
-
-const schedule = require("node-schedule");
-const Order = require("../models/order");
-const OrderHistory = require("../models/order-history");
-const Config = require("../models/config");
-const NovaPoshta = require("../services/novaposhta");
-const { remind } = require("../services/sms");
-const moment = require("moment");
-const _ = require("lodash");
+import schedule from "node-schedule";
+import Order from "../models/order";
+import OrderHistory from "../models/order-history";
+import Config from "../models/config";
+import NovaPoshta from "../services/novaposhta";
+import { remind } from "../services/sms";
+import * as moment from "moment";
+import _ = require("lodash");
 
 const Code = {
   wait: ["1"],
@@ -25,7 +23,9 @@ const Code = {
   stopsaving: ["105"]
 };
 
-class Scheduler {
+export default class Scheduler {
+  private scheduler = [];
+
   constructor() {
     this.notify = this.notify.bind(this);
     this.checkOrders = this.checkOrders.bind(this);
@@ -109,5 +109,3 @@ class Scheduler {
     );
   };
 }
-
-module.exports = Scheduler;

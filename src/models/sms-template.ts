@@ -1,9 +1,11 @@
-"use strict";
+import { Model } from "objection";
+import db from "../services/db";
 
-const { Model } = require("objection");
-const db = require("../services/db");
+export default class SmsTemplate extends Model {
+  public user_id: number;
+  public template: string;
+  public description: string;
 
-class SmsTemplate extends Model {
   static get tableName() {
     return "sms_template";
   }
@@ -21,4 +23,3 @@ class SmsTemplate extends Model {
 }
 
 SmsTemplate.knex(db);
-module.exports = SmsTemplate;

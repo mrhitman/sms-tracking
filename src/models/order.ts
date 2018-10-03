@@ -1,25 +1,35 @@
-"use strict";
+import { Model } from "objection";
+import db from "../services/db";
+import Sms from "./sms";
+import OrderHistory from "./order-history";
+import SmsTemplate from "./sms-template";
 
-const { Model } = require("objection");
-const db = require("../services/db");
-const Sms = require("./sms");
-const OrderHistory = require("./order-history");
-const SmsTemplate = require("./sms-template");
+export default class Order extends Model {
+  public phone: string;
+  public type: string;
+  public ttn: string;
+  public user_id: number;
+  public remind_sms_template_id: number;
+  public on_send_sms_template_id: number;
+  public status: string;
+  public last_sms_sent: number;
+  public created_at: number;
 
-class Order extends Model {
   static get tableName() {
     return "order";
   }
 
   async pause() {
     if (this.status === "ready") {
-      return this.$query().update({ status: "paused" });
+      this.status = "paused"
+      return this.$query().update(this);
     }
   }
 
   async unpause() {
     if (this.status === "paused") {
-      return this.$query().update({ status: "ready" });
+      this.status = "ready";
+      return this.$query().update(this);
     }
   }
 
@@ -79,4 +89,3 @@ class Order extends Model {
 }
 
 Order.knex(db);
-module.exports = Order;

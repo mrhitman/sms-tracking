@@ -1,12 +1,10 @@
 "use strict";
 
-const request = require("request-promise-native");
-const _ = require("lodash");
+import * as request from "request-promise-native";
+import { map } from "lodash";
 
-class NovaPoshta {
-  constructor() {
-    this.uri = "https://api.novaposhta.ua/v2.0/json/";
-  }
+export default class NovaPoshta {
+  private uri = "https://api.novaposhta.ua/v2.0/json/";
 
   async getStatusDocuments(apiKey, documents) {
     return request({
@@ -17,7 +15,7 @@ class NovaPoshta {
         modelName: "TrackingDocument",
         calledMethod: "getStatusDocuments",
         methodProperties: {
-          Documents: _.map(documents, ({ ttn, phone }) => ({
+          Documents: map(documents, ({ ttn, phone }) => ({
             DocumentNumber: ttn,
             Phone: phone
           }))
@@ -27,5 +25,3 @@ class NovaPoshta {
     });
   }
 }
-
-module.exports = NovaPoshta;
