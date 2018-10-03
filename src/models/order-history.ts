@@ -1,9 +1,7 @@
-"use strict";
+import { Model } from "objection";
+import db from "../services/db";
 
-const { Model } = require("objection");
-const db = require("../services/db");
-
-class OrderHistory extends Model {
+export default class OrderHistory extends Model {
   static get tableName() {
     return "order_history";
   }
@@ -23,4 +21,3 @@ class OrderHistory extends Model {
 }
 
 OrderHistory.knex(db);
-module.exports = OrderHistory;

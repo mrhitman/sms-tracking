@@ -1,5 +1,5 @@
-const passport = require("koa-passport");
+import * as passport from "koa-passport";
 
-module.exports = passport.authenticate("jwt", {
+export default passport.authenticate("jwt", {
   session: false
 });

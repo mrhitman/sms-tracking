@@ -1,10 +1,13 @@
 "use strict";
 
-const { Model } = require("objection");
-const db = require("../services/db");
-const _ = require("lodash");
+import { Model } from "objection";
+import db from "../services/db";
+import { zipObject, map } from "lodash";
 
-class Config extends Model {
+export default class Config extends Model {
+  public name: string;
+  public value: string;
+
   static get tableName() {
     return "config";
   }
@@ -14,8 +17,8 @@ class Config extends Model {
   }
 
   static async all() {
-    const all = await Config.query().all();
-    return _.zipObject(_.map(all, "name"), _.map(all, "value"));
+    const all = await Config.query().execute();
+    return zipObject(map(all, "name"), map(all, "value"));
   }
 
   static get jsonSchema() {
@@ -23,11 +26,10 @@ class Config extends Model {
       type: "object",
       properties: {
         name: { type: "string" },
-        value: { type: "string" },
+        value: { type: "string" }
       }
     };
   }
 }
 
 Config.knex(db);
-module.exports = Config;

@@ -1,9 +1,7 @@
-"use strict";
-
-const Knex = require("knex");
+import * as Knex from "knex";
 require("dotenv").config();
 
-module.exports = Knex({
+export default Knex({
   client: "mysql",
   connection: {
     host: process.env.DB_HOST,
@@ -13,9 +11,5 @@ module.exports = Knex({
     database: process.env.DB_NAME,
     debug: false,
     charset: "utf8"
-  },
-  pool: {
-    min: process.env.DB_MIN_CONNECTIONS || 24,
-    max: process.env.DB_MAX_CONNECTIONS || 48
   }
 });
