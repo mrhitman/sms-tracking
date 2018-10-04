@@ -1,5 +1,5 @@
-import * as base from "joi";
-import * as phone from "joi-phone-number";
+import * as base from 'joi';
+import * as phone from 'joi-phone-number';
 
 export const validate = (ctx, schema) => {
   const { error } = joi.validate(ctx.request.body, schema);

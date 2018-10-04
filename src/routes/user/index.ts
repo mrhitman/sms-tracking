@@ -1,15 +1,13 @@
-"use strict";
-
-const Router = require("koa-router");
-const auth = require("../../middlewares/auth");
+import * as Router from "koa-router";
+import auth from "../../middlewares/auth";
 
 const router = new Router();
 
-router.post("/user", require("./create"));
-router.post("/user/login", require("./login"));
-router.post("/user/refresh", require("./refresh"));
-router.get("/user", auth, require("./get"));
-router.post("/user/logout", auth, require("./logout"));
-router.post("/user/update", auth, require("./update"));
+router.post("/user", require("./create").default);
+router.post("/user/login", require("./login").default);
+router.post("/user/refresh", require("./refresh").default);
+router.get("/user", auth, require("./get").default);
+router.post("/user/logout", auth, require("./logout").default);
+router.post("/user/update", auth, require("./update").default);
 
-module.exports = router;
+export default router;

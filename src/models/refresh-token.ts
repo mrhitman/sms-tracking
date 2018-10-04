@@ -1,5 +1,5 @@
-import { Model } from "objection";
-import db from "../services/db";
+import db from '../services/db';
+import { Model } from 'objection';
 
 export default class RefreshToken extends Model {
   public user_id: number;

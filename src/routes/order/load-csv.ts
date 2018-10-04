@@ -1,10 +1,8 @@
-"use strict";
+import * as moment from 'moment';
+import Order from '../../models/order';
+import { parse } from 'papaparse';
 
-const Order = require("../../models/order");
-const { parse } = require("papaparse");
-const moment = require("moment")();
-
-module.exports = async ctx => {
+export default async ctx => {
   const result = parse(ctx.request.body.files[0], {
     skipEmptyLines: true,
     header: true
@@ -18,9 +16,9 @@ module.exports = async ctx => {
         phone,
         status: "pending",
         type: "novaposhta",
-        sms_template:
-          sms_template || user.default_sms_template || "SMS template",
-        created_at: moment.format()
+        // remind_sms_template:
+        // sms_template || user.default_sms_template || "SMS template",
+        created_at: moment().unix()
       });
     })
   );

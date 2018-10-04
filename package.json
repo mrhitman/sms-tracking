@@ -5,8 +5,8 @@
   "author": "hitman <kabalx47@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node src/index.js",
-    "start:dev": "nodemon src/index.js",
+    "start": "node dist/index.js",
+    "start:dev": "nodemon dist/index.js",
     "test": "mocha tests",
     "migrate": "knex migrate:latest",
     "migrate:down": "knex migrate:rollback",

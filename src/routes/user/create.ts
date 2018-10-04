@@ -1,9 +1,7 @@
-"use strict";
-
-const User = require("../../models/user");
-const SmsTemplate = require("../../models/sms-template");
-const bcrypt = require("bcrypt");
-const { joi, validate } = require("../../helpers/validate");
+import User from "../../models/user";
+import SmsTemplate from "../../models/sms-template";
+import * as bcrypt from "bcrypt";
+import { joi, validate } from "../../helpers/validate";
 
 const schema = joi.object().keys({
   name: joi.string().required(),
@@ -19,7 +17,7 @@ const schema = joi.object().keys({
   "repeat-password": joi.string().required()
 });
 
-module.exports = async ctx => {
+export default async ctx => {
   validate(ctx, schema);
   const { name, email, phone, password } = ctx.request.body;
   const salt = bcrypt.genSaltSync(10);

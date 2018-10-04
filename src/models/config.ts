@@ -1,6 +1,6 @@
-import { Model } from "objection";
-import db from "../services/db";
-import { zipObject, map } from "lodash";
+import db from '../services/db';
+import { map, zipObject } from 'lodash';
+import { Model } from 'objection';
 
 export default class Config extends Model {
   public name: string;

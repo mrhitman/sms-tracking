@@ -1,11 +1,9 @@
-"use strict";
+import * as jwt from "jsonwebtoken";
+import * as moment from "moment";
+import * as uuid from "uuid";
+import RefreshToken from "../../models/refresh-token";
 
-const RefreshToken = require("../../models/refresh-token");
-const jwt = require("jsonwebtoken");
-const uuid = require("uuid");
-const moment = require("moment")();
-
-module.exports = async ctx => {
+export default async ctx => {
   const { token } = ctx.request.body;
 
   const refreshToken = await RefreshToken.query().findOne({ token });
@@ -15,7 +13,7 @@ module.exports = async ctx => {
 
   await refreshToken
     .$query()
-    .update({ token: uuid(), created_at: moment.unix() })
+    .update({ token: uuid(), created_at: moment().unix() })
     .execute();
 
   const newToken = jwt.sign({ id: refreshToken.user_id }, process.env.SALT, {

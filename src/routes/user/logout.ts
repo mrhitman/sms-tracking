@@ -1,8 +1,6 @@
-"use strict";
+import RefreshToken from "../../models/refresh-token";
 
-const RefreshToken = require("../../models/refresh-token");
-
-module.exports = async ctx => {
+export default async ctx => {
   const user = ctx.state.user;
   await RefreshToken.query()
     .delete()

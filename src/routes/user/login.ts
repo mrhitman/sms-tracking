@@ -1,13 +1,11 @@
-"use strict";
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import * as moment from 'moment';
+import * as uuid from 'uuid';
+import RefreshToken from '../../models/refresh-token';
+import User from '../../models/user';
 
-const User = require("../../models/user");
-const RefreshToken = require("../../models/refresh-token");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const uuid = require("uuid");
-const moment = require("moment")();
-
-module.exports = async ctx => {
+export default async ctx => {
   const { email, password } = ctx.request.body;
   const user = await User.query()
     .eager("[default_remind_sms_template,default_on_send_sms_template]")
@@ -25,7 +23,7 @@ module.exports = async ctx => {
   const refreshToken = await RefreshToken.query().insert({
     user_id: user.id,
     token: uuid(),
-    created_at: moment.unix()
+    created_at: moment().unix()
   });
   ctx.body = {
     user,

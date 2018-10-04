@@ -1,5 +1,3 @@
-"use strict";
-
-module.exports = async ctx => {
+export default async ctx => {
   ctx.body = ctx.state.user;
 };

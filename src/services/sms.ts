@@ -1,10 +1,9 @@
-import BSG from "bsg-nodejs";
+import * as BSG from "bsg-nodejs";
 import * as moment from "moment";
+import Config from "../models/config";
 import Sms from "../models/sms";
 import User from "../models/user";
-import Config from "../models/config";
 import { render } from "mustache";
-import _ from "lodash";
 
 export const remind = async order => {
   send(order, order.remind_template);
@@ -22,7 +21,7 @@ const send = async (order, template) => {
     order_id: order.id,
     status: "in_progress",
     send_time: moment().unix()
-  });
+  } as Sms);
   try {
     const alpha_name = await Config.get("alpha_name");
     const request = {
@@ -47,7 +46,7 @@ const send = async (order, template) => {
         status: "sent",
         sms_raw: JSON.stringify(response),
         sms_template_id: template.id
-      }),
+      } as Sms),
       order.$query().update({ last_sms_sent: moment().unix() }),
       user.$query().update({ reference: user.reference + 1 })
     ]);
@@ -56,6 +55,6 @@ const send = async (order, template) => {
       status: "not_reached",
       sms_raw: e.toString(),
       sms_template_id: order.remind_template.id
-    });
+    } as Sms);
   }
 };

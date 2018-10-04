@@ -1,7 +1,5 @@
-"use strict";
-
-import * as request from "request-promise-native";
-import { map } from "lodash";
+import * as request from 'request-promise-native';
+import { map } from 'lodash';
 
 export default class NovaPoshta {
   private uri = "https://api.novaposhta.ua/v2.0/json/";

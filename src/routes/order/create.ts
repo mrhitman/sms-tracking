@@ -1,15 +1,13 @@
-"use strict";
-
-const Order = require("../../models/order");
-const OrderHistory = require("../../models/order-history");
-const moment = require("moment");
-const Config = require("../../models/config");
-const NovaPoshta = require("../../services/novaposhta");
-const { on_send } = require("../../services/sms");
-const db = require("../../services/db");
-const { joi, validate } = require("../../helpers/validate");
-const { transaction } = require("objection");
-const _ = require("lodash");
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import Config from '../../models/config';
+import db from '../../services/db';
+import NovaPoshta from '../../services/novaposhta';
+import Order from '../../models/order';
+import OrderHistory from '../../models/order-history';
+import { joi, validate } from '../../helpers/validate';
+import { on_send } from '../../services/sms';
+import { transaction } from 'objection';
 
 const schema = joi.object().keys({
   phone: joi
@@ -22,7 +20,7 @@ const schema = joi.object().keys({
   send_sms: joi.boolean()
 });
 
-module.exports = async ctx => {
+export default async ctx => {
   const user_id = ctx.state.user.id;
   validate(ctx, schema);
   const { phone, ttn, remind_sms_template_id, on_send_sms_template_id, send_sms } = ctx.request.body;
@@ -47,7 +45,7 @@ module.exports = async ctx => {
     );
 
     if (invoice.StatusCode) {
-      order.$query(t).update({ status: invoice.StatusCode});
+      order.$query(t).update({ status: invoice.StatusCode });
     }
 
     await OrderHistory.query(t).insert({
@@ -55,8 +53,7 @@ module.exports = async ctx => {
       order_id: order.id,
       status: order.status,
       created_at: moment().unix(),
-      data: JSON.stringify(invoice),
-      created_at: moment().unix()
+      data: JSON.stringify(invoice)
     });
 
     if (!!send_sms) {

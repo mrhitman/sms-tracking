@@ -1,13 +1,14 @@
-import { Model } from "objection";
-import db from "../services/db";
-import SmsTemplate from "./sms-template";
-import Order from "./order";
+import db from '../services/db';
+import Order from './order';
+import SmsTemplate from './sms-template';
+import { Model } from 'objection';
 
 export default class User extends Model {
   public id: number;
   public name: string;
   public email: string;
   public phone: string;
+  public password: string;
   public default_remind_sms_template_id: number;
   public default_on_send_sms_template_id: number;
   public default_remind_sms_template?: SmsTemplate;

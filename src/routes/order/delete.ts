@@ -1,13 +1,11 @@
-"use strict";
-
-const Order = require("../../models/order");
-const { joi, validate } = require("../../helpers/validate");
+import Order from '../../models/order';
+import { joi, validate } from '../../helpers/validate';
 
 const schema = joi.object().keys({
   id: joi.number().required()
 });
 
-module.exports = async ctx => {
+export default async ctx => {
   const user_id = ctx.state.user.id;
   validate(ctx, schema);
   const { id } = ctx.request.body;

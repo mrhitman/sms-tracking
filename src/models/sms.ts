@@ -1,5 +1,5 @@
-import { Model } from "objection";
-import db from "../services/db";
+import db from '../services/db';
+import { Model } from 'objection';
 
 enum Status {
   sent = "sent",
@@ -8,6 +8,7 @@ enum Status {
 }
 
 export default class Sms extends Model {
+  public id: number;
   public order_id: number;
   public user_id: number;
   public sms_template_id: number;

@@ -1,10 +1,11 @@
-import { Model } from "objection";
-import db from "../services/db";
-import Sms from "./sms";
-import OrderHistory from "./order-history";
-import SmsTemplate from "./sms-template";
+import db from '../services/db';
+import OrderHistory from './order-history';
+import Sms from './sms';
+import SmsTemplate from './sms-template';
+import { Model } from 'objection';
 
 export default class Order extends Model {
+  public id: number;
   public phone: string;
   public type: string;
   public ttn: string;

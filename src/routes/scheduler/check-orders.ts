@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = async ctx => {
+export default async ctx => {
   ctx.scheduler.checkOrders();
   ctx.body = "ok";
 };

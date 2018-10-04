@@ -1,7 +1,8 @@
-import { Model } from "objection";
-import db from "../services/db";
+import db from '../services/db';
+import { Model } from 'objection';
 
 export default class SmsTemplate extends Model {
+  public id: number;
   public user_id: number;
   public template: string;
   public description: string;

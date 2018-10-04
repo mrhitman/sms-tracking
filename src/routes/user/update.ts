@@ -1,7 +1,5 @@
-"use strict";
-
-const User = require("../../models/user");
-const { joi, validate } = require("../../helpers/validate");
+import User from '../../models/user';
+import { joi, validate } from '../../helpers/validate';
 
 const schema = joi.object().keys({
   name: joi.string().required(),
@@ -12,7 +10,7 @@ const schema = joi.object().keys({
   reference: joi.number()
 });
 
-module.exports = async ctx => {
+export default async ctx => {
   validate(ctx, schema);
   const user_id = ctx.state.user.id;
   const body = ctx.request.body;

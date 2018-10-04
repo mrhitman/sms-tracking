@@ -1,13 +1,11 @@
-"use strict";
-
-const SmsTemplate = require("../../models/sms-template");
-const { joi, validate } = require("../../helpers/validate");
+import SmsTemplate from '../../models/sms-template';
+import { joi, validate } from '../../helpers/validate';
 
 const schema = joi.object().keys({
   id: joi.number().required()
 });
 
-module.exports = async ctx => {
+export default async ctx => {
   validate(ctx, schema);
   const { id } = ctx.request.body;
   const user_id = ctx.state.user.id;

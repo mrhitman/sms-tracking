@@ -1,11 +1,9 @@
-"use strict";
-
-const Router = require("koa-router");
+import * as Router from "koa-router";
 // const auth = require("../../middlewares/auth");
 
 const router = new Router();
 
-router.get("/scheduler/notify", require("./notify"));
-router.get("/scheduler/check-orders", require("./check-orders"));
+router.get("/scheduler/notify", require("./notify").default);
+router.get("/scheduler/check-orders", require("./check-orders").default);
 
-module.exports = router;
+export default router;

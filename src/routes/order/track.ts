@@ -1,10 +1,8 @@
-"use strict";
+import Order from "../../models/order";
+import Config from "../../models/config";
+import NovaPosta from "../../services/novaposhta";
 
-const Order = require("../../models/order");
-const Config = require("../../models/config");
-const NovaPosta = require("../../services/novaposhta");
-
-module.exports = async ctx => {
+export default async ctx => {
   const { id } = ctx.params;
   const order = await Order.query().findById(id);
   if (!order) {

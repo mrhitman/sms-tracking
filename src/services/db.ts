@@ -1,5 +1,7 @@
-import * as Knex from "knex";
-require("dotenv").config();
+import * as Knex from 'knex';
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 export default Knex({
   client: "mysql",
