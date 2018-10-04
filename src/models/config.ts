@@ -3,6 +3,7 @@ import { map, zipObject } from 'lodash';
 import { Model } from 'objection';
 
 export default class Config extends Model {
+  public id: number;
   public name: string;
   public value: string;
 

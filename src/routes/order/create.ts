@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { first } from 'lodash';
 import * as moment from 'moment';
 import Config from '../../models/config';
 import db from '../../services/db';
@@ -40,7 +40,7 @@ export default async ctx => {
 
     const api = new NovaPoshta();
     const novaposhtaKey = await Config.get("novaposhta_key");
-    const invoice = _.first(
+    const invoice = first(
       (await api.getStatusDocuments(novaposhtaKey, [order])).data
     );
 

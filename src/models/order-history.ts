@@ -2,6 +2,7 @@ import db from '../services/db';
 import { Model } from 'objection';
 
 export default class OrderHistory extends Model {
+  public id: number;
   public user_id: number;
   public order_id: number;
   public status: string;

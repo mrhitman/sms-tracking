@@ -1,6 +1,6 @@
 const { test } = require("mocha");
 const { expect } = require("chai");
-const createApp = require("../src");
+const createApp = require("../dist");
 const agent = require("supertest-koa-agent");
 const chance = require("chance")();
 const issueToken = require("./helpers/issueToken");
