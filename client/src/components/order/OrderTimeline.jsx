@@ -34,7 +34,7 @@ class OrderTimeline extends Component {
           {history.get(row.id, []).map(item => {
             return (
               <Timeline.Item>
-                {moment.unix(item.created_at).format()}: {item.status}
+                {moment.unix(item.created_at).format("L hh:mm")}: {item.status}
               </Timeline.Item>
             );
           })}

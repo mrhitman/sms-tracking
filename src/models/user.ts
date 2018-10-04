@@ -1,7 +1,7 @@
-import db from '../services/db';
-import Order from './order';
-import SmsTemplate from './sms-template';
-import { Model } from 'objection';
+import db from "../services/db";
+import Order from "./order";
+import SmsTemplate from "./sms-template";
+import { Model } from "objection";
 
 export default class User extends Model {
   public id: number;
@@ -14,6 +14,7 @@ export default class User extends Model {
   public default_remind_sms_template?: SmsTemplate;
   public default_on_send_sms_template?: SmsTemplate;
   public reference: number;
+  public amount: number;
 
   static get tableName() {
     return "user";
@@ -32,7 +33,8 @@ export default class User extends Model {
         : "",
       default_on_send_sms_template: this.default_on_send_sms_template
         ? this.default_on_send_sms_template.template
-        : ""
+        : "",
+      amount: this.amount
     };
   }
 
@@ -88,6 +90,9 @@ export default class User extends Model {
           type: "number"
         },
         default_on_send_sms_template_id: {
+          type: "number"
+        },
+        amount: {
           type: "number"
         }
       }

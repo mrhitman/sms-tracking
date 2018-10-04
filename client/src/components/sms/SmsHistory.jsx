@@ -41,7 +41,9 @@ class SmsHistory extends Component {
           renderItem={item => (
             <List.Item>
               <List.Item.Meta
-                title={`${item.status} ${moment.unix(item.send_time).format()}`}
+                title={`${item.status} ${moment
+                  .unix(item.send_time)
+                  .format("L hh:mm")}`}
                 description={item.sms_raw}
               />
             </List.Item>

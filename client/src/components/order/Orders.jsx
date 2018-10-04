@@ -9,6 +9,7 @@ import OrderTimeline from "./OrderTimeline";
 import SmsHistory from "../sms/SmsHistory";
 import { bindActionCreators } from "redux";
 import { getOrders, pause, unpause, deleteOrder } from "../../actions/order";
+import DeliveryInfo from "./DeliveryInfo";
 
 class Orders extends Component {
   state = {
@@ -45,12 +46,12 @@ class Orders extends Component {
       title: "Last sms sent",
       dataIndex: "last_sms_sent",
       render: text =>
-        parseInt(text) === 0 ? "None" : moment.unix(text).format()
+        parseInt(text) === 0 ? "None" : moment.unix(text).format("L hh:mm")
     },
     {
       title: "Created at",
       dataIndex: "created_at",
-      render: text => moment.unix(text).format()
+      render: text => moment.unix(text).format("L hh:mm")
     },
     {
       title: "Operation",
@@ -72,11 +73,7 @@ class Orders extends Component {
                 onClick={() => this.handleUnpause(record.id)}
               />
             )}
-            <Icon
-              title="Track order"
-              type="dashboard"
-              onClick={() => this.handleTrack(record.id)}
-            />
+            <DeliveryInfo id={record.id} />
             <Icon
               title="Send sms to order owner"
               type="mail"
@@ -157,7 +154,7 @@ class Orders extends Component {
               <Col span={16}>
                 <SmsHistory row={row} />
               </Col>
-              <Col span={6} offset={2}>
+              <Col span={7}>
                 <OrderTimeline row={row} />
               </Col>
             </Row>
