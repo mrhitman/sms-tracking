@@ -2,7 +2,12 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:3000/";
 class Api {
-  constructor(options = {}) {
+  private client;
+  private token; 
+  private refreshToken;
+  private refreshRequest;
+
+  constructor(options = {} as any) {
     this.client = options.client || axios.create({ baseURL: baseUrl });
     this.token = options.token || localStorage.getItem("token");
     this.refreshToken =
