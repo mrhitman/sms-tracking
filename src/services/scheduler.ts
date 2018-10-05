@@ -1,11 +1,11 @@
-import * as _ from 'lodash';
-import * as moment from 'moment';
-import * as schedule from 'node-schedule';
-import Config from '../models/config';
-import NovaPoshta from '../services/novaposhta';
-import Order from '../models/order';
-import OrderHistory from '../models/order-history';
-import { remind } from '../services/sms';
+import * as moment from "moment";
+import * as schedule from "node-schedule";
+import Config from "../models/config";
+import NovaPoshta from "../services/novaposhta";
+import Order from "../models/order";
+import OrderHistory from "../models/order-history";
+import { map, partialRight, pick } from "lodash";
+import { remind } from "../services/sms";
 
 const Code = {
   wait: ["1"],
@@ -51,7 +51,7 @@ export default class Scheduler {
   }
 
   stop() {
-    _.map(this.scheduler, task => task.cancel());
+    map(this.scheduler, task => task.cancel());
   }
 
   async notify() {
@@ -60,7 +60,7 @@ export default class Scheduler {
       status: "ready"
     });
     Promise.all(
-      _.map(orders, order => {
+      map(orders, order => {
         if (
           !order.last_sms_sent ||
           moment().diff(moment(order.last_sms_sent)) >= 85400000
@@ -98,11 +98,11 @@ export default class Scheduler {
       "paused"
     ]);
 
-    const cards = _.map(orders, _.partialRight(_.pick, ["ttn", "phone"]));
+    const cards = map(orders, partialRight(pick, ["ttn", "phone"]));
     const invoices = (await api.getStatusDocuments(novaposhtaKey, cards)).data;
 
     Promise.all(
-      _.map(invoices, (invoice, i) => {
+      map(invoices, (invoice, i) => {
         const order = orders[i];
         if (invoice.StatusCode !== order.status) {
           const status = Scheduler.getStatus(invoice);

@@ -1,8 +1,8 @@
-import db from '../services/db';
-import OrderHistory from './order-history';
-import Sms from './sms';
-import SmsTemplate from './sms-template';
-import { Model } from 'objection';
+import db from "../services/db";
+import OrderHistory from "./order-history";
+import Sms from "./sms";
+import SmsTemplate from "./sms-template";
+import { Model } from "objection";
 
 export default class Order extends Model {
   public id: number;
@@ -22,15 +22,13 @@ export default class Order extends Model {
 
   async pause() {
     if (this.status === "ready") {
-      this.status = "paused"
-      return this.$query().update(this);
+      return this.$query().update({ status: "paused" } as any);
     }
   }
 
   async unpause() {
     if (this.status === "paused") {
-      this.status = "ready";
-      return this.$query().update(this);
+      return this.$query().update({ status: "ready" } as any);
     }
   }
 

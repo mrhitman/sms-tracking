@@ -1,6 +1,6 @@
-import db from '../services/db';
-import { map, zipObject } from 'lodash';
-import { Model } from 'objection';
+import db from "../services/db";
+import { map, zipObject } from "lodash";
+import { Model } from "objection";
 
 export default class Config extends Model {
   public id: number;
@@ -11,11 +11,11 @@ export default class Config extends Model {
     return "config";
   }
 
-  static async get(key: string) {
+  static async get(key: string): Promise<string | number> {
     return (await Config.query().findOne({ name: key })).value;
   }
 
-  static async all() {
+  static async all(): Promise<Array<Config>> {
     const all = await Config.query().execute();
     return zipObject(map(all, "name"), map(all, "value"));
   }

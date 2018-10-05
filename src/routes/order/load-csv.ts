@@ -1,9 +1,10 @@
-import * as moment from 'moment';
-import Order from '../../models/order';
-import { parse } from 'papaparse';
+import * as moment from "moment";
+import Order from "../../models/order";
+import { first } from "lodash";
+import { parse } from "papaparse";
 
 export default async ctx => {
-  const result = parse(ctx.request.body.files[0], {
+  const result = parse(first(ctx.request.body.files), {
     skipEmptyLines: true,
     header: true
   });

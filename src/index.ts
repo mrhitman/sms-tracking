@@ -1,12 +1,13 @@
+import * as bodyparser from "koa-bodyparser";
+import * as cors from "koa-cors";
+import * as dotenv from "dotenv";
+import * as helmet from "koa-helmet";
 import * as Koa from "koa";
 import * as logger from "koa-morgan";
-import * as bodyparser from "koa-bodyparser";
-import * as helmet from "koa-helmet";
 import passport from "./middlewares/passport";
 import Scheduler from "./services/scheduler";
-import * as cors from "koa-cors";
 
-require("dotenv").config();
+dotenv.config();
 
 export function createApp() {
   const app = new Koa();
