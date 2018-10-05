@@ -52,13 +52,24 @@ class DeliveryInfo extends Component {
           onCancel={this.handleClose.bind(this)}
         >
           {console.log(body)}
-          <Card loading={loading} title={body ? body.Number : "Not found"}>
+          <Card
+            loading={loading}
+            title={
+              body
+                ? `${body.Number} ${body.CargoDescriptionString}`
+                : "Not found"
+            }
+          >
             {body && (
               <Fragment>
                 <div>Route: {body.WarehouseSender} </div>
                 <div>Address: {body.CityRecipient}</div>
+                <div>Weight: {body.DocumentWeight}</div>
                 <div>Value: {body.PayerType}</div>
                 <div>Status: {body.Status}</div>
+                {body.RecipientFullNameEW && (
+                  <div>Recipient: {body.RecipientFullNameEW}</div>
+                )}
               </Fragment>
             )}
           </Card>
