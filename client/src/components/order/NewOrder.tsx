@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, SyntheticEvent } from "react";
 import { Form, Icon, Input, Button, Modal, Select, Checkbox } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -16,7 +16,7 @@ const formItemLayout = {
   }
 };
 
-class NewOrder extends Component {
+class NewOrder extends Component<{ form: any }> {
   state = {
     visible: false
   };
@@ -27,13 +27,13 @@ class NewOrder extends Component {
     });
   };
 
-  handleOk = e => {
+  handleOk = (e: SyntheticEvent) => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const { afterCreateOrder } = this.props;
         api
           .createOrder(values)
-          .then(response => {
+          .then((response: any) => {
             this.setState({ visible: false });
             return response;
           })

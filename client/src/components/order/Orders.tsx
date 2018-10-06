@@ -11,7 +11,15 @@ import { bindActionCreators } from "redux";
 import { getOrders, pause, unpause, deleteOrder } from "../../actions/order";
 import DeliveryInfo from "./DeliveryInfo";
 
-class Orders extends Component {
+interface OrdersProps {
+  pause: Function;
+  unpause: Function;
+  deleteOrder: Function;
+  getOrders: Function;
+  user: any;
+}
+
+class Orders extends Component<OrdersProps> {
   state = {
     loading: true
   };
@@ -20,7 +28,7 @@ class Orders extends Component {
     {
       title: "Id",
       dataIndex: "id",
-      sorter: (a, b) => a.id - b.id
+      sorter: (a: { id: number }, b: { id: number }) => a.id - b.id
     },
     {
       title: "Phone",
@@ -91,26 +99,26 @@ class Orders extends Component {
     }
   ];
 
-  handlePause(id) {
+  handlePause(id: number) {
     const { pause } = this.props;
     api.pauseOrder({ id }).then(pause);
   }
 
-  handleUnpause(id) {
+  handleUnpause(id: number) {
     const { unpause } = this.props;
     api.unpauseOrder({ id }).then(unpause);
   }
 
-  handleDelete(id) {
+  handleDelete(id: number) {
     const { deleteOrder } = this.props;
     api.deleteOrder({ id }).then(deleteOrder);
   }
 
-  handleTrack(id) {
+  handleTrack(id: number) {
     api.trackOrder(id);
   }
 
-  handleSendSms(id) {
+  handleSendSms(id: number) {
     api.sendSmsOrder({ id });
   }
 

@@ -2,10 +2,10 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:3000/";
 class Api {
-  private client;
-  private token; 
-  private refreshToken;
-  private refreshRequest;
+  private client: any;
+  private token: string | null;
+  private refreshToken: string | null;
+  private refreshRequest: any;
 
   constructor(options = {} as any) {
     this.client = options.client || axios.create({ baseURL: baseUrl });
@@ -15,7 +15,7 @@ class Api {
     this.refreshRequest = null;
 
     this.client.interceptors.request.use(
-      config => {
+      (config: any) => {
         if (!this.token) {
           return config;
         }
@@ -27,12 +27,12 @@ class Api {
         newConfig.headers.Authorization = `Bearer ${this.token}`;
         return newConfig;
       },
-      e => Promise.reject(e)
+      (e: Error) => Promise.reject(e)
     );
 
     this.client.interceptors.response.use(
-      r => r,
-      async error => {
+      (r: Response) => r,
+      async (error: any) => {
         this.ensureToken(error);
 
         if (!this.refreshRequest) {
@@ -56,7 +56,7 @@ class Api {
     );
   }
 
-  ensureToken(error) {
+  ensureToken(error: { response: any; config: any }) {
     if (
       !this.refreshToken ||
       error.response.status !== 401 ||

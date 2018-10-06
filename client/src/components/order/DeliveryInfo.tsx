@@ -1,9 +1,8 @@
-import React, { Component, Fragment, cloneElement } from "react";
-import { connect } from "react-redux";
+import React, { Component, Fragment } from "react";
 import { Modal, Card, Icon } from "antd";
 import api from "../../api";
 
-class DeliveryInfo extends Component {
+class DeliveryInfo extends Component<{ id: number }> {
   state = {
     visible: false,
     loading: false,
@@ -18,7 +17,7 @@ class DeliveryInfo extends Component {
     });
     api
       .trackOrder(id)
-      .then(response => {
+      .then((response: any) => {
         this.setState({
           loading: false,
           body: response.data[0]

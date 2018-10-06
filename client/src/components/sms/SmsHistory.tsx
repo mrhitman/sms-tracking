@@ -3,10 +3,16 @@ import { connect } from "react-redux";
 import { List, Card } from "antd";
 import api from "../../api";
 import * as moment from "moment";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, Dispatch } from "redux";
 import { getHistory } from "../../actions/sms";
 
-class SmsHistory extends Component {
+interface SmsHistory {
+  getHistory: Function;
+  sms: any;
+  row: any;
+}
+
+class SmsHistory extends Component<SmsHistory> {
   state = {
     loading: false
   };
@@ -54,7 +60,7 @@ class SmsHistory extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
       getHistory
