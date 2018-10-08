@@ -1,18 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { List, Card } from "antd";
-import api from "../../api";
 import * as moment from "moment";
+import api from "../../api";
+import React, { Component } from "react";
 import { bindActionCreators, Dispatch } from "redux";
+import { Card, List } from "antd";
+import { connect } from "react-redux";
 import { getHistory } from "../../actions/sms";
 
-interface SmsHistory {
+type SmsHistoryProps = {
   getHistory: Function;
   sms: any;
   row: any;
-}
+};
+type SmsHistoryState = {
+  loading: boolean;
+};
 
-class SmsHistory extends Component<SmsHistory> {
+class SmsHistory extends Component<SmsHistoryProps, SmsHistoryState> {
   state = {
     loading: false
   };

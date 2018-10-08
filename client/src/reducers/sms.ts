@@ -1,15 +1,22 @@
 import { Map, Record, List } from "immutable";
 import { actions } from "../constants";
+import Action from "./action";
 
-const Sms = Record({
+const SmsRecord = Record({
   status: "",
   send_time: "",
   sms_raw: ""
 });
 
+export class Sms extends SmsRecord {
+  status: string;
+  send_time: number;
+  sms_raw: string;
+}
+
 const initialState = Map();
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: Action) => {
   switch (action.type) {
     case actions.order_get_sms:
       const sms = action.payload;

@@ -16,7 +16,11 @@ const formItemLayout = {
   }
 };
 
-class NewSmsTemplate extends Component {
+type NewSmsTemplateProps = {
+  form: { validateFields: Function; getFieldDecorator: Function };
+  afterCreateTemplate: Function;
+};
+class NewSmsTemplate extends Component<NewSmsTemplateProps> {
   state = {
     visible: false
   };
@@ -96,4 +100,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   state => state,
   mapDispatchToProps
-)(Form.create()(NewSmsTemplate));
+)(Form.create()(NewSmsTemplate as any));

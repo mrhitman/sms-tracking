@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from "react";
-import { Form, Icon, Input, Modal } from "antd";
-import { connect } from "react-redux";
 import api from "../../api";
-import { bindActionCreators } from "redux";
+import React, { Component, Fragment } from "react";
 import { afterUpdateTemplate } from "../../actions/sms";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Form, Icon, Input, Modal } from "antd";
 
 const formItemLayout = {
   labelCol: {
@@ -16,7 +16,20 @@ const formItemLayout = {
   }
 };
 
-class UpdateSmsTemplate extends Component {
+type UpdateSmsTemplateProps = {
+  form: { validateFields: Function; getFieldDecorator: Function };
+  afterUpdateTemplate: Function;
+  template: string;
+  description: string;
+};
+type UpdateSmsTemplateState = {
+  visible: boolean;
+};
+
+class UpdateSmsTemplate extends Component<
+  UpdateSmsTemplateProps,
+  UpdateSmsTemplateState
+> {
   state = {
     visible: false
   };
@@ -96,4 +109,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   state => state,
   mapDispatchToProps
-)(Form.create()(UpdateSmsTemplate));
+)(Form.create()(UpdateSmsTemplate as any));

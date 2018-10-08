@@ -5,9 +5,18 @@ import { connect } from "react-redux";
 import api from "../../api";
 import { bindActionCreators } from "redux";
 import { login } from "../../actions/user";
+import { User } from "../../reducers/user";
 
 const FormItem = Form.Item;
-class Login extends Component {
+
+interface LoginProps {
+  form: { validateFields: Function; getFieldDecorator: Function };
+  login: any;
+  user: User;
+  getFieldDecorator: Function;
+}
+
+class Login extends Component<LoginProps> {
   state = {
     error: false
   };
@@ -90,4 +99,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   state => state,
   mapDispatchToProps
-)(Form.create()(Login));
+)(Form.create()(Login as any));

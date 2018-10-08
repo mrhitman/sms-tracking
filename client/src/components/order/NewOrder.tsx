@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { afterCreateOrder, getTemplates } from "../../actions/order";
 import api from "../../api";
+import { SmsTemplate } from "../../reducers/sms-template";
 
 const formItemLayout = {
   labelCol: {
@@ -16,7 +17,18 @@ const formItemLayout = {
   }
 };
 
-class NewOrder extends Component<{ form: any }> {
+type NewOrderProps = {
+  form: {
+    validateFields: Function;
+    getFieldDecorator: Function;
+    getFieldValue: Function;
+  };
+  afterCreateOrder: any;
+  getTemplates: any;
+  sms_template: SmsTemplate;
+};
+
+class NewOrder extends Component<NewOrderProps> {
   state = {
     visible: false
   };
@@ -130,4 +142,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   state => state,
   mapDispatchToProps
-)(Form.create()(NewOrder));
+)(Form.create()(NewOrder as any));

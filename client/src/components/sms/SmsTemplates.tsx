@@ -1,19 +1,28 @@
-import React, { Component } from "react";
-import { Table, Icon, Popconfirm, Button } from "antd";
-import { connect } from "react-redux";
 import api from "../../api";
 import Layout from "../Layout";
 import NewSmsTemplate from "./NewSmsTemplate";
+import React, { Component } from "react";
 import UpdateSmsTemplate from "./UpdateSmsTemplate";
-import { bindActionCreators } from "redux";
 import {
   afterCreateTemplate,
-  afterUpdateTemplate,
   afterDeleteTemplate,
+  afterUpdateTemplate,
   getTemplates
 } from "../../actions/sms";
+import { bindActionCreators } from "redux";
+import { Button, Icon, Popconfirm, Table } from "antd";
+import { connect } from "react-redux";
+import { SmsTemplate } from "../../reducers/sms-template";
 
-class SmsTemplates extends Component {
+type SmsTemplatesProps = {
+  sms_template: SmsTemplate;
+  afterCreateTemplate: Function;
+  afterUpdateTemplate: Function;
+  afterDeleteTemplate: Function;
+  getTemplates: Function;
+};
+
+class SmsTemplates extends Component<SmsTemplatesProps> {
   state = {
     loading: false
   };

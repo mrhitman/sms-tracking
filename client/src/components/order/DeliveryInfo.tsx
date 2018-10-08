@@ -1,12 +1,12 @@
-import React, { Component, Fragment } from "react";
-import { Modal, Card, Icon } from "antd";
 import api from "../../api";
+import React, { Component, Fragment } from "react";
+import { Card, Icon, Modal } from "antd";
 
-interface DeliveryInfoProps {
+type DeliveryInfoProps = {
   id: number;
-}
+};
 
-interface NovaposhtaTrackInfo {
+type NovaposhtaTrackInfo = {
   Number: number;
   CargoDescriptionString: string;
   WarehouseSender: string;
@@ -15,15 +15,15 @@ interface NovaposhtaTrackInfo {
   PayerType: string;
   Status: string;
   RecipientFullNameEW: string;
-}
+};
 
-interface DeliveryInfoState {
+type DeliveryInfoState = {
   visible: boolean;
   loading: boolean;
   body: NovaposhtaTrackInfo | null;
-}
+};
 
-class DeliveryInfo extends Component<DeliveryInfoProps & DeliveryInfoState> {
+class DeliveryInfo extends Component<DeliveryInfoProps, DeliveryInfoState> {
   state: DeliveryInfoState = {
     visible: false,
     loading: false,

@@ -1,9 +1,11 @@
 import { Record } from "immutable";
 import { actions } from "../constants";
 import * as decode from "jwt-decode";
+import Action from "./action";
 
 const localToken = localStorage.getItem("token");
-const User = Record({
+
+const UserRecord = Record({
   id: localToken ? decode(localToken).id : null,
   name: "",
   email: "",
@@ -16,9 +18,22 @@ const User = Record({
   refreshToken: localStorage.getItem("refreshToken")
 });
 
+export class User extends UserRecord {
+  id: number | null;
+  name: string;
+  email: string;
+  phone: string;
+  default_remind_sms_template_id: number;
+  default_remind_sms_template: string;
+  default_on_send_sms_template_id: number;
+  default_on_send_sms_template: string;
+  token: string;
+  refreshToken: string;
+}
+
 const initialState = new User();
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: Action) => {
   switch (action.type) {
     case actions.user_logout:
       localStorage.clear();

@@ -1,23 +1,26 @@
-import React, { Component } from "react";
-import { Table, Icon, Button, Upload, Popconfirm, Col, Row } from "antd";
-import { connect } from "react-redux";
-import api from "../../api";
 import * as moment from "moment";
+import api from "../../api";
+import DeliveryInfo from "./DeliveryInfo";
 import Layout from "../Layout";
 import NewOrder from "./NewOrder";
 import OrderTimeline from "./OrderTimeline";
+import React, { Component } from "react";
 import SmsHistory from "../sms/SmsHistory";
 import { bindActionCreators } from "redux";
-import { getOrders, pause, unpause, deleteOrder } from "../../actions/order";
-import DeliveryInfo from "./DeliveryInfo";
+import { Button, Col, Icon, Popconfirm, Row, Table, Upload } from "antd";
+import { connect } from "react-redux";
+import { deleteOrder, getOrders, pause, unpause } from "../../actions/order";
+import { Order } from "../../reducers/order";
+import { User } from "../../reducers/user";
 
-interface OrdersProps {
+type OrdersProps = {
   pause: Function;
   unpause: Function;
   deleteOrder: Function;
   getOrders: Function;
-  user: any;
-}
+  user: User;
+  order: Order;
+};
 
 class Orders extends Component<OrdersProps> {
   state = {
@@ -123,10 +126,10 @@ class Orders extends Component<OrdersProps> {
   }
 
   componentDidMount() {
-    const { getOrders, user } = this.props;
+    const { getOrders } = this.props;
     this.setState({ loading: true });
     api
-      .getOrders(user.get("id"))
+      .getOrders()
       .then(getOrders)
       .then(() => {
         this.setState({ loading: false });

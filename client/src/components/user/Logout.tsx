@@ -5,7 +5,11 @@ import api from "../../api";
 import { bindActionCreators } from "redux";
 import { logout } from "../../actions/user";
 
-class Logout extends Component {
+type LogoutProps = {
+  logout: Function
+};
+
+class Logout extends Component<LogoutProps> {
   UNSAFE_componentWillMount() {
     api.logout().then(this.props.logout);
   }
