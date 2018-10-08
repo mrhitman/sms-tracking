@@ -47,7 +47,7 @@ class DeliveryInfo extends Component<DeliveryInfoProps, DeliveryInfoState> {
       .catch(() => {
         this.setState({
           loading: false,
-          body: "Not found"
+          body: null
         });
       });
   }

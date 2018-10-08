@@ -5,16 +5,17 @@ import { bindActionCreators, Dispatch } from "redux";
 import { Card, List } from "antd";
 import { connect } from "react-redux";
 import { getHistory } from "../../actions/sms";
+import { Sms } from "../../reducers/sms";
+import { Order } from "../../reducers/order";
 
 type SmsHistoryProps = {
   getHistory: Function;
-  sms: any;
-  row: any;
+  sms: Sms;
+  row: Order;
 };
 type SmsHistoryState = {
   loading: boolean;
 };
-
 class SmsHistory extends Component<SmsHistoryProps, SmsHistoryState> {
   state = {
     loading: false
@@ -38,7 +39,7 @@ class SmsHistory extends Component<SmsHistoryProps, SmsHistoryState> {
 
   render() {
     const order = this.props.row;
-    const sms = this.props.sms.get(order.id);
+    const sms = this.props.sms.get(order.get("id"));
     return (
       <Card loading={this.state.loading}>
         <h3>Sended sms's</h3>

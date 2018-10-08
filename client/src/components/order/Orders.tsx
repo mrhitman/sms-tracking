@@ -21,8 +21,10 @@ type OrdersProps = {
   user: User;
   order: Order;
 };
-
-class Orders extends Component<OrdersProps> {
+type OrdersState = {
+  loading: boolean;
+};
+class Orders extends Component<OrdersProps, OrdersState> {
   state = {
     loading: true
   };

@@ -27,8 +27,10 @@ type NewOrderProps = {
   getTemplates: any;
   sms_template: SmsTemplate;
 };
-
-class NewOrder extends Component<NewOrderProps> {
+type NewOrderState = {
+  visible: boolean;
+};
+class NewOrder extends Component<NewOrderProps, NewOrderState> {
   state = {
     visible: false
   };
