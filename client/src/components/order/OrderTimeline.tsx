@@ -1,12 +1,22 @@
-import React, { Component } from "react";
-import { Timeline, Card } from "antd";
-import { connect } from "react-redux";
-import api from "../../api";
 import * as moment from "moment";
+import api from "../../api";
+import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { Card, Timeline } from "antd";
+import { connect } from "react-redux";
 import { getHistory } from "../../actions/order";
+import { History } from "../../reducers/history";
+import { Order } from "../../reducers/order";
 
-class OrderTimeline extends Component {
+type OrderTimelineProps = {
+  getHistory: Function;
+  history: History;
+  row: Order;
+};
+type OrderTimelineState = {
+  loading: boolean;
+};
+class OrderTimeline extends Component<OrderTimelineProps, OrderTimelineState> {
   state = {
     loading: false
   };
@@ -28,10 +38,10 @@ class OrderTimeline extends Component {
   render() {
     const { history, row } = this.props;
     return (
-      <Card loading={this.state.loadingd}>
+      <Card loading={this.state.loading}>
         <h3>Order timeline:</h3>
         <Timeline>
-          {history.get(row.id, []).map(item => {
+          {history.get(row.get("id"), []).map(item => {
             return (
               <Timeline.Item>
                 {moment.unix(item.created_at).format("L hh:mm")}: {item.status}

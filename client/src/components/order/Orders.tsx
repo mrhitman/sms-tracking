@@ -162,7 +162,7 @@ class Orders extends Component<OrdersProps, OrdersState> {
         <Table
           loading={this.state.loading}
           columns={this.columns}
-          expandedRowRender={row => (
+          expandedRowRender={(row: Order) => (
             <Row>
               <Col span={16}>
                 <SmsHistory row={row} />

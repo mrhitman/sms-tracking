@@ -1,9 +1,9 @@
-import React, { Component, Fragment, SyntheticEvent } from "react";
-import { Form, Icon, Input, Button, Modal, Select, Checkbox } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { afterCreateOrder, getTemplates } from "../../actions/order";
 import api from "../../api";
+import React, { Component, Fragment, SyntheticEvent } from "react";
+import { afterCreateOrder, getTemplates } from "../../actions/order";
+import { bindActionCreators } from "redux";
+import { Button, Checkbox, Form, Icon, Input, Modal, Select } from "antd";
+import { connect } from "react-redux";
 import { SmsTemplate } from "../../reducers/sms-template";
 
 const formItemLayout = {
