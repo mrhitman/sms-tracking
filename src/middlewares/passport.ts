@@ -1,6 +1,6 @@
-import * as passport from 'koa-passport';
-import User from '../models/user';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import * as passport from "koa-passport";
+import User from "../models/user";
+import { ExtractJwt, Strategy } from "passport-jwt";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

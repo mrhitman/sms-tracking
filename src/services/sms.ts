@@ -14,7 +14,10 @@ export const on_send = async order => {
 };
 
 const send = async (order, template) => {
-  const user: User = await User.query().findById(order.user_id);
+  const user = await User.query().findById(order.user_id);
+  if (!user) {
+    throw new Error("No such user!");
+  }
   const bsg_token = await Config.get("bsg_token");
   const bsg = BSG(bsg_token);
   const sms = await Sms.query().insert({

@@ -9,6 +9,9 @@ export default async ctx => {
   validate(ctx, schema);
   const { id } = ctx.request.body;
   const order = await Order.query().findById(id);
+  if (!order) {
+    return;
+  }
   await order.unpause();
   ctx.body = order;
 };

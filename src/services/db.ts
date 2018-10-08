@@ -1,4 +1,4 @@
-import * as Knex from 'knex';
+import * as Knex from "knex";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -14,4 +14,4 @@ export default Knex({
     debug: false,
     charset: "utf8"
   }
-});
+} as any);
