@@ -2,8 +2,29 @@ import React, { Component, Fragment } from "react";
 import { Modal, Card, Icon } from "antd";
 import api from "../../api";
 
-class DeliveryInfo extends Component<{ id: number }> {
-  state = {
+interface DeliveryInfoProps {
+  id: number;
+}
+
+interface NovaposhtaTrackInfo {
+  Number: number;
+  CargoDescriptionString: string;
+  WarehouseSender: string;
+  CityRecipient: string;
+  DocumentWeight: string;
+  PayerType: string;
+  Status: string;
+  RecipientFullNameEW: string;
+}
+
+interface DeliveryInfoState {
+  visible: boolean;
+  loading: boolean;
+  body: NovaposhtaTrackInfo | null;
+}
+
+class DeliveryInfo extends Component<DeliveryInfoProps & DeliveryInfoState> {
+  state: DeliveryInfoState = {
     visible: false,
     loading: false,
     body: null
@@ -50,7 +71,6 @@ class DeliveryInfo extends Component<{ id: number }> {
           onOk={this.handleClose.bind(this)}
           onCancel={this.handleClose.bind(this)}
         >
-          {console.log(body)}
           <Card
             loading={loading}
             title={
