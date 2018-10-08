@@ -1,7 +1,7 @@
-import { Record } from "immutable";
-import { actions } from "../constants";
 import * as decode from "jwt-decode";
-import Action from "./action";
+import { Action } from "./index";
+import { actions } from "../constants";
+import { Record } from "immutable";
 
 const localToken = localStorage.getItem("token");
 

@@ -2,7 +2,10 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:3000/";
 class Api {
-  private client: any;
+  private client: {
+    interceptors: any;
+    post: Function;
+  } & Function;
   private token: string | null;
   private refreshToken: string | null;
   private refreshRequest: any;

@@ -1,6 +1,6 @@
-import { Record, List } from "immutable";
+import { Action } from "./index";
 import { actions } from "../constants";
-import Action from "./action";
+import { List, Record } from "immutable";
 
 const OrderRecord = Record({
   id: null,

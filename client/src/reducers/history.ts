@@ -1,6 +1,6 @@
-import { Map, Record } from "immutable";
+import { Action } from "./index";
 import { actions } from "../constants";
-import Action from "./action";
+import { Map, Record } from "immutable";
 
 const HistoryRecord = Record({
   id: undefined,

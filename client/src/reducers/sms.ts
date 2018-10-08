@@ -1,6 +1,6 @@
-import { Map, Record, List } from "immutable";
+import { Action } from "./index";
 import { actions } from "../constants";
-import Action from "./action";
+import { List, Map, Record } from "immutable";
 
 const SmsRecord = Record({
   status: "",

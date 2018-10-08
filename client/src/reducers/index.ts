@@ -1,9 +1,13 @@
-import { combineReducers } from "redux";
-import user from "./user";
+import history from "./history";
 import order from "./order";
 import sms from "./sms";
 import sms_template from "./sms-template";
-import history from "./history";
+import user from "./user";
+import { combineReducers } from "redux";
+export interface Action {
+  payload?: any;
+  type: string;
+}
 
 export default combineReducers({
   user,

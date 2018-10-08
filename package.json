@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
+    "@types/axios": "^0.14.0",
     "@types/joi": "^13.6.0",
     "@types/knex": "^0.14.25",
     "@types/koa": "^2.0.46",
