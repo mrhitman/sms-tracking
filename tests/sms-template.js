@@ -1,12 +1,16 @@
 const { test } = require("mocha");
 const { expect } = require("chai");
-const createApp = require("../dist");
+const { createApp } = require("../dist");
 const agent = require("supertest-koa-agent");
 const chance = require("chance")();
 const issueToken = require("./helpers/issueToken");
+const Scheduler = require("./mocks/scheduler");
+const NovaPoshta = require("./mocks/novaposhta");
 
 describe("template", () => {
-  const app = agent(createApp());
+  const api = new NovaPoshta();
+  const scheduler = new Scheduler(api);
+  const app = agent(createApp(scheduler));
   const token = issueToken({ id: 1 }, { expiresIn: "1m" });
   let template;
 

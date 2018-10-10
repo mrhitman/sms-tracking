@@ -7,7 +7,7 @@ import OrderHistory from "../models/order-history";
 import { map, partialRight, pick } from "lodash";
 import { remind } from "../services/sms";
 
-const Code = {
+export const Code = {
   wait: ["1"],
   deleted: ["2"],
   notfound: ["3"],
@@ -24,30 +24,27 @@ const Code = {
 };
 
 export default class Scheduler {
-  private scheduler = [];
+  private scheduler: any[] = [];
 
-  constructor() {
+  constructor(public readonly api: NovaPoshta) {
     this.notify = this.notify.bind(this);
     this.checkOrders = this.checkOrders.bind(this);
-    this.start();
   }
 
   async start() {
     const interval =
       (await Config.get("orders_check_interval")) || "*/10 * * * *";
-    this.scheduler = [
-      schedule.scheduleJob(interval, this.checkOrders),
-      schedule.scheduleJob("* * * * *", this.notify),
-      schedule.scheduleJob("0 10 * * *", this.notify),
-      schedule.scheduleJob("0 11 * * *", this.notify),
-      schedule.scheduleJob("0 12 * * *", this.notify),
-      schedule.scheduleJob("0 13 * * *", this.notify),
-      schedule.scheduleJob("0 14 * * *", this.notify),
-      schedule.scheduleJob("0 15 * * *", this.notify),
-      schedule.scheduleJob("0 16 * * *", this.notify),
-      schedule.scheduleJob("0 17 * * *", this.notify),
-      schedule.scheduleJob("0 18 * * *", this.notify)
-    ];
+    this.scheduler.push(schedule.scheduleJob(interval, this.checkOrders));
+    this.scheduler.push(schedule.scheduleJob("* * * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 10 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 11 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 12 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 13 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 14 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 15 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 16 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 17 * * *", this.notify));
+    this.scheduler.push(schedule.scheduleJob("0 18 * * *", this.notify));
   }
 
   stop() {
@@ -85,11 +82,11 @@ export default class Scheduler {
     if (Code.stopsaving.includes(invoice.StatusCode)) {
       return "refuse";
     }
+    return "unknown";
   }
 
   async checkOrders() {
     console.log("____ checkOrders ____");
-    const api = new NovaPoshta();
     const novaposhtaKey = await Config.get("novaposhta_key");
 
     const orders = await Order.query().whereNotIn("status", [
@@ -99,7 +96,8 @@ export default class Scheduler {
     ]);
 
     const cards = map(orders, partialRight(pick, ["ttn", "phone"]));
-    const invoices = (await api.getStatusDocuments(novaposhtaKey, cards)).data;
+    const invoices = (await this.api.getStatusDocuments(novaposhtaKey, cards))
+      .data;
 
     Promise.all(
       map(invoices, (invoice, i) => {

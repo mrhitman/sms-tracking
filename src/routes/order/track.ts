@@ -1,6 +1,6 @@
-import Order from "../../models/order";
 import Config from "../../models/config";
-import NovaPosta from "../../services/novaposhta";
+import Order from "../../models/order";
+import { first } from "lodash";
 
 export default async ctx => {
   const { id } = ctx.params;
@@ -8,8 +8,8 @@ export default async ctx => {
   if (!order) {
     return;
   }
-  const poshta = new NovaPosta();
+  const poshta = ctx.scheduler.api;
   const apiKey = await Config.get("novaposhta_key");
   const response = await poshta.getStatusDocuments(apiKey, [order]);
-  ctx.body = response.data;
+  ctx.body = first(response.data);
 };

@@ -1,9 +1,9 @@
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
-import * as moment from 'moment';
-import * as uuid from 'uuid';
-import RefreshToken from '../../models/refresh-token';
-import User from '../../models/user';
+import * as bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
+import * as moment from "moment";
+import * as uuid from "uuid";
+import RefreshToken from "../../models/refresh-token";
+import User from "../../models/user";
 
 export default async ctx => {
   const { email, password } = ctx.request.body;
@@ -17,7 +17,7 @@ export default async ctx => {
   if (!bcrypt.compareSync(String(password), user.password)) {
     return;
   }
-  const token = jwt.sign({ id: user.id }, process.env.SALT, {
+  const token = jwt.sign({ id: user.id }, process.env.SALT || "", {
     expiresIn: "1h"
   });
   const refreshToken = await RefreshToken.query().insert({

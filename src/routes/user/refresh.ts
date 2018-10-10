@@ -16,9 +16,13 @@ export default async ctx => {
     .update({ token: uuid(), created_at: moment().unix() })
     .execute();
 
-  const newToken = jwt.sign({ id: refreshToken.user_id }, process.env.SALT, {
-    expiresIn: "1h"
-  });
+  const newToken = jwt.sign(
+    { id: refreshToken.user_id },
+    process.env.SALT || "",
+    {
+      expiresIn: "1h"
+    }
+  );
 
   ctx.body = {
     token: newToken,

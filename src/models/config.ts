@@ -12,7 +12,11 @@ export default class Config extends Model {
   }
 
   static async get(key: string): Promise<string | number> {
-    return (await Config.query().findOne({ name: key })).value;
+    const config = await Config.query().findOne({ name: key });
+    if (!config) {
+      throw new Error(`No such config item:${key}`);
+    }
+    return config.value;
   }
 
   static async all(): Promise<Array<Config>> {

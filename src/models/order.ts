@@ -24,12 +24,14 @@ export default class Order extends Model {
     if (this.status === "ready") {
       return this.$query().update({ status: "paused" } as any);
     }
+    return;
   }
 
   async unpause() {
     if (this.status === "paused") {
       return this.$query().update({ status: "ready" } as any);
     }
+    return;
   }
 
   static get relationMappings() {
