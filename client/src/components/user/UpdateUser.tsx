@@ -1,11 +1,14 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import Layout from "../Layout";
-import { Row, Form, Input, Button, Select } from "antd";
 import api from "../../api";
+import Layout from "../Layout";
+import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { getUser } from "../../actions/user";
+import { Button, Form, Input, Row, Select } from "antd";
+import { connect } from "react-redux";
 import { getTemplates } from "../../actions/sms";
+import { getUser } from "../../actions/user";
+import { SmsTemplate } from "src/reducers/sms-template";
+import { User } from "../../reducers/user";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -14,7 +17,14 @@ const formItemLayout = {
 };
 const rowStyle = { margin: 6 };
 
-class User extends Component {
+type UserProps = {
+  getUser: Function;
+  getTemplates: Function;
+  form: WrappedFormUtils;
+  user: User;
+  sms_template: SmsTemplate;
+};
+class UpdateUser extends Component<UserProps> {
   componentDidMount() {
     const { getUser, getTemplates } = this.props;
     api
@@ -37,7 +47,7 @@ class User extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Layout>
-        <FormItem type="hidden">
+        <FormItem>
           {getFieldDecorator("id", {
             initialValue: user.get("id"),
             rules: [{ required: true }]
@@ -121,4 +131,4 @@ const mapDispatchToState = dispatch =>
 export default connect(
   state => state,
   mapDispatchToState
-)(Form.create()(User));
+)(Form.create()(UpdateUser));

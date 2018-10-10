@@ -1,9 +1,10 @@
-import React, { Component, Fragment } from "react";
-import { Form, Icon, Input, Button, Modal } from "antd";
-import { connect } from "react-redux";
 import api from "../../api";
-import { bindActionCreators } from "redux";
+import React, { Component, Fragment } from "react";
 import { afterCreateTemplate } from "../../actions/sms";
+import { bindActionCreators } from "redux";
+import { Button, Form, Icon, Input, Modal } from "antd";
+import { connect } from "react-redux";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 
 const formItemLayout = {
   labelCol: {
@@ -17,7 +18,7 @@ const formItemLayout = {
 };
 
 type NewSmsTemplateProps = {
-  form: { validateFields: Function; getFieldDecorator: Function };
+  form: WrappedFormUtils;
   afterCreateTemplate: Function;
 };
 class NewSmsTemplate extends Component<NewSmsTemplateProps> {

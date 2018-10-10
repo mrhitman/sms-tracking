@@ -11,6 +11,7 @@ import { Button, Col, Icon, Popconfirm, Row, Table, Upload } from "antd";
 import { connect } from "react-redux";
 import { deleteOrder, getOrders, pause, unpause } from "../../actions/order";
 import { Order } from "../../reducers/order";
+import { State } from "../../reducers";
 import { User } from "../../reducers/user";
 
 type OrdersProps = {
@@ -191,6 +192,6 @@ const mapDispatchToState = dispatch =>
   );
 
 export default connect(
-  state => state,
+  (state: State) => state,
   mapDispatchToState
 )(Orders);

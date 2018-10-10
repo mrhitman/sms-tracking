@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { Button, Checkbox, Form, Icon, Input, Modal, Select } from "antd";
 import { connect } from "react-redux";
 import { SmsTemplate } from "../../reducers/sms-template";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 
 const formItemLayout = {
   labelCol: {
@@ -18,11 +19,7 @@ const formItemLayout = {
 };
 
 type NewOrderProps = {
-  form: {
-    validateFields: Function;
-    getFieldDecorator: Function;
-    getFieldValue: Function;
-  };
+  form: WrappedFormUtils;
   afterCreateOrder: any;
   getTemplates: any;
   sms_template: SmsTemplate;

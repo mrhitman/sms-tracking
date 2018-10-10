@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import { Alert, Checkbox, Form, Icon, Input, Button } from "antd";
-import { Link, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
 import api from "../../api";
+import React, { Component } from "react";
+import { Alert, Button, Checkbox, Form, Icon, Input } from "antd";
 import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 import { login } from "../../actions/user";
 import { User } from "../../reducers/user";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 
 const FormItem = Form.Item;
 
 interface LoginProps {
-  form: { validateFields: Function; getFieldDecorator: Function };
+  form: WrappedFormUtils;
   login: any;
   user: User;
   getFieldDecorator: Function;

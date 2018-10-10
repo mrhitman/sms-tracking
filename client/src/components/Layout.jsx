@@ -1,11 +1,15 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Component } from "react";
 import { Layout, Menu, Icon } from "antd";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { User } from "src/reducers/user";
 
 const { Header, Sider, Content } = Layout;
 
-class BaseLayout extends PureComponent {
+type BaseLayoutProps = {
+  user?: User
+};
+class BaseLayout extends PureComponent<BaseLayoutProps> {
   render() {
     const { user } = this.props;
     return (
@@ -50,11 +54,11 @@ class BaseLayout extends PureComponent {
           <Header style={{ background: "#fff", padding: 0 }} />
           <Content
             style={{
-              margin: "24px 16px",
-              padding: 24,
               background: "#fff",
+              margin: "24px 16px",
               minHeight: "86vh",
-              overflowY: "auto"
+              overflowY: "auto",
+              padding: 24
             }}
           >
             {this.props.children}

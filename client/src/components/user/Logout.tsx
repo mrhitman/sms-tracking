@@ -4,9 +4,11 @@ import { connect } from "react-redux";
 import api from "../../api";
 import { bindActionCreators } from "redux";
 import { logout } from "../../actions/user";
+import { User } from "src/reducers/user";
 
 type LogoutProps = {
-  logout: Function
+  logout: any;
+  user: User;
 };
 
 class Logout extends Component<LogoutProps> {

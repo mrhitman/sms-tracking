@@ -9,8 +9,8 @@ import { Sms } from "../../reducers/sms";
 import { Order } from "../../reducers/order";
 
 type SmsHistoryProps = {
-  getHistory: Function;
-  sms: Sms;
+  getHistory?: Function;
+  sms?: Sms;
   row: Order;
 };
 type SmsHistoryState = {

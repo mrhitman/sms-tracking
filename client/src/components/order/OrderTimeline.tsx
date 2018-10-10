@@ -7,11 +7,12 @@ import { connect } from "react-redux";
 import { getHistory } from "../../actions/order";
 import { History } from "../../reducers/history";
 import { Order } from "../../reducers/order";
+import { State } from "../../reducers";
 
 type OrderTimelineProps = {
-  getHistory: Function;
-  history: History;
-  row: Order;
+  readonly getHistory: Function;
+  readonly history: History;
+  readonly row: Order;
 };
 type OrderTimelineState = {
   loading: boolean;
@@ -37,11 +38,12 @@ class OrderTimeline extends Component<OrderTimelineProps, OrderTimelineState> {
 
   render() {
     const { history, row } = this.props;
+    const id = row.get("id") || 0;
     return (
       <Card loading={this.state.loading}>
         <h3>Order timeline:</h3>
         <Timeline>
-          {history.get(row.get("id"), []).map(item => {
+          {history.get(id, []).map((item: History) => {
             return (
               <Timeline.Item>
                 {moment.unix(item.created_at).format("L hh:mm")}: {item.status}
@@ -63,6 +65,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  state => state,
+  (state: State) => state,
   mapDispatchToProps
-)(OrderTimeline);
+)(OrderTimeline as any);

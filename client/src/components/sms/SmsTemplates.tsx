@@ -21,8 +21,10 @@ type SmsTemplatesProps = {
   afterDeleteTemplate: Function;
   getTemplates: Function;
 };
-
-class SmsTemplates extends Component<SmsTemplatesProps> {
+type SmsTemplatesState = {
+  loading: boolean;
+};
+class SmsTemplates extends Component<SmsTemplatesProps, SmsTemplatesState> {
   state = {
     loading: false
   };

@@ -1,13 +1,22 @@
-import React, { Component } from "react";
-import { Alert, Form, Icon, Input, Button } from "antd";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import api from "../../api";
+import React, { Component } from "react";
+import { Alert, Button, Form, Icon, Input } from "antd";
 import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { create } from "../../actions/user";
+import { Redirect } from "react-router-dom";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 
 const FormItem = Form.Item;
-class Register extends Component {
+type RegisterProps = {
+  form: WrappedFormUtils;
+  create: Function;
+};
+type RegisterState = {
+  registered: boolean;
+  errors: string[];
+};
+class Register extends Component<RegisterProps, RegisterState> {
   state = {
     registered: false,
     errors: []
@@ -123,4 +132,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   state => state,
   mapDispatchToProps
-)(Form.create()(Register));
+)(Form.create()(Register as any));

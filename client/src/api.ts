@@ -2,13 +2,10 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:3000/";
 class Api {
-  private client: {
-    interceptors: any;
-    post: Function;
-  } & Function;
-  private token: string | null;
-  private refreshToken: string | null;
-  private refreshRequest: any;
+  public client: any;
+  public token: string | null;
+  public refreshToken: string | null;
+  public refreshRequest: any;
 
   constructor(options = {} as any) {
     this.client = options.client || axios.create({ baseURL: baseUrl });
@@ -59,7 +56,7 @@ class Api {
     );
   }
 
-  ensureToken(error: { response: any; config: any }) {
+  public ensureToken(error: { response: any; config: any }) {
     if (
       !this.refreshToken ||
       error.response.status !== 401 ||
@@ -69,88 +66,88 @@ class Api {
     }
   }
 
-  async login({ email, password }) {
+  public async login({ email, password }) {
     const { data } = await this.client.post("user/login", { email, password });
     this.token = data.token;
     this.refreshToken = data.refreshToken;
     return { data };
   }
 
-  logout() {
+  public logout() {
     this.token = null;
     this.refreshToken = null;
     return Promise.resolve();
   }
 
-  getUser() {
+  public getUser() {
     return this.client(`/user`);
   }
 
-  updateUser(data) {
+  public updateUser(data) {
     return this.client.post("/user/update", data);
   }
 
-  createUser(data) {
+  public createUser(data) {
     return this.client.post("/user", data);
   }
 
-  getOrders() {
+  public getOrders() {
     return this.client(`/order`);
   }
 
-  deleteOrder(data) {
+  public deleteOrder(data) {
     return this.client.post("/order/delete", data);
   }
 
-  updateOrder(data) {
+  public updateOrder(data) {
     return this.client.post("/order/update", data);
   }
 
-  createOrder(data) {
+  public createOrder(data) {
     return this.client.post("/order", data);
   }
 
-  pauseOrder(data) {
+  public pauseOrder(data) {
     return this.client.post("/order/pause", data);
   }
 
-  sendSmsOrder(data) {
+  public sendSmsOrder(data) {
     return this.client.post("/order/send-sms", data);
   }
 
-  unpauseOrder(data) {
+  public unpauseOrder(data) {
     return this.client.post("/order/unpause", data);
   }
 
-  trackOrder(id) {
+  public trackOrder(id) {
     return this.client(`/order/${id}/track`);
   }
 
-  getOrderHistory(id) {
+  public getOrderHistory(id) {
     return this.client(`/order/${id}/history`);
   }
 
-  loadOrders(type, data) {
+  public loadOrders(type, data) {
     return this.client.post(`/order/load/${type}`, data);
   }
 
-  getSmsTemplates() {
+  public getSmsTemplates() {
     return this.client(`/sms-template`);
   }
 
-  updateSmsTemplate(data) {
+  public updateSmsTemplate(data) {
     return this.client.post(`/sms-template/update`, data);
   }
 
-  deleteSmsTemplate(data) {
+  public deleteSmsTemplate(data) {
     return this.client.post(`/sms-template/delete`, data);
   }
 
-  createSmsTemplate(data) {
+  public createSmsTemplate(data) {
     return this.client.post(`/sms-template`, data);
   }
 
-  getSms(id) {
+  public getSms(id) {
     return this.client(`/order/${id}/sms`);
   }
 }

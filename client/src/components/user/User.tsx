@@ -1,15 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import Layout from "../Layout";
-import { Col, Row, Button } from "antd";
 import api from "../../api";
-import { Link } from "react-router-dom";
+import Layout from "../Layout";
+import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { Button, Col, Row } from "antd";
+import { connect } from "react-redux";
 import { getUser } from "../../actions/user";
+import { Link } from "react-router-dom";
+import { User as UserClass } from "../../reducers/user";
 
 const rowStyle = { margin: 8 };
 
-class User extends Component {
+type UserProps = {
+  getUser: Function;
+  user: UserClass;
+};
+
+class User extends Component<UserProps> {
   componentDidMount() {
     const { getUser } = this.props;
     api.getUser().then(getUser);

@@ -4,6 +4,7 @@ import { afterUpdateTemplate } from "../../actions/sms";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Form, Icon, Input, Modal } from "antd";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 
 const formItemLayout = {
   labelCol: {
@@ -17,7 +18,8 @@ const formItemLayout = {
 };
 
 type UpdateSmsTemplateProps = {
-  form: { validateFields: Function; getFieldDecorator: Function };
+  id: number;
+  form: WrappedFormUtils;
   afterUpdateTemplate: Function;
   template: string;
   description: string;
