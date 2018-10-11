@@ -1,13 +1,13 @@
-import { first } from 'lodash';
-import * as moment from 'moment';
-import Config from '../../models/config';
-import db from '../../services/db';
-import NovaPoshta from '../../services/novaposhta';
-import Order from '../../models/order';
-import OrderHistory from '../../models/order-history';
-import { joi, validate } from '../../helpers/validate';
-import { on_send } from '../../services/sms';
-import { transaction } from 'objection';
+import * as moment from "moment";
+import Config from "../../models/config";
+import db from "../../services/db";
+import Scheduler from "../../services/scheduler";
+import Order from "../../models/order";
+import OrderHistory from "../../models/order-history";
+import { first } from "lodash";
+import { joi, validate } from "../../helpers/validate";
+import { on_send } from "../../services/sms";
+import { transaction } from "objection";
 
 const schema = joi.object().keys({
   phone: joi
@@ -23,7 +23,13 @@ const schema = joi.object().keys({
 export default async ctx => {
   const user_id = ctx.state.user.id;
   validate(ctx, schema);
-  const { phone, ttn, remind_sms_template_id, on_send_sms_template_id, send_sms } = ctx.request.body;
+  const {
+    phone,
+    ttn,
+    remind_sms_template_id,
+    on_send_sms_template_id,
+    send_sms
+  } = ctx.request.body;
 
   await transaction(db, async t => {
     const order = await Order.query(t).insert({
@@ -38,15 +44,14 @@ export default async ctx => {
       created_at: moment().unix()
     });
 
-    const api = new NovaPoshta();
+    const api = ctx.scheduler.api;
     const novaposhtaKey = await Config.get("novaposhta_key");
     const invoice = first(
       (await api.getStatusDocuments(novaposhtaKey, [order])).data
     );
 
-    if (invoice.StatusCode) {
-      order.$query(t).update({ status: invoice.StatusCode });
-    }
+    const status = Scheduler.getStatus(invoice);
+    await order.$query(t).update({ status });
 
     await OrderHistory.query(t).insert({
       user_id: order.user_id,
@@ -64,7 +69,7 @@ export default async ctx => {
       order_id: order.id,
       user_id,
       data: JSON.stringify(invoice),
-      status: invoice.StatusCode || "unknown",
+      status: order.status,
       created_at: moment().unix()
     });
     ctx.body = order;

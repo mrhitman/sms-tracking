@@ -8,19 +8,19 @@ import { map, partialRight, pick } from "lodash";
 import { remind } from "../services/sms";
 
 export const Code = {
-  wait: ["1"],
-  deleted: ["2"],
-  notfound: ["3"],
-  inlocation: ["4"],
-  inlocationexpress: ["41"],
-  inprogress: ["5", "101"],
-  inlocationinprogess: ["6"],
-  ready: ["7", "8"],
-  done: ["9"],
-  taken: ["10", "11", "106"],
-  checking: ["14"],
-  refuse: ["102", "103", "108"],
-  stopsaving: ["105"]
+  wait: [1],
+  deleted: [2],
+  notfound: [3],
+  inlocation: [4],
+  inlocationexpress: [41],
+  inprogress: [5, 101],
+  inlocationinprogess: [6],
+  ready: [7, 8],
+  done: [9],
+  taken: [10, 11, 106],
+  checking: [14],
+  refuse: [102, 103, 108],
+  stopsaving: [105]
 };
 
 export default class Scheduler {
@@ -70,16 +70,23 @@ export default class Scheduler {
   }
 
   static getStatus(invoice) {
-    if (Code.ready.includes(invoice.StatusCode)) {
+    const code = parseInt(invoice.StatusCode, 10);
+    if (Code.inlocation.includes(code)) {
+      return "inlocation";
+    }
+    if (Code.inprogress.includes(code)) {
+      return "inprogress";
+    }
+    if (Code.ready.includes(code)) {
       return "ready";
     }
-    if (Code.done.includes(invoice.StatusCode)) {
+    if (Code.done.includes(code)) {
       return "done";
     }
-    if (Code.refuse.includes(invoice.StatusCode)) {
+    if (Code.refuse.includes(code)) {
       return "refuse";
     }
-    if (Code.stopsaving.includes(invoice.StatusCode)) {
+    if (Code.stopsaving.includes(code)) {
       return "refuse";
     }
     return "unknown";

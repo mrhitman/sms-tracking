@@ -7,7 +7,7 @@ const issueToken = require("./helpers/issueToken");
 const Scheduler = require("./mocks/scheduler");
 const NovaPoshta = require("./mocks/novaposhta");
 
-describe("order", () => {
+describe.only("order", () => {
   const api = new NovaPoshta();
   const scheduler = new Scheduler(api);
   const app = agent(createApp(scheduler));
@@ -61,6 +61,22 @@ describe("order", () => {
     const response = await app
       .get(`/order/${order.id}/track`)
       .set("Authorization", `Bearer ${token}`);
-    expect(response.body).to.be.an('object');
+    expect(response.body).to.be.an("object");
+  });
+
+  test("create order with tracking", async () => {
+    api.setOption(api.statusCodes.inlocation);
+    const response = await app
+      .post("/order")
+      .send({
+        phone: "+380994000000",
+        ttn: String(chance.natural({ max: 9999999999 })),
+        remind_sms_template_id: 1,
+        send_sms: false
+      })
+      .set("Authorization", `Bearer ${token}`);
+    order = response.body;
+    expect(response.status).eq(201);
+    console.log(response.body);
   });
 });

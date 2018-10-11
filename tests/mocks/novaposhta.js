@@ -1,23 +1,17 @@
 class NovaPoshtaMock {
   constructor() {
-    this.setOption("ready");
+    this.statusCodes = {
+      inlocation: 4,
+      inprogress: 5,
+      done: 9,
+      refuse: 102,
+      ready: 7
+    };
+    this.setOption(this.statusCodes.ready);
   }
 
   setOption(option) {
     this.option = option;
-  }
-
-  getStatusCode() {
-    switch (this.option) {
-      case "done":
-        return "9";
-      case "refuse":
-        return "102";
-      case "ready":
-        return "7";
-      default:
-        return "7";
-    }
   }
 
   async getStatusDocuments(apiKey, documents) {
@@ -73,7 +67,7 @@ class NovaPoshtaMock {
           AmountToPay: "",
           AmountPaid: "",
           Status: "Одержано",
-          StatusCode: this.getStatusCode(),
+          StatusCode: this.option,
           RefEW: "55fbe203-ad74-11e6-b5da-005056887b8d",
           BackwardDeliverySubTypesServices: [],
           BackwardDeliverySubTypesActions: [],
