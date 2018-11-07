@@ -74,11 +74,12 @@ class Orders extends Component {
               />
             )}
             <DeliveryInfo id={record.id} />
-            <Icon
-              title="Send sms to order owner"
-              type="mail"
+            <Popconfirm
+              title="Do you realy want to send remind sms?"
               onClick={() => this.handleSendSms(record.id)}
-            />
+            >
+              <Icon title="Send sms to order owner" type="mail" />
+            </Popconfirm>
             <Popconfirm
               title="Sure to delete?"
               onConfirm={() => this.handleDelete(record.id)}

@@ -22,6 +22,7 @@ class SmsTemplates extends Component {
     {
       title: "Id",
       dataIndex: "id",
+      width: 80,
       sorter: (a, b) => a.id - b.id
     },
     {

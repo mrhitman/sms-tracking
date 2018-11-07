@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Layout } from "antd";
+import { Layout, Avatar } from "antd";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import LeftMenu from "./LeftMenu";
@@ -18,13 +18,14 @@ class BaseLayout extends PureComponent {
     return (
       <Layout>
         {!!user.get("id") === false && <Redirect to="/login" />}
-        <Sider trigger={null}>
-          <div className="logo" />
-          <LeftMenu />
-        </Sider>
+        <Header style={{ background: "#fff", padding: 0 }}>
+          <Avatar style={{ float: "right", margin: "18px" }} />
+        </Header>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }} />
+          <Sider theme="light" width="40" />
+          <LeftMenu />
           <Content style={ContentStyle}>{this.props.children}</Content>
+          <Sider theme="light" />
         </Layout>
       </Layout>
     );
