@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { Layout, Avatar } from "antd";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import LeftMenu from "./LeftMenu";
 
@@ -17,9 +17,11 @@ class BaseLayout extends PureComponent {
     const { user } = this.props;
     return (
       <Layout>
-        {!!user.get("id") === false && <Redirect to="/login" />}
+        {user.get("id") === null && <Redirect to="/login" />}
         <Header style={{ background: "#fff", padding: 0 }}>
-          <Avatar style={{ float: "right", margin: "18px" }} />
+          <Link to={"/logout"}>
+            <Avatar style={{ float: "right", margin: "18px" }} />
+          </Link>
         </Header>
         <Layout>
           <Sider theme="light" width="40" />
@@ -32,7 +34,4 @@ class BaseLayout extends PureComponent {
   }
 }
 
-export default connect(
-  state => state,
-  () => ({})
-)(BaseLayout);
+export default connect(state => state)(BaseLayout);
